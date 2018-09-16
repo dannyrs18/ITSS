@@ -1,0 +1,44 @@
+ENTORNO EN DEBIAN 9 STRETCH
+
+########################### INSTALAR MARIADB Y CONFIGURARLA
+
+-instalar mariadb
+apt-get install mysql-server mysql-client
+
+-desde root ingresar a mysql
+mysql -u root
+
+-crear una base de datos desde root 
+CREATE DATABASE prueba
+
+-crear un usuario 
+CREATE USER 'dep_practicas'@'localhost' IDENTIFIED BY 'admiN680x'
+
+-darle privilegios solo en la base de datos especificada 
+GRANT ALL PRIVILEGES ON practicas . * 'dep_practicas'@'localhost'
+
+-actualizar los privilegios 
+FLUSH PRIVILEGES
+
+############################ INSTALAR LAS CONEXIONES PYTHON MYSQL
+
+1. Instalar paquete libmysqlclient desde root
+- apt-get install libmysqlclient-dev
+# si falla la instalacion usar(esto sucede en ultimas versiones de distros)
+- apt install default-libmysqlclient-dev
+
+2. Instalar paquete python-mysql
+- apt install python-MySQLdb
+
+# si no se instalo por los requirements instalarlo manualmente
+3. instalar libreria python (en local o virtual): 
+- pip install mysql-python
+
+
+########################### PRUEBAS CON GUNICORN
+# gunicorn (-w $num_work) (-b $host:$port) (-n $app_name) (--reload) $modulo:$funcion
+# gunicorn -w 2 -b localhost:8000 -n testing test:app
+# --reload (orientado para el desarrollo, reinicia los procesos cada vez que cambie el codigo)
+# -w == --workers (los workers son la cantidad de procesos que se le da a una app dentro del sistema normalmente se recomienda de 2 a 4 por nucleo)
+# -b == --bind (es el la direccion ip y el puert que se le otorga manuamente)
+# -n == --name (para cambiar el nombre del proceso y ubicarlo de una manera directa --debe instalarse setproctitle desde pip para que funcione)
