@@ -9,8 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/ico" />
 
-    <title>{% block title %}INSTITUTO TECNOLOGICO SUPERIO SUDAMERICANO{% endblock %}</title>
-
+    <title>{% block title %}Instituto Tecnológico Superior Sudamericano{% endblock %}</title>
+    {% block style %}
     <!-- Bootstrap -->
     <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Font Awesome -->
@@ -29,8 +29,6 @@
 
     <!-- Custom Theme Style -->
     <link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
-
-    {% block style %}
     {% endblock %}
 </head>
 
@@ -39,8 +37,8 @@
     <div class="main_container">
         <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
-            <div class="navbar nav_title" style="border: 0;">
-                <a href="index.html" class="site_title"><span><img src="{% static 'images/logo.png' %}" width="30"><strong> Sudamericano</strong></span></a>
+            <div class="navbar nav_title" style="border: 0; background: #007d7c;">
+                <a href="/" class="site_title"><span><img src="{% static 'images/logo2.png' %}" width="30"><strong style="color:rgb(255, 255, 255)"> <u>Sudamericano</u></strong></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -48,7 +46,11 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
             <div class="profile_pic">
-                <img src="{% static 'images/img.jpg' %}" alt="..." class="img-circle profile_img">
+                {% if user.perfil.avatar %}
+                <img src="{{ user.perfil.avatar.url }}" alt="usuario" class="img-circle profile_img" width="50" height="55">
+                {% else %}
+                <img src="{% static 'images/user.png' %}" alt="{{ user.get_full_name }}" class="img-circle profile_img" width="50" height="55">
+                {% endif %}
             </div>
             <div class="profile_info">
                 <span>Bienvenido,</span>
@@ -63,14 +65,28 @@
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                 <div class="menu_section">
                     <ul class="nav side-menu">
-                        <li><a href="{% url 'index' %}"><i class="fa fa-home"></i> Pagina Principal</a></li>
-                        <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
+                        <li><a href="{% url 'index' %}"><i class="fa fa-home"></i> <strong>Pagina Principal</strong> </a></li>
+                        {% if user.is_superuser %}
+                        <li><a href="{% url 'registro:registros' %}"><i class="fa  fa-sort-amount-asc"></i> <strong>Web Services</strong> </a></li>
+                        {% endif %}
+                        {% if perms.registros.admin_prac or perms.registros.admin_vinc %}
+                        <li><a><i class="fa fa-users"></i> <strong>Usuarios</strong> <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                            <li><a href="{% url 'registro:crear_usuario' %}">Crear</a></li>
-                            <li><a href="#">Dashboard2</a></li>
-                            <li><a href="#">Dashboard3</a></li>
+                                {% if perms.auth.add_user %}
+                                <li><a href="{% url 'registro:crear_usuario' %}">Crear</a></li>
+                                {% endif %}
+                                <li><a href="#">Buscar</a></li>
                             </ul>
                         </li>
+                        {% endif %}
+                        {% if user.is_superuser %}
+                        <li><a><i class="fa fa-download"></i> <strong>Backups</strong> <span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li><a href="{% url 'registro:load-data' %}">Cargar archivo</a></li>
+                                <li><a href="{% url 'registro:dump-data' %}"><i class="fa fa-download"></i>Descargar</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -87,93 +103,20 @@
 
         <!-- top navigation -->
         <div class="top_nav">
-        <div class="nav_menu">
+        <div class="nav_menu" style="background: #007d7c;">
             <nav>
             <div class="nav toggle">
-                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                <a id="menu_toggle"><i class="fa fa-bars" style="color: white"></i></a>
             </div>
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="">
                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="{% static 'images/img.jpg' %}" alt="">{{ user.get_full_name }}
-                    <span class=" fa fa-angle-down"></span>
+                    <img src="{% static 'images/user.png' %}" alt=""> <strong style="color: #ffffff"> {{ user.get_full_name }}</strong>&nbsp; 
+                    <span class="fa fa-angle-down" style="color: white"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="javascript:;"> Profile</a></li>
-                    <li>
-                    <a href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                    </a>
-                    </li>
-                    <li><a href="javascript:;">Help</a></li>
                     <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesión</a></li>
-                </ul>
-                </li>
-
-                <li role="presentation" class="dropdown">
-                <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-envelope-o"></i>
-                    <span class="badge bg-green">6</span>
-                </a>
-                <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                    <li>
-                    <a>
-                        <span class="image"><img src="{% static 'images/img.jpg' %}" alt="Profile Image" /></span>
-                        <span>
-                        <span>John Smith</span>
-                        <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                    </a>
-                    </li>
-                    <li>
-                    <a>
-                        <span class="image"><img src="{% static 'images/img.jpg' %}" alt="Profile Image" /></span>
-                        <span>
-                        <span>John Smith</span>
-                        <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                    </a>
-                    </li>
-                    <li>
-                    <a>
-                        <span class="image"><img src="{% static 'images/img.jpg' %}" alt="Profile Image" /></span>
-                        <span>
-                        <span>John Smith</span>
-                        <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                    </a>
-                    </li>
-                    <li>
-                    <a>
-                        <span class="image"><img src="{% static 'images/img.jpg' %}" alt="Profile Image" /></span>
-                        <span>
-                        <span>John Smith</span>
-                        <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                    </a>
-                    </li>
-                    <li>
-                    <div class="text-center">
-                        <a>
-                        <strong>See All Alerts</strong>
-                        <i class="fa fa-angle-right"></i>
-                        </a>
-                    </div>
-                    </li>
                 </ul>
                 </li>
             </ul>
@@ -194,7 +137,7 @@
         <!-- footer content -->
         <footer>
         <div class="pull-right">
-            INSTITUTO TECNOLÓGICO SUPERIOR SUDAMERICANO
+            <strong>INSTITUTO TECNOLÓGICO SUPERIOR SUDAMERICANO</strong> 
         </div>
         <div class="clearfix"></div>
         </footer>
@@ -202,6 +145,7 @@
     </div>
     </div>
 
+    {% block script %}
     <!-- jQuery -->
     <script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
     <!-- Bootstrap -->
@@ -242,7 +186,6 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{% static 'build/js/custom.min.js' %}"></script>
-    {% block script %}
     {% endblock %}
     
 </body>

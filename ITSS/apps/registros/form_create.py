@@ -2,35 +2,20 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User, Group
-"""
-class AdminForm(UserCreationForm):
+from django.contrib.auth.models import User, Permission
 
-    PRACTICAS = 'practicas'
-    VINCULACION = 'vinculacion'
-    SELECT = (
-        (None, '-------'),
-        (PRACTICAS,_(u'ADMINISTRAR PRACTICAS')),
-        (VINCULACION, _(u'ADMINISTRAR VINCULACIÓN')),
-    )
-    tipo = forms.ChoiceField(choices=SELECT, widget= forms.Select(attrs={'class':'form-control js-example-basic-single'}))
-    avatar = forms.ImageField(label=_('Imagen de perfil'), widget = forms.FileInput(attrs={'class':'form-control'}), required=False)
-    docente = forms.ModelChoiceField(queryset=Docentes.objects.all(), widget= forms.Select(attrs={'class':'form-control js-example-basic-single'}))
-    cedula = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'readonly':'readonly'}))
-    class Meta:
-"""
 class RootForm(UserCreationForm):
 
     PRACTICAS, VINCULACION = 1, 2
     SELECT = (
         (None, '-----'),
         (PRACTICAS,_(u'PRACTICAS')),
-        (VINCULACION, _(u'VINCULACIÓN')),   
+        (VINCULACION, _(u'VINCULACIÓN')),
     )
 
     username = forms.CharField(max_length='20', label=_('Usuario'))
-    avatar = forms.ImageField(_('Imagen de perfil'))
-    cedula = forms.IntegerField(_('Cedula'))
+    avatar = forms.ImageField(label=_('Imagen de perfil'), required=False)
+    cedula = forms.IntegerField(label=_('Cedula'))
     admin = forms.ChoiceField(choices=SELECT, label=_('Administracion'))
 
     class Meta:
@@ -44,10 +29,26 @@ class RootForm(UserCreationForm):
         self.fields['last_name'].widget.attrs.update({'class' : 'form-control'})
         self.fields['email'].widget.attrs.update({'class' : 'form-control'})
         self.fields['cedula'].widget.attrs.update({'class' : 'form-control'})
-        self.fields['avatar'].widget.attrs.update({'class' : 'form-control', 'required':False})
+        self.fields['avatar'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['admin'].widget.attrs.update({'class' : 'form-control'})
         self.fields['password1'].widget.attrs.update({'class' : 'form-control'})
         self.fields['password2'].widget.attrs.update({'class' : 'form-control'})
 
-
-    def grupo():
-        pass
+    def save(self, user, commit=True):
+        instance = super(RootForm, self).save(commit=True)
+        if user.is_superuser:
+            perm_add = Permission.objects.get(codename='add_user')
+            perm_change = Permission.objects.get(codename='change_user')
+            if self.cleaned_data.get('admin') == '1':
+                perm_admin = Permission.objects.get(codename='admin_prac')
+                instance.user_permissions = [perm_add, perm_change, perm_admin]
+            else:
+                perm_admin = Permission.objects.get(codename='admin_vinc')
+                instance.user_permissions = [perm_add, perm_change, perm_admin]
+        if commit:
+            instance.save()
+            instance.refresh_from_db()  # cargar la instancia de perfil creada por la señal
+            instance.perfil.avatar = self.cleaned_data.get('avatar')
+            instance.perfil.cedula = self.cleaned_data.get('cedula')
+            instance.save()
+        return instance

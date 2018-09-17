@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Load data" %} {{ block.super }}{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+    {{ form.media.js }}
+{% endblock %}
+
+{% block bodyclass %}change-form{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans "Home" %}</a> &rsaquo;
+  {% trans "Load data" %}
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="">
+  <div class="page-title" >
+    <div class="title_left">
+      <h3><strong>BACKUPS</strong> </h3>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2><small>{% trans 'Se sobrescribirán los artículos existentes con la misma clave principal.' %}</small></h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <br />
+          <form id="demo-form2" class="form-horizontal form-label-left" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+              {% if form.errors %}
+                <p class="errornote">
+                {% if form.errors|length == 1 %}
+                  {% trans "Please correct the error below." %}
+                {% else %}
+                  {% trans "Please correct the errors below." %}
+                {% endif %}
+                </p>
+                {{ form.non_field_errors }}
+              {% endif %}
+              <div class="form-group">
+              {% for fieldset in adminform %}
+                {% include "admin/includes/fieldset.html" %}
+              {% endfor %}       
+              </div>
+              <div class="ln_solid"></div>
+              <div class="form-group">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                  <input type="submit" class="btn btn-default" name="_load" value="{% trans "Cargar" %}" />
+                </div>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

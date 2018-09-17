@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block style %}
+    {{ block.super }}
+    <!-- Datatables -->
+    <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-right">
+                <a href="{% url 'registro:web_services' %}" class="btn btn-success">Actualizar datos</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!---->
+<div class="">
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Estudiantes</h2>
+                <div class="clearfix"></div>
+             </div>
+            <div class="x_content">
+            <table id="datatable" class="table table-hover table-bordered" style="font-size:14px; ">
+                <thead>
+                <tr>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Cedula</th>
+                    <th>Carrera</th>
+                    <th>Paralelo</th>
+                    <th>Ciclo</th>
+                    <th>Seccion</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for estudiante in estudiantes %}
+                <tr>
+                    <td>{{ estudiante.nombres }}</td>
+                    <td>{{ estudiante.apellidos }}</td>
+                    <td>{{ estudiante.cedula }}</td>
+                    <td>{{ estudiante.carrera }}</td>
+                    <td>{{ estudiante.paralelo }}</td>
+                    <td>{{ estudiante.ciclo }}</td>
+                    <td>{{ estudiante.seccion }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="">
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Docentes</h2>
+                <div class="clearfix"></div>
+             </div>
+            <div class="x_content">
+            <table id="datatable2" class="table table-hover table-bordered" style="font-size:14px;" data-page-length='10'>
+                <thead>
+                <tr>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Cedula</th>
+                    <th>Telefono</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for docente in docentes %}
+                <tr>
+                    <td>{{ docente.nombres }}</td>
+                    <td>{{ docente.apellidos }}</td>
+                    <td>{{ docente.cedula }}</td>
+                    <td>{{ docente.telefono }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="">
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Carreras</h2>
+                <div class="clearfix"></div>
+             </div>
+            <div class="x_content">
+            <table id="datatable3" class="table table-hover table-bordered" style="font-size:14px; ">
+                <thead>
+                <tr>
+                    <th>Carreras</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for carrera in carreras %}
+                <tr>
+                    <td>{{ carrera.nombre }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+    {{ block.super }}
+    <!-- Datatables -->
+    <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+    <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            $('#datatable').DataTable();
+            $('#datatable2').DataTable();
+            $('#datatable3').DataTable();
+        })
+    </script>
+{% endblock %}
+    
