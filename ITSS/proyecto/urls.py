@@ -6,6 +6,8 @@ from django.views.static import serve
 
 urlpatterns = [
     url(r'^registro/', include('apps.registros.urls')),
+    url(r'^practicas/', include('apps.practicas.urls')),
+    url(r'^vinculacion/', include('apps.vinculacion.urls')),
     url(r'^$', views.index, name='index'),
     url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),

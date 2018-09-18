@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block style %}
+    {{ block.super }}
+    <!-- Datatables -->
+    <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<div class="">
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2> <strong>{{ title }}</strong> </h2>
+                <div class="clearfix"></div>
+             </div>
+            <div class="x_content">
+            <table id="datatable" class="table table-hover table-bordered" style="font-size:14px; ">
+                <thead>
+                <tr>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Cedula</th>
+                    <th>Carrera</th>
+                    <th>Seccion</th>
+                    <th>Empresa o Entidad</th>
+                    <th>Horas</th>
+                    <th>Calificación</th>
+                    <th>Evidencias</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for estudiante in estudiantes %}
+                <tr>
+                    <td>{{ estudiante.nombres }}</td>
+                    <td>{{ estudiante.apellidos }}</td>
+                    <td>{{ estudiante.cedula }}</td>
+                    <td>{{ estudiante.carrera }}</td>
+                    <td>{{ estudiante.paralelo }}</td>
+                    <td>{{ estudiante.ciclo }}</td>
+                    <td>{{ estudiante.seccion }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+    {{ block.super }}
+    <!-- Datatables -->
+    <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+    <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+
+    <!-- Uikit -->
+    <script src="{% static 'js/uikit/uikit.js' %}"></script>
+    <script src="{% static 'js/uikit/uikit-icons.js' %}"></script>
+    <script>
+        function evidencia(pk){
+            $.ajax({
+                url: "{% url 'practicas:evidencia' %}",
+                type: 'post',
+                data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'pk': pk},
+                success: function(data){
+                    var galeria = []
+                    for (i=0; i < data.galeria.length; i++){
+                        galeria.push({source: data.galeria[i].solicitud, caption: 'Documento de Solicitud'})
+                        galeria.push({source: data.galeria[i].aceptacion, caption: 'Documento de Aceptación'})
+                        for (c=0; c < data.galeria[i].asistencia.length; c++){
+                            galeria.push({source: data.galeria[i].asistencia[c], caption: 'Hoja de asistecia '+(c+1)})
+                        }
+                        for (c=0; c < data.galeria[i].anexos.length; c++){
+                            galeria.push({source: data.galeria[i].anexos[c], caption: 'Anexo '+(c+1)})
+                        }
+                    }
+                    console.log(galeria)
+                    UIkit.lightboxPanel({
+                        items: galeria
+                    }).show();
+                }
+            })
+        }
+        function evidencia2(pk){
+            $.ajax({
+                url: "{% url 'vinculacion:evidencia' %}",
+                type: 'post',
+                data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'pk': pk},
+                success: function(data){
+                    var galeria = []
+                    for (i=0; i < data.imagen.length; i++){
+                        galeria.push({source: data.imagen[i], caption: 'Evidencia '+(i+1)})
+                    }
+                    UIkit.lightboxPanel({
+                        items: galeria
+                    }).show();
+                }
+            })
+        }
+    </script>
+{% endblock %}
+    

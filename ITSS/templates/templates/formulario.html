@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    {{ block.super }}
+    <!-- bootstrap-daterangepicker -->
+    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="{% static 'vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="">
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+            <h2><strong>{{ title }}<strong></h2>
+            <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+            <br />
+            <form id="demo-form2" class="form-horizontal form-label-left" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                    
+                {% for field in form %}
+                {{ field.errors }}
+                    <div class="form-group">
+                        <label class="control-label col-md-3" >{{ field.label_tag }}</label>
+                        <div class="col-md-6">
+                            {{ field }}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                    <a href="#" class="btn btn-primary" type="button">Cancel</a>
+                    <input type="submit" class="btn btn-success" value="Guardar">
+                </div>
+                </div>
+
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <!-- bootstrap-daterangepicker -->
+    <script src="{% static 'vendors/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <script>
+        $(function(){
+            $('.fecha1').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                locale: {
+                    format: 'DD-MM-YYYY'
+                },
+            })
+            $('.fecha2').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                locale: {
+                    format: 'DD-MM-YYYY'
+                },
+            })
+            $('.fecha3').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                locale: {
+                    format: 'DD-MM-YYYY'
+                },
+            })
+        });
+    </script>
+    <!-- Select2 -->
+    <script src="{% static 'vendors/select2/dist/js/select2.full.min.js' %}"></script>
+    <script>
+        $('.js-example-basic-single').select2();
+    </script>
+{% endblock %}

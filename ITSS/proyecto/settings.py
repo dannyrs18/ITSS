@@ -25,7 +25,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -104,9 +103,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'es'
+LANGUAGE_CODE = 'es-ec'
 
-TIME_ZONE = 'America/Bogota'
+TIME_ZONE = 'America/Guayaquil'
 
 USE_I18N = True
 
@@ -128,6 +127,9 @@ MEDIA_ROOT = path('media')
 LOGIN_REDIRECT_URL = '/inicio/'
 LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_URL = '/login/'
+
+# Formato de Fecha
+DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 
 # Servidor de correos
 EMAIL_HOST = 'smtp.gmail.com' 
