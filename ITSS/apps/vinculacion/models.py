@@ -24,5 +24,10 @@ class Entidad(Oficina):
 class Informe_vinculacion(models.Model):
     convenio = models.FileField(_('Convenio'), upload_to='informes_vinculacion', validators=[valid_extension])
 
+    class Meta:
+        permissions = [
+            ('view_informe_vinculacion', 'Puede acceder a Informe Vinculacion'),
+        ]
+
     def __unicode__(self):
         return self.convenio

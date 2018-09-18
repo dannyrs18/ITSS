@@ -2,7 +2,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django import forms
-from .models import Informe_practicas, Empresa, Registro
+from .models import Informe_practicas, Empresa, Registro_practicas
 from ..registros.models import Carrera, Estudiante
 
 class ConvenioForm(forms.ModelForm):
@@ -60,6 +60,8 @@ class EmpresaForm(forms.ModelForm):
             instance.carreras = Carrera.objects.all()
         elif user.has_perm('registros.resp_prac'):
             instance.carreras.add(user.perfil.carrera)
+        else:
+            raise Http404
         instance.save()
 
 class RegistroForm(forms.ModelForm):
@@ -68,13 +70,12 @@ class RegistroForm(forms.ModelForm):
     cedula = forms.IntegerField(label=_(u'cedula'))
     presentacion = forms.DateField(label=_(u'Fecha de Presentación') ,input_formats=settings.DATE_INPUT_FORMATS)
     class Meta:
-        model = Registro
+        model = Registro_practicas
         fields = ('estudiante', 'nombres', 'apellidos', 'cedula', 'empresa', 'presentacion', 'solicitud', 'aceptacion')
 
         widgets = {
             'estudiante': forms.Select(attrs={'class':"form-control js-example-basic-single"}),
             'empresa': forms.Select(attrs={'class':"form-control js-example-basic-single"}),
-            'presentacion': forms.TextInput(attrs={'class':'form-control fecha1'}),
             'solicitud': forms.FileInput(attrs={'class':"form-control"}),
             'aceptacion': forms.FileInput(attrs={'class':"form-control"}),
         }
@@ -86,6 +87,7 @@ class RegistroForm(forms.ModelForm):
         self.fields['nombres'].widget.attrs.update({'class' : 'form-control', 'readonly':'readonly'})
         self.fields['apellidos'].widget.attrs.update({'class' : 'form-control', 'readonly':'readonly'})
         self.fields['cedula'].widget.attrs.update({'class' : 'form-control', 'readonly':'readonly'})
+        self.fields['presentacion'].widget.attrs.update({'class' : 'form-control fecha1'})
 
     def clean(self, *args, **kwargs):
         instance = super(RegistroForm, self).clean(*args, **kwargs)

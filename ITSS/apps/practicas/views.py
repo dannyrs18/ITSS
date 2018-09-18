@@ -7,9 +7,11 @@ from django.http import Http404, JsonResponse
 from django.db import transaction
 from .forms_create import ConvenioForm, EmpresaForm, RegistroForm
 from ..registros.models import Estudiante
+from .models import Registro_practicas
 
 # Create your views here.
 @login_required
+@permission_required('practicas.add_registro_practicas')
 @transaction.atomic
 def crear(request):
     form = RegistroForm(request.user, request.POST or None, request.FILES or None)
@@ -23,6 +25,7 @@ def crear(request):
     return render(request, 'formularios/registro.html', context)
 
 @login_required
+@permission_required('practicas.add_informe_practicas')
 @transaction.atomic
 def crear_convenio(request):
     form = ConvenioForm(request.POST or None, request.FILES or None)
@@ -36,6 +39,7 @@ def crear_convenio(request):
     return render(request, 'formulario.html', context)
 
 @login_required
+@permission_required('practicas.add_empresa')
 @transaction.atomic
 def crear_empresa(request):
     form = EmpresaForm(request.POST or None, request.FILES or None)
@@ -47,6 +51,19 @@ def crear_empresa(request):
         'form':form
     }
     return render(request, 'formulario.html', context)
+
+@login_required
+@permission_required('practicas.view_registro_practicas')
+def tabla(request):
+    data = None
+    if request.user.has_perm('registros.admin_prac'):
+        data = Registro_practicas.objects.filter(estado=True)
+    elif request.user.has_perm('registros.resp_prac'):
+        data = Registro_practicas.objects.filter(estado=True)
+    context = {
+        'practicas' : data
+    }
+    return render(request, 'tablas/practicas.html', context)
 
 @login_required
 def evidencia(request):

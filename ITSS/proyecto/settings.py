@@ -54,7 +54,7 @@ TEMPLATES = [
             path('templates/templates'),
             path('templates/pages'),
         ],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',

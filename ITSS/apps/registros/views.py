@@ -26,6 +26,7 @@ def crear_usuario(request):
 # Web Services
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
+@transaction.atomic
 def tabla_registros(request):
     context = {
         'estudiantes': Estudiante.objects.all(),
@@ -35,6 +36,7 @@ def tabla_registros(request):
     return render(request, 'tablas/web_services.html', context)
 
 @login_required
+@permission_required('registros.view_estudiante')
 def tabla_estudiantes(request):
     estudiantes = None
     if request.user.has_perms(['registros.admin_prac','registros.admin_vinc']):

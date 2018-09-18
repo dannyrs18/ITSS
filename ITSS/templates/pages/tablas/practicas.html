@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block style %}
+    {{ block.super }}
+    <!-- Datatables -->
+    <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/uikit/uikit.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block contenido %}
+<div class="">
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2> <strong>ESTUDIANTES EN PROCESO</strong> </h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+            <table id="datatable" class="table table-hover table-bordered" style="font-size:13px;">
+                <thead>
+                <tr>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Cedula</th>
+                    <th>Empresa</th>
+                    <th>Fecha de presentacion</th>
+                    <th>Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for practica in practicas %}
+                    {% if practica.is_active %}
+                        <tr>
+                            <td>{{ practica.estudiante.nombres }}</td>
+                            <td>{{ practica.estudiante.apellidos }}</td>
+                            <td>{{ practica.estudiante.cedula }}</td>
+                            <td>{{ practica.entidad.nombre }}</td>
+                            <td>{{ practica.presentacion }}</td>
+                            <td>
+                                <a href="{% url 'practicas:registro' pk=practica.pk %}" class="btn btn-DEFAULT btn-xs"><i class="fa fa-pencil"></i></a>
+                                <button class="btn btn-default btn-xs" onclick="evidencia('{{ practica.pk }}');"><i class="fa fa-eye"></i></button>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+    
+{% block script %}
+    <!-- Datatables -->
+    <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+    <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+{% endblock %}

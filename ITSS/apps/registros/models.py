@@ -17,6 +17,11 @@ class Carrera(models.Model):
     codigo = models.CharField(max_length=10)
     nombre = models.CharField(max_length=70)
 
+    class Meta:
+        permissions = [
+            ('view_carrera', 'Puede acceder a Carrera'),
+        ]
+
     def __unicode__(self):
         return self.nombre
 
@@ -44,6 +49,11 @@ class Docente(models.Model):
     cedula = models.CharField(_('Cedula'), max_length=15)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        permissions = [
+            ('view_docente', 'Puede acceder a Docente'),
+        ]
 
     def __unicode__(self):
         return '{0} {1} - {2}'.format(self.nombres.partition(" ")[0], self.apellidos.partition(" ")[0], self.cedula)
@@ -73,6 +83,7 @@ class Perfil(models.Model):
 
     class Meta:
         permissions = (
+            ("view_perfil", "Puede acceder a perfiles"),
             ("admin_vinc", "Administrador de Vinculacion"),
             ("admin_prac", "Administrador de Practicas"),
             ("resp_vinc",  "Responsable de Vinculacion"),

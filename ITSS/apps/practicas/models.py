@@ -26,13 +26,18 @@ class Empresa(Oficina): # PRACTICAS
 class Informe_practicas(models.Model):
     convenio = models.FileField(upload_to='informes_practicas', validators=[valid_extension])
 
+    class Meta:
+        permissions = [
+            ('view_informe_practicas', 'Puede acceder a Informe Practicas'),
+        ]
+
     def __unicode__(self):
         return self.convenio
 
 def generate_path(instance, filename):
     return 'estudiantes/user_{0}/{1}'.format(instance.estudiante.cedula, filename)
 
-class Registro(models.Model):
+class Registro_practicas(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE, related_name='practicas')
     carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE, related_name='practicas') 
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='practicas') 
@@ -48,7 +53,7 @@ class Registro(models.Model):
 
     class Meta:
         permissions = (
-            ('view_regstro', 'Puede visualizar el registro'),
+            ('view_registro_practicas', 'Puede visualizar el registro'),
         )
 
     def __unicode__(self):

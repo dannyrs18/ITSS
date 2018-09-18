@@ -52,23 +52,34 @@ class UserForm(UserCreationForm):
         return instance
 
     def permisos(self, user, instance):
-        if user.is_superuser:
-            perm_add = Permission.objects.get(codename='add_user')
+        perms = None
+        if user.is_superuser: # Si es super usuario entonce registrara un administrador ya sea de practicas o vinculacion
             if self.cleaned_data.get('admin') == '1':
-                perm_inf2 = Permission.objects.get(codename='add_informe_practicas')
-                perm_emp = Permission.objects.get(codename='view_empresa')
-                perm_emp_add = Permission.objects.get(codename='add_empresa')
-                perm_admin = Permission.objects.get(codename='admin_prac')
-                instance.user_permissions = [perm_admin, perm_add, perm_inf2, perm_emp, perm_emp_add]
+                perms = (
+                    Permission.objects.get(codename='view_informe_practicas'),
+                    Permission.objects.get(codename='add_informe_practicas'),
+                    Permission.objects.get(codename='view_estudiante'),
+                    Permission.objects.get(codename='view_perfil'),
+                    Permission.objects.get(codename='add_user'),
+                    Permission.objects.get(codename='view_empresa'),
+                    Permission.objects.get(codename='add_empresa'),
+                    Permission.objects.get(codename='view_registro_practicas'),
+                    Permission.objects.get(codename='change_registro_practicas'),
+                    Permission.objects.get(codename='admin_prac'),
+                )
             elif self.cleaned_data.get('admin') == '2':
-                perm_inf2 = Permission.objects.get(codename='add_informe_vinculacion')
-                perm_admin = Permission.objects.get(codename='admin_vinc')
-                perm_ent = Permission.objects.get(codename='view_entidad')
-                perm_ent_add = Permission.objects.get(codename='add_entidad')
-                instance.user_permissions = [perm_admin, perm_add, perm_inf2, perm_ent, perm_ent_add]
-        elif user.has_perm('registros.admin_prac'):
-            perm_resp = Permission.objects.get(codename='resp_prac')
-            instance.user_permissions = [perm_resp,]
-        elif user.has_perm('registros.admin_vinc'):
-            perm_resp = Permission.objects.get(codename='resp_vinc')
-            instance.user_permissions = [perm_resp,]
+                perms = None
+        elif user.has_perm('registros.admin_prac'): # Caso contrario es un administrador de practicas y registrara un responsable
+            print 'ok'
+            perms = (
+                Permission.objects.get(codename='view_estudiante'),
+                Permission.objects.get(codename='view_empresa'),
+                Permission.objects.get(codename='add_empresa'),
+                Permission.objects.get(codename='view_registro_practicas'),
+                Permission.objects.get(codename='add_registro_practicas'),
+                Permission.objects.get(codename='change_registro_practicas'),
+                Permission.objects.get(codename='resp_prac'),
+            )
+        elif user.has_perm('registros.admin_vinc'): # Caso contrario es un administrador de vinculacion y registrara un responsable
+            perms = None
+        instance.user_permissions = perms

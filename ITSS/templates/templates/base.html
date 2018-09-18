@@ -70,41 +70,59 @@
                         {% if user.is_superuser %}
                         <li><a href="{% url 'registro:tabla_registros' %}"><i class="fa  fa-sort-amount-asc"></i> <strong>Web Services</strong> </a></li>
                         {% endif %}
-                        {% if not user.is_superuser %}
-                        <li><a href="{% url 'registro:tabla_estudiantes' %}"><i class="fa  fa-sort-amount-asc"></i> <strong>Estudiantes</strong> </a></li>
+                        {% if perms.registros.view_estudiante %}
+                        <li><a href="{% url 'registro:tabla_estudiantes' %}"><i class="fa  fa-users"></i> <strong>Estudiantes</strong> </a></li>
                         {% endif %}
-                        {% if perms.practicas.add_informe_practicas or perms.practicas.add_informe_vinculacion %}
-                        <li><a href="{% if perms.practicas.add_informe_practicas %} {% url 'practicas:crear_convenio' %} {% else %} {% url 'vinculacion:crear_convenio' %} {% endif %}">
-                            <i class="fa fa-file-word-o"></i> <strong>Convenios</strong> </a>
+                        {% if perms.practicas.view_informe_practicas or perms.practicas.view_informe_vinculacion %}
+                        <li>
+                            <a href="{% if perms.practicas.add_informe_practicas %} {% url 'practicas:crear_convenio' %} {% elif perms.vinculacion.add_informe_vinculacion %} {% url 'vinculacion:crear_convenio' %} {% endif %}">
+                                    <i class="fa fa-file-word-o"></i> <strong>Convenios</strong> 
+                            </a>
                         </li>
                         {% endif %}
-                        {% if perms.auth.add_user %}
+                        {% if perms.registros.view_perfil %}
                         <li><a><i class="fa fa-users"></i> <strong>Usuarios</strong> <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
+                                {% if perms.auth.add_user %}
                                 <li><a href="{% url 'registro:crear_usuario' %}">Nuevo</a></li>
+                                {% endif %}
                                 <li><a href="#">Buscar</a></li>
                             </ul>
                         </li>
                         {% endif %}
-                        {% if perms.practicas.view_empresa or perms.vinculacion.view_entidad %}
-                        {% comment %}Empresa o Entidad{% endcomment %}
-                        <li><a><i class="fa fa-building-o"></i> <strong>{% oficina user=user %}</strong> <span class="fa fa-chevron-down"></span></a>
+                        {% if perms.practicas.view_empresa %}
+                        <li><a><i class="fa fa-building-o"></i> <strong>Empresa</strong> <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 {% if perms.practicas.add_empresa %}
                                 <li><a href=" {% url 'practicas:crear_empresa' %}">Nuevo</a></li>
-                                {% elif perms.vinculacion.add_entidad %}
+                                {% endif %}
+                                <li><a href="#">Buscar</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if perms.vinculacion.view_entidad %}
+                        <li><a><i class="fa fa-building-o"></i> <strong>Entidad</strong> <span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                {% if perms.vinculacion.add_entidad %}
                                 <li><a href="{% url 'vinculacion:crear_entidad' %}">Nuevo</a></li>
                                 {% endif %}
                                 <li><a href="#">Buscar</a></li>
                             </ul>
                         </li>
                         {% endif %}
+                        {% if perms.practicas.view_registro_practicas %}
                         <li><a><i class="fa fa-list-alt"></i> <strong>Prácticas</strong> <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
+                                {% if perms.practicas.add_registro_practicas %}
                                 <li><a href="{% url 'practicas:crear' %}">Nuevo</a></li>
+                                {% endif %}
+                                {% if perms.practicas.change_registro_practicas %}
                                 <li><a href="#">Seguimiento</a></li>
+                                {% endif %}
+                                <li><a href="#">Buscar</a></li>
                             </ul>
                         </li> 
+                        {% endif %}
                         {% if user.is_superuser %}
                         <li><a><i class="fa fa-download"></i> <strong>Backups</strong> <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
