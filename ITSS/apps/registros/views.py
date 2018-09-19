@@ -38,13 +38,14 @@ def tabla_registros(request):
 @login_required
 @permission_required('registros.view_estudiante')
 def tabla_estudiantes(request):
+    print request.user.get_all_permissions()
     estudiantes = None
-    if request.user.has_perms(['registros.admin_prac','registros.admin_vinc']):
+    if request.user.has_perm('registros.admin_prac') or request.user.has_perm('registros.admin_vinc'):
         estudiantes = Estudiante.objects.all()
-    elif request.user.has_perms(['registros.resp_prac','registros.resp_vinc']):
+    elif request.user.has_perm('registros.resp_prac') or request.user.has_perm('registros.resp_vinc'):
         estudiantes = Estudiante.objects.filter(carrera=request.user.perfil.carrera)
     context = {
-        'estudiantes':estudiantes,
+        'estudiantes' : estudiantes,
         'title': 'ESTUDIANTES'
     }
     return render(request, 'tablas/estudiantes.html', context)
@@ -120,3 +121,21 @@ def ajax_estudiante(request):
         }
         return JsonResponse(data)
     raise Http404
+
+@login_required
+def flush_permisos(request):
+    from django.contrib.auth.models import User
+    from ..modulos import permisos
+
+    for user in User.objects.all():
+        if user.has_perm('registros.admin_prac'):
+            user.user_permissions = permisos.administrador_practicas()
+        elif user.has_perm('registros.resp_prac'):
+            user.user_permissions = permisos.responsable_practicas()
+        elif user.has_perm('registros.admin_vinc'):
+            user.user_permissions = permisos.administrador_vinculacion()
+        elif user.has_perm('registros.resp_vinc'):
+            user.user_permissions = permisos.responsable_vinculacion()
+        else:
+            raise Http404
+    redirect('/')

@@ -11,7 +11,7 @@ class Empresa(Oficina): # PRACTICAS
     gerente = models.CharField(_('Nombre del Gerente'), max_length=100)
     descripcion = models.TextField(_('Descricion'))
     carreras = models.ManyToManyField(Carrera, related_name='empresas')
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='empresas')
 
     class Meta:
         permissions = [
@@ -32,23 +32,23 @@ class Informe_practicas(models.Model):
         ]
 
     def __unicode__(self):
-        return self.convenio
+        return '{}'.format(self.convenio)
 
 def generate_path(instance, filename):
     return 'estudiantes/user_{0}/{1}'.format(instance.estudiante.cedula, filename)
 
 class Registro_practicas(models.Model):
-    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE, related_name='practicas')
-    carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE, related_name='practicas') 
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='practicas') 
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE, related_name='registros_practicas')
+    carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE, related_name='registros_practicas') 
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='registros_practicas') 
     presentacion = models.DateField(_('Fecha de Presentacion')) #
     fin = models.DateField(_(u'Fecha de finalización'),blank=True, null=True)
-    horas = models.PositiveIntegerField(_(u'Horas comletadas'), blank=True, null=True, default=0)
+    horas = models.PositiveIntegerField(_(u'Horas completadas'), blank=True, null=True, default=0)
     calificacion = models.FloatField(_(u'Calificación del Estudiante'), blank=True, null=True, default=0)
     solicitud = models.ImageField(_(u'Evidencia de Solicitud'), upload_to=generate_path)
     aceptacion = models.ImageField(_(u'Evidencia de Aceptación'), upload_to=generate_path)
-    evaluacion = models.ImageField(_(u'Fecha de Evaluación'), upload_to=generate_path, blank=True, null=True)
-    culminacion = models.ImageField(_(u'Fecha de Culminación'), upload_to=generate_path, blank=True, null=True)
+    evaluacion = models.ImageField(_(u'Evidencia de Evaluación'), upload_to=generate_path, blank=True, null=True)
+    culminacion = models.ImageField(_(u'Evidencia de Culminación'), upload_to=generate_path, blank=True, null=True)
     estado = models.BooleanField(_(u'Estado del registro'), default=True )# True si esta en proceso
 
     class Meta:
@@ -57,4 +57,4 @@ class Registro_practicas(models.Model):
         )
 
     def __unicode__(self):
-        return self.estudiante
+        return '{}'.format(self.estudiante)

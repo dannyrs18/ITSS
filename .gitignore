@@ -102,3 +102,11 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Carpeta de las media archivos
+# ITSS/media/*
+# Migraciones
+# ITSS/apps/practicas/migrations/0*
+# ITSS/apps/vinculacion/migrations/0*
+# ITSS/apps/registros/migrations/0*
+

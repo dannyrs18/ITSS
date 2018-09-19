@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+
 {% load staticfiles %}
+
 {% block style %}
     {{ block.super }}
     <!-- Datatables -->
@@ -8,48 +10,55 @@
     <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/uikit/uikit.css' %}" rel="stylesheet">
 {% endblock %}
 
-{% block contenido %}
+{% block content %}
+
 <div class="">
-
     <div class="clearfix"></div>
-
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2> <strong>ESTUDIANTES EN PROCESO</strong> </h2>
+                <h2> <strong>{{ title }}</strong> </h2>
                 <div class="clearfix"></div>
-            </div>
+             </div>
             <div class="x_content">
-            <table id="datatable" class="table table-hover table-bordered" style="font-size:13px;">
+            <table id="datatable" class="table table-hover table-bordered" style="font-size:14px; ">
                 <thead>
                 <tr>
+                    <th>Empresa</th>
+                    <th>F. de Presentacion</th>
                     <th>Nombres</th>
                     <th>Apellidos</th>
                     <th>Cedula</th>
-                    <th>Empresa</th>
-                    <th>Fecha de presentacion</th>
+                    {% if perms.registros.admin_prac %}
+                    <th>Carrera</th>
+                    {% endif %}
+                    <th>Evidencias</th>
+                    {% if perms.practicas.change_registro_practicas %}
                     <th>Opciones</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
                 {% for practica in practicas %}
-                    {% if practica.is_active %}
-                        <tr>
-                            <td>{{ practica.estudiante.nombres }}</td>
-                            <td>{{ practica.estudiante.apellidos }}</td>
-                            <td>{{ practica.estudiante.cedula }}</td>
-                            <td>{{ practica.entidad.nombre }}</td>
-                            <td>{{ practica.presentacion }}</td>
-                            <td>
-                                <a href="{% url 'practicas:registro' pk=practica.pk %}" class="btn btn-DEFAULT btn-xs"><i class="fa fa-pencil"></i></a>
-                                <button class="btn btn-default btn-xs" onclick="evidencia('{{ practica.pk }}');"><i class="fa fa-eye"></i></button>
-                            </td>
-                        </tr>
+                <tr>
+                    <td>{{ practica.empresa.nombre }}</td>
+                    <td>{{ practica.presentacion }}</td>
+                    <td>{{ practica.estudiante.nombres }}</td>
+                    <td>{{ practica.estudiante.apellidos }}</td>
+                    <td>{{ practica.estudiante.cedula }}</td>
+                    {% if perms.registros.admin_prac %}
+                    <td>{{ estudiante.carrera }}</td>
                     {% endif %}
+                    <td>{{ estudiante.paralelo }}</td>
+                    {% if perms.practicas.change_registro_practicas %}
+                    <td>
+                        <a href="{% url 'practicas:proceso' pk=practica.pk %}" class="btn btn-default btn-xs"><i class="fa fa-pencil-square-o"></i></a>
+                    </td>
+                    {% endif %}
+                </tr>
                 {% endfor %}
                 </tbody>
             </table>
@@ -58,9 +67,12 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
-    
+
 {% block script %}
+
+    {{ block.super }}
     <!-- Datatables -->
     <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
@@ -77,4 +89,6 @@
     <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
     <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
     <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+
 {% endblock %}
+    

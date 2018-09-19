@@ -1,6 +1,7 @@
 from django.conf.urls import url
-from . import views
+from django.conf import settings
 from ..modulos.respaldo.views import dump_data, load_data
+import views
 
 app_name='registro'
 # Crear
@@ -22,3 +23,8 @@ urlpatterns += [
     url(r'^dump/$', dump_data, name='dump-data'),
     url(r'^load/$', load_data, name='load-data'),
 ]
+
+if settings.DEBUG: # Esto se ejecutara solamente cuando el modo desarrollo este activado ("DEBUG = TRUE" en el archivo settings) 
+    urlpatterns += [
+        url(r'^permisos/$', views.flush_permisos, name='permisos'),
+    ]

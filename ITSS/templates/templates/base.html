@@ -1,7 +1,6 @@
-{% load static %}
-{% load tags %}
+{% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -10,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/ico" />
 
-    <title>{% block title %}Instituto Tecnológico Superior Sudamericano{% endblock %}</title>
+    <title>Gentelella Alela! | </title>
     {% block style %}
     <!-- Bootstrap -->
     <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -18,16 +17,8 @@
     <link href="{% static 'vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
     <!-- NProgress -->
     <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="{% static 'vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
-    
-    <!-- bootstrap-progressbar -->
-    <link href="{% static 'vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="{% static 'vendors/jqvmap/dist/jqvmap.min.css' %}" rel="stylesheet"/>
-    <!-- bootstrap-daterangepicker -->
-    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
-
+    <!-- jQuery custom content scroller -->
+    <link href="{% static 'vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet"/>
     <!-- Custom Theme Style -->
     <link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
     {% endblock %}
@@ -36,7 +27,7 @@
 <body class="nav-md">
     <div class="container body">
     <div class="main_container">
-        <div class="col-md-3 left_col">
+        <div class="col-md-3 left_col menu_fixed">
         <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0; background: #007d7c;">
                 <a href="/" class="site_title"><span><img src="{% static 'images/logo2.png' %}" width="30"><strong style="color:rgb(255, 255, 255)"> <u>Sudamericano</u></strong></span></a>
@@ -64,84 +55,87 @@
 
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-                <div class="menu_section">
-                    <ul class="nav side-menu">
-                        <li><a href="{% url 'index' %}"><i class="fa fa-home"></i> <strong>Pagina Principal</strong> </a></li>
-                        {% if user.is_superuser %}
-                        <li><a href="{% url 'registro:tabla_registros' %}"><i class="fa  fa-sort-amount-asc"></i> <strong>Web Services</strong> </a></li>
-                        {% endif %}
-                        {% if perms.registros.view_estudiante %}
-                        <li><a href="{% url 'registro:tabla_estudiantes' %}"><i class="fa  fa-users"></i> <strong>Estudiantes</strong> </a></li>
-                        {% endif %}
-                        {% if perms.practicas.view_informe_practicas or perms.practicas.view_informe_vinculacion %}
-                        <li>
-                            <a href="{% if perms.practicas.add_informe_practicas %} {% url 'practicas:crear_convenio' %} {% elif perms.vinculacion.add_informe_vinculacion %} {% url 'vinculacion:crear_convenio' %} {% endif %}">
-                                    <i class="fa fa-file-word-o"></i> <strong>Convenios</strong> 
-                            </a>
-                        </li>
-                        {% endif %}
-                        {% if perms.registros.view_perfil %}
-                        <li><a><i class="fa fa-users"></i> <strong>Usuarios</strong> <span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
-                                {% if perms.auth.add_user %}
-                                <li><a href="{% url 'registro:crear_usuario' %}">Nuevo</a></li>
-                                {% endif %}
-                                <li><a href="#">Buscar</a></li>
-                            </ul>
-                        </li>
-                        {% endif %}
-                        {% if perms.practicas.view_empresa %}
-                        <li><a><i class="fa fa-building-o"></i> <strong>Empresa</strong> <span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
-                                {% if perms.practicas.add_empresa %}
-                                <li><a href=" {% url 'practicas:crear_empresa' %}">Nuevo</a></li>
-                                {% endif %}
-                                <li><a href="#">Buscar</a></li>
-                            </ul>
-                        </li>
-                        {% endif %}
-                        {% if perms.vinculacion.view_entidad %}
-                        <li><a><i class="fa fa-building-o"></i> <strong>Entidad</strong> <span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
-                                {% if perms.vinculacion.add_entidad %}
-                                <li><a href="{% url 'vinculacion:crear_entidad' %}">Nuevo</a></li>
-                                {% endif %}
-                                <li><a href="#">Buscar</a></li>
-                            </ul>
-                        </li>
-                        {% endif %}
-                        {% if perms.practicas.view_registro_practicas %}
-                        <li><a><i class="fa fa-list-alt"></i> <strong>Prácticas</strong> <span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
-                                {% if perms.practicas.add_registro_practicas %}
-                                <li><a href="{% url 'practicas:crear' %}">Nuevo</a></li>
-                                {% endif %}
-                                {% if perms.practicas.change_registro_practicas %}
-                                <li><a href="#">Seguimiento</a></li>
-                                {% endif %}
-                                <li><a href="#">Buscar</a></li>
-                            </ul>
-                        </li> 
-                        {% endif %}
-                        {% if user.is_superuser %}
-                        <li><a><i class="fa fa-download"></i> <strong>Backups</strong> <span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
-                                <li><a href="{% url 'registro:load-data' %}">Cargar archivo</a></li>
-                                <li><a href="{% url 'registro:dump-data' %}"><i class="fa fa-download"></i>Descargar</a></li>
-                            </ul>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
+            <div class="menu_section">
+                <ul class="nav side-menu">
+                    <li><a href="{% url 'index' %}"><i class="fa fa-home"></i> <strong>Pagina Principal</strong> </a></li>
+                    {% if user.is_superuser %}
+                    <li><a href="{% url 'registro:tabla_registros' %}"><i class="fa  fa-sort-amount-asc"></i> <strong>Web Services</strong> </a></li>
+                    {% endif %}
+                    {% if perms.registros.view_estudiante %}
+                    <li><a href="{% url 'registro:tabla_estudiantes' %}"><i class="fa  fa-users"></i> <strong>Estudiantes</strong> </a></li>
+                    {% endif %}
+                    {% if perms.practicas.view_informe_practicas or perms.practicas.view_informe_vinculacion %}
+                    <li>
+                        <a href="{% if perms.practicas.add_informe_practicas %} {% url 'practicas:crear_convenio' %} {% elif perms.vinculacion.add_informe_vinculacion %} {% url 'vinculacion:crear_convenio' %} {% endif %}">
+                                <i class="fa fa-file-word-o"></i> <strong>Convenios</strong> 
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if perms.registros.view_perfil %}
+                    <li><a><i class="fa fa-users"></i> <strong>Usuarios</strong> <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            {% if perms.auth.add_user %}
+                            <li><a href="{% url 'registro:crear_usuario' %}">Nuevo</a></li>
+                            {% endif %}
+                            <li><a href="#">Buscar</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if perms.practicas.view_empresa %}
+                    <li><a><i class="fa fa-building-o"></i> <strong>Empresa</strong> <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            {% if perms.practicas.add_empresa %}
+                            <li><a href=" {% url 'practicas:crear_empresa' %}">Nuevo</a></li>
+                            {% endif %}
+                            <li><a href="#">Buscar</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if perms.vinculacion.view_entidad %}
+                    <li><a><i class="fa fa-building-o"></i> <strong>Entidad</strong> <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            {% if perms.vinculacion.add_entidad %}
+                            <li><a href="{% url 'vinculacion:crear_entidad' %}">Nuevo</a></li>
+                            {% endif %}
+                            <li><a href="#">Buscar</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if perms.practicas.view_registro_practicas %}
+                    <li><a><i class="fa fa-list-alt"></i> <strong>Prácticas</strong> <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            {% if perms.practicas.add_registro_practicas %}
+                            <li><a href="{% url 'practicas:crear' %}">Nuevo</a></li>
+                            {% endif %}
+                            {% if perms.practicas.change_registro_practicas %}
+                            <li><a href="{% url 'practicas:tabla' %}">Seguimiento</a></li>
+                            {% endif %}
+                        </ul>
+                    </li> 
+                    {% endif %}
+                    
+                    <li><a><i class="fa fa-file-pdf-o"></i> <strong>Reportes</strong> <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="#">Estudiante</a></li>
+                            <li><a href="#"><i class="fa fa-download"> </i>Empresas</i></a></li>
+                            <li><a href="#">Registro por periodo</a></li>
+                        </ul>
+                    </li> 
+                    
+                    {% if user.is_superuser %}
+                    <li><a><i class="fa fa-download"></i> <strong>Backups</strong> <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="{% url 'registro:load-data' %}">Cargar archivo</a></li>
+                            <li><a href="{% url 'registro:dump-data' %}"><i class="fa fa-download"></i>Descargar</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+
             </div>
             <!-- /sidebar menu -->
 
-            <!-- /menu footer buttons -->
-            <div class="sidebar-footer hidden-small">
-            <br>
-            <br>
-            </div>
-            <!-- /menu footer buttons -->
         </div>
         </div>
 
@@ -155,13 +149,13 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="">
-                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="{% static 'images/user.png' %}" alt=""> <strong style="color: #ffffff"> {{ user.get_full_name }}</strong>&nbsp; 
-                    <span class="fa fa-angle-down" style="color: white"></span>
-                </a>
-                <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesión</a></li>
-                </ul>
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <img src="{% static 'images/user.png' %}" alt=""> <strong style="color: #ffffff"> {{ user.get_full_name }}</strong>&nbsp; 
+                        <span class="fa fa-angle-down" style="color: white"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesión</a></li>
+                    </ul>
                 </li>
             </ul>
             </nav>
@@ -171,24 +165,21 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-
-        {% block content %}
-        {% endblock %}
-
+            {% block content %}
+            {% endblock %}
         </div>
         <!-- /page content -->
 
         <!-- footer content -->
         <footer>
-        <div class="pull-right">
-            <strong>INSTITUTO TECNOLÓGICO SUPERIOR SUDAMERICANO</strong> 
-        </div>
-        <div class="clearfix"></div>
+            <div class="pull-right">
+                <strong>INSTITUTO TECNOLÓGICO SUPERIOR SUDAMERICANO</strong> 
+            </div>
+            <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
     </div>
     </div>
-
     {% block script %}
     <!-- jQuery -->
     <script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
@@ -198,39 +189,11 @@
     <script src="{% static 'vendors/fastclick/lib/fastclick.js' %}"></script>
     <!-- NProgress -->
     <script src="{% static 'vendors/nprogress/nprogress.js' %}"></script>
-    <!-- Chart.js -->
-    <script src="{% static 'vendors/Chart.js/dist/Chart.min.js' %}"></script>
-    <!-- gauge.js -->
-    <script src="{% static 'vendors/gauge.js/dist/gauge.min.js' %}"></script>
-    <!-- bootstrap-progressbar -->
-    <script src="{% static 'vendors/bootstrap-progressbar/bootstrap-progressbar.min.js' %}"></script>
-    <!-- iCheck -->
-    <script src="{% static 'vendors/iCheck/icheck.min.js' %}"></script>
-    <!-- Skycons -->
-    <script src="{% static 'vendors/skycons/skycons.js' %}"></script>
-    <!-- Flot -->
-    <script src="{% static 'vendors/Flot/jquery.flot.js' %}"></script>
-    <script src="{% static 'vendors/Flot/jquery.flot.pie.js' %}"></script>
-    <script src="{% static 'vendors/Flot/jquery.flot.time.js' %}"></script>
-    <script src="{% static 'vendors/Flot/jquery.flot.stack.js' %}"></script>
-    <script src="{% static 'vendors/Flot/jquery.flot.resize.js' %}"></script>
-    <!-- Flot plugins -->
-    <script src="{% static 'vendors/flot.orderbars/js/jquery.flot.orderBars.js' %}"></script>
-    <script src="{% static 'vendors/flot-spline/js/jquery.flot.spline.min.js' %}"></script>
-    <script src="{% static 'vendors/flot.curvedlines/curvedLines.js' %}"></script>
-    <!-- DateJS -->
-    <script src="{% static 'vendors/DateJS/build/date.js' %}"></script>
-    <!-- JQVMap -->
-    <script src="{% static 'vendors/jqvmap/dist/jquery.vmap.js' %}"></script>
-    <script src="{% static 'vendors/jqvmap/dist/maps/jquery.vmap.world.js' %}"></script>
-    <script src="{% static 'vendors/jqvmap/examples/js/jquery.vmap.sampledata.js' %}"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="{% static 'vendors/moment/min/moment.min.js' %}"></script>
-    <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <!-- jQuery custom content scroller -->
+    <script src="{% static 'vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js' %}"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="{% static 'build/js/custom.min.js' %}"></script>
     {% endblock %}
-    
 </body>
 </html>

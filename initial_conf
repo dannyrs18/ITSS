@@ -3,19 +3,19 @@ ENTORNO EN DEBIAN 9 STRETCH
 ########################### INSTALAR MARIADB Y CONFIGURARLA
 
 -instalar mariadb
-apt-get install mysql-server mysql-client
+apt-get install mysql-server mysql-client mysql-common
 
 -desde root ingresar a mysql
 mysql -u root
 
 -crear una base de datos desde root 
-CREATE DATABASE prueba
+CREATE DATABASE practicas
 
 -crear un usuario 
 CREATE USER 'dep_practicas'@'localhost' IDENTIFIED BY 'admiN680x'
 
 -darle privilegios solo en la base de datos especificada 
-GRANT ALL PRIVILEGES ON practicas . * 'dep_practicas'@'localhost'
+GRANT ALL PRIVILEGES ON practicas . * TO 'dep_practicas'@'localhost'
 
 -actualizar los privilegios 
 FLUSH PRIVILEGES

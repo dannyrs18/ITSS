@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User, Permission
 from .models import Docente, Carrera
+from ..modulos import permisos
 
 class UserForm(UserCreationForm):
 
@@ -41,7 +42,7 @@ class UserForm(UserCreationForm):
 
     def save(self, user, commit=True):
         instance = super(UserForm, self).save(commit=True)
-        self.permisos(user, instance)
+        self.perms(user, instance)
         if self.cleaned_data.get('carrera', ''):
             instance.perfil.carrera = self.cleaned_data.get('carrera', '')
         if commit:
@@ -51,35 +52,14 @@ class UserForm(UserCreationForm):
             instance.save()
         return instance
 
-    def permisos(self, user, instance):
-        perms = None
+    def perms(self, user, instance):
         if user.is_superuser: # Si es super usuario entonce registrara un administrador ya sea de practicas o vinculacion
             if self.cleaned_data.get('admin') == '1':
-                perms = (
-                    Permission.objects.get(codename='view_informe_practicas'),
-                    Permission.objects.get(codename='add_informe_practicas'),
-                    Permission.objects.get(codename='view_estudiante'),
-                    Permission.objects.get(codename='view_perfil'),
-                    Permission.objects.get(codename='add_user'),
-                    Permission.objects.get(codename='view_empresa'),
-                    Permission.objects.get(codename='add_empresa'),
-                    Permission.objects.get(codename='view_registro_practicas'),
-                    Permission.objects.get(codename='change_registro_practicas'),
-                    Permission.objects.get(codename='admin_prac'),
-                )
+                instance.user_permissions = permisos.administrador_practicas()
             elif self.cleaned_data.get('admin') == '2':
-                perms = None
+                instance.user_permissions = permisos.administrador_vinculacion()
         elif user.has_perm('registros.admin_prac'): # Caso contrario es un administrador de practicas y registrara un responsable
-            print 'ok'
-            perms = (
-                Permission.objects.get(codename='view_estudiante'),
-                Permission.objects.get(codename='view_empresa'),
-                Permission.objects.get(codename='add_empresa'),
-                Permission.objects.get(codename='view_registro_practicas'),
-                Permission.objects.get(codename='add_registro_practicas'),
-                Permission.objects.get(codename='change_registro_practicas'),
-                Permission.objects.get(codename='resp_prac'),
-            )
+            instance.user_permissions = permisos.responsable_practicas()
         elif user.has_perm('registros.admin_vinc'): # Caso contrario es un administrador de vinculacion y registrara un responsable
-            perms = None
-        instance.user_permissions = perms
+            instance.user_permissions = permisos.responsable_vinculacion()
+        return instance

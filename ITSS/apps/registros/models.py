@@ -42,6 +42,9 @@ class Estudiante(models.Model):
     def __unicode__(self):
         return '{0} {1} - {2}'.format(self.nombres.partition(" ")[0], self.apellidos.partition(" ")[0], self.cedula)
 
+    def get_full_name(self):
+        return '{} {}'.format(self.nombres, self.apellidos)
+
 class Docente(models.Model):
     nombres = models.CharField(_('Nombres'), max_length=50)
     apellidos = models.CharField(_('Apellidos'), max_length=50)
@@ -60,7 +63,7 @@ class Docente(models.Model):
 
 class Oficina(models.Model): # Clase abstracta que usa practicas y vinculacion desde registros
     nombre = models.CharField(_('Nombre'), max_length=100, unique=True)
-    logo = models.ImageField(_('Logo'), upload_to='logos', blank=True, null=True)
+    logo = models.ImageField(_('Logo de la Empresa'), upload_to='logos', blank=True, null=True)
     telefono = models.CharField(_('Telefono'), max_length=15)
     inicio = models.DateField(_('Inicio del Convenio'))
     fin = models.DateField(_('Finalizacion del Convenio'))
@@ -77,8 +80,8 @@ class Oficina(models.Model): # Clase abstracta que usa practicas y vinculacion d
 
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    docente = models.ForeignKey(Docente, on_delete=models.CASCADE, null=True, blank=True)
-    carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE, null=True, blank=True)
+    docente = models.ForeignKey(Docente, on_delete=models.CASCADE, null=True, blank=True, related_name='perfiles')
+    carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE, null=True, blank=True, related_name='perfiles')
     avatar = models.ImageField(_('Imagen de Perfil'), upload_to='img_perfil/', blank=True, null=True)
 
     class Meta:

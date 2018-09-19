@@ -10,8 +10,13 @@ urlpatterns = [
     url(r'^crear_empresa/$', views.crear_empresa, name='crear_empresa'),
 ]
 
+# Modificar
 urlpatterns += [
     url(r'^tabla/$', views.tabla, name='tabla'),
+]
+
+urlpatterns += [
+    url(r'^proceso/(?P<pk>\d+)/$', views.proceso, name='proceso'),
 ]
 
 # Otros

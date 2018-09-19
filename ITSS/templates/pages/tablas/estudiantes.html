@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
-
 {% load staticfiles %}
+{% load tags %}
 
 {% block style %}
     {{ block.super }}
@@ -30,9 +30,14 @@
                     <th>Nombres</th>
                     <th>Apellidos</th>
                     <th>Cedula</th>
+                    {% if perms.registros.admin_prac %}
                     <th>Carrera</th>
-                    <th>Seccion</th>
-                    <th>Empresa o Entidad</th>
+                    {% endif %}
+                    {% if perms.registros.admin_prac or perms.registros.resp_prac %}
+                    <th>Empresas</th>
+                    {% elif perms.registros.admin_vinc or perms.registros.resp_vinc %}
+                    <th>Entidades</th>
+                    {% endif %}
                     <th>Horas</th>
                     <th>Calificación</th>
                     <th>Evidencias</th>
@@ -40,15 +45,22 @@
                 </thead>
                 <tbody>
                 {% for estudiante in estudiantes %}
+                {% count_valores estudiante.registros_practicas.all as value %}
                 <tr>
                     <td>{{ estudiante.nombres }}</td>
                     <td>{{ estudiante.apellidos }}</td>
                     <td>{{ estudiante.cedula }}</td>
-                    <td>{{ estudiante.carrera }}</td>
-                    <td>{{ estudiante.paralelo }}</td>
-                    <td>{{ estudiante.ciclo }}</td>
-                    <td>{{ estudiante.seccion }}</td>
+                    {% if perms.registros.admin_prac %}
+                    <td>{{ estudiante.carrera.nombre }}</td>
+                    {% endif %}
+                    {% if perms.registros.admin_prac or perms.registros.resp_prac %}
+                    <td>{{ estudiante.registros_practicas.count }}</td>
+                    <td>{{ value.horas }}</td>
+                    {% elif perms.registros.admin_vinc or perms.registros.resp_vinc %}
+                    <td>{{ estudiante.registros_vinculacion.count }}</td>
                     <td></td>
+                    {% endif %}
+                    <td>{{ value.calificacion }}</td>
                     <td></td>
                 </tr>
                 {% endfor %}
