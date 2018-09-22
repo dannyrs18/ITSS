@@ -92,7 +92,7 @@ class RegistroForm(forms.ModelForm):
     def clean(self, *args, **kwargs):
         instance = super(RegistroForm, self).clean(*args, **kwargs)
         estudiante = instance.get('estudiante', None)
-        if estudiante.practicas.filter(estado=True).exists():
+        if estudiante.registros_practicas.filter(estado=True).exists():
             self.add_error('estudiante', 'El estudiantes se encuentra actualmente en otro proceso de practicas')
 
     def save(self, user, commit=True):

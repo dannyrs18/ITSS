@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 from .models import Informe_vinculacion, Entidad
 from ..registros.models import Carrera
 
@@ -20,17 +21,18 @@ class ConvenioForm(forms.ModelForm):
             instance.save()
 
 class EntidadForm(forms.ModelForm):
-
     class Meta:
         model = Entidad
-        fields = '__all__'
+        fields = ('nombre', 'responsable', 'cargo', 'correo', 'telefono', 'inicio', 'fin', 'direccion', 'descripcion', 'logo', 'carreras')
+        widgets = {'carreras': forms.CheckboxInput()}
+        labels = {'nombre': _(u'Nombre de la entidad')}
 
     def __init__(self, *args, **kwargs):
         super(EntidadForm, self).__init__(*args, **kwargs)
         for key in self.fields:
             self.fields[key].widget.attrs.update({'class' : 'form-control'})
-        self.fields['descripcion'].widget.attrs.update({'class' : 'form-control', 'rows':5})
-        self.fields['direccion'].widget.attrs.update({'class' : 'form-control', 'rows':3})
+        self.fields['descripcion'].widget.attrs.update({'rows':5})
+        self.fields['direccion'].widget.attrs.update({'rows':3})
 
     def save(self, user, commit=True):
         data = super(EntidadForm, self).save(commit=False)

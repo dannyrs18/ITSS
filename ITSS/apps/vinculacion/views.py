@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, permission_required
-from .forms_create import ConvenioForm
+from .forms_create import ConvenioForm, EntidadForm
 
 # Create your views here.
 
@@ -50,4 +50,4 @@ def crear_entidad(request):
         'title':'NUEVA ENTIDAD',
         'form':form
     }
-    return render(request, 'registro/empresas/nuevo.html', context)
+    return render(request, 'formulario.html', context)

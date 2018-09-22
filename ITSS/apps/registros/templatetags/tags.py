@@ -11,4 +11,4 @@ def count_valores(lista):
         horas += value.horas
     if calificacion:
         calificacion /= lista.count()
-    return {'horas':horas, 'calificacion': "{0:.2f}".format(calificacion)}
+    return {'horas':horas, 'calificacion': "{0:.1f}".format(calificacion)}

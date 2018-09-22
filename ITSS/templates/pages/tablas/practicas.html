@@ -50,7 +50,7 @@
                     <td>{{ practica.estudiante.apellidos }}</td>
                     <td>{{ practica.estudiante.cedula }}</td>
                     {% if perms.registros.admin_prac %}
-                    <td>{{ estudiante.carrera }}</td>
+                    <td>{{ practica.estudiante.carrera.nombre }}</td>
                     {% endif %}
                     <td>{{ estudiante.paralelo }}</td>
                     {% if perms.practicas.change_registro_practicas %}

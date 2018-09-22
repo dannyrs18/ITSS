@@ -11,11 +11,12 @@ class Empresa(Oficina): # PRACTICAS
     gerente = models.CharField(_('Nombre del Gerente'), max_length=100)
     descripcion = models.TextField(_('Descricion'))
     carreras = models.ManyToManyField(Carrera, related_name='empresas')
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='empresas')
+    responsable = models.ForeignKey(User, on_delete=models.CASCADE, related_name='empresas')
 
     class Meta:
         permissions = [
             ('view_empresa', 'Puede acceder a Empresa'),
+            ('reporte_empresa', 'Puede acceder a reporte de Empresa')
         ]
 
     def __unicode__(self):
@@ -29,6 +30,7 @@ class Informe_practicas(models.Model):
     class Meta:
         permissions = [
             ('view_informe_practicas', 'Puede acceder a Informe Practicas'),
+            ('reporte_convenio', 'Puede realizar el reporte de convenio')
         ]
 
     def __unicode__(self):
@@ -53,7 +55,8 @@ class Registro_practicas(models.Model):
 
     class Meta:
         permissions = (
-            ('view_registro_practicas', 'Puede visualizar el registro'),
+            ('view_registro_practicas', 'Puede visualizar el Registro'),
+            ('reporte_registro_practicas', 'Puede acceder a reportes de Registro')
         )
 
     def __unicode__(self):

@@ -116,8 +116,9 @@ USE_TZ = True
 # Archivos estaticos
 STATIC_URL = '/static/' # RUTA DE URL PARA LOS STATICFILES (localhost/static/....)
 STATICFILES_DIRS = [ 
-    path('static')
-]                       # si los estatics no se encuentran dentro de las aplicacion donde por default se buscan los archivos, aqui se especifican las carpetas adicionales
+    path('desarrollo/assets')
+]# si los estatics no se encuentran dentro de las aplicacion donde por default se buscan los archivos, aqui se especifican las carpetas adicionales
+STATIC_ROOT = path('static')
 
 # Archivos medios
 MEDIA_URL = '/media/'

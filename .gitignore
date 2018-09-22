@@ -104,14 +104,15 @@ venv.bak/
 .mypy_cache/
 
 # Archivos code
-
-# .vscode
+.vscode
 
 # Carpeta de las media archivos
-# ITSS/media/*
+ITSS/media/*
 
 # Migraciones
 ITSS/apps/practicas/migrations/0*
 ITSS/apps/vinculacion/migrations/0*
 ITSS/apps/registros/migrations/0*
 
+# Archivo estatico
+ITSS/static/

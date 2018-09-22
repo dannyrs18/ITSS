@@ -18,10 +18,11 @@ urlpatterns += [
 # Otros
 urlpatterns += [
     url(r'^web_services/$', views.web_services, name='web_services'),
-    url(r'^ajax_docente/$', views.ajax_docente, name='ajax_docente'),
-    url(r'^ajax_estudiante/$', views.ajax_estudiante, name='ajax_estudiante'),
+    url(r'^reporte_estudiante/$', views.reporte_estudiante, name='reporte_estudiante'),
     url(r'^dump/$', dump_data, name='dump-data'),
     url(r'^load/$', load_data, name='load-data'),
+    url(r'^ajax_docente/$', views.ajax_docente, name='ajax_docente'),
+    url(r'^ajax_estudiante/$', views.ajax_estudiante, name='ajax_estudiante'),
 ]
 
 if settings.DEBUG: # Esto se ejecutara solamente cuando el modo desarrollo este activado ("DEBUG = TRUE" en el archivo settings) 

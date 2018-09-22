@@ -9,7 +9,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404, JsonResponse
 from django.db import transaction
 from ..registros.models import Estudiante
-from .models import Registro_practicas
+from ..modulos.reportes import reporte_practicas
+from .models import Registro_practicas, Informe_practicas, Empresa
 
 # Create your views here.
 @login_required
@@ -81,6 +82,25 @@ def tabla(request):
         'title': 'ESTUDIANTES EN PROCESO'
     }
     return render(request, 'tablas/practicas.html', context)
+
+@login_required
+@permission_required('practicas.view_empresa')
+def tabla_empresa(request):
+    data = None
+    if request.user.has_perm('registros.admin_prac'):
+        data = Empresa.objects.all()
+    elif request.user.has_perm('registros.resp_prac'):
+        data = Empresa.objects.filter(carrera=request.user.perfil.carrera)
+    context = {
+        'empresas': data,
+        'title': 'Empresas'
+    }
+    return render(request, 'tablas/empresas.html', context)
+
+@login_required
+@permission_required('practicas.reporte_convenio')
+def reporte_convenio(request, pk):
+    return reporte_practicas.convenio(pk)
 
 @login_required
 def evidencia(request):

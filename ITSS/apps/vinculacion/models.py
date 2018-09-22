@@ -8,7 +8,8 @@ from ..registros.models import Oficina, Carrera, Perfil
 from ..modulos.validators import valid_extension
 
 class Entidad(Oficina):
-    gerente = models.CharField(_('Gerente'), max_length=100)
+    responsable = models.CharField(_('Responsable'), max_length=100)
+    cargo = models.CharField(_('Cargo'), max_length=100)
     descripcion = models.TextField(_('Descripción'))
     carreras = models.ManyToManyField(Carrera, related_name='entidades')
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)

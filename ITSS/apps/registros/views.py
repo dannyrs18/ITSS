@@ -3,10 +3,12 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, FileResponse
 from django.db import transaction
-from .form_create import UserForm
+from .forms_create import UserForm
+from .forms import EstudianteForm
 from ..modulos import web_services as _
+from ..modulos.reportes import practicas
 from .models import Estudiante, Docente, Carrera
 
 @login_required
@@ -51,7 +53,7 @@ def tabla_estudiantes(request):
     return render(request, 'tablas/estudiantes.html', context)
 
 @login_required
-@user_passes_test(lambda u: u.is_superuser)
+@permission_required('registros.web_services')
 def web_services(request):
     try:
         carreras()
@@ -98,6 +100,19 @@ def docentes():
             instance.save()
 
 @login_required
+@permission_required('registros.reporte_estudiante')
+def reporte_estudiante(request):
+    form = EstudianteForm(request.user, request.POST or None, request.FILES or None)
+    if form.is_valid():
+        response = practicas.lienzo()
+        return response
+    context = {
+        'form' : form,
+        'title' : 'REPORTE ESTUDIANTE'
+    }
+    return render(request, 'formulario.html', context)
+
+@login_required
 def ajax_docente(request):
     if request.is_ajax():
         docente = Docente.objects.get(pk=request.POST.get('pk'))
@@ -122,11 +137,11 @@ def ajax_estudiante(request):
         return JsonResponse(data)
     raise Http404
 
+### Funciones que solo sirven en desarrollo
 @login_required
 def flush_permisos(request):
     from django.contrib.auth.models import User
     from ..modulos import permisos
-
     for user in User.objects.all():
         if user.has_perm('registros.admin_prac'):
             user.user_permissions = permisos.administrador_practicas()
@@ -138,4 +153,4 @@ def flush_permisos(request):
             user.user_permissions = permisos.responsable_vinculacion()
         else:
             raise Http404
-    redirect('/')
+    return redirect('/')
