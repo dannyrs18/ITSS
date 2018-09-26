@@ -8,8 +8,8 @@ from ..registros.models import Oficina, Carrera, Perfil, Estudiante
 from ..modulos.validators import valid_extension
 
 class Empresa(Oficina): # PRACTICAS
-    gerente = models.CharField(_('Nombre del Gerente'), max_length=100)
-    descripcion = models.TextField(_('Descricion'))
+    gerente = models.CharField(_(u'Nombre del Gerente'), max_length=100)
+    descripcion = models.TextField(_(u'Descricion'))
     carreras = models.ManyToManyField(Carrera, related_name='empresas')
     responsable = models.ForeignKey(User, on_delete=models.CASCADE, related_name='empresas')
 
@@ -21,8 +21,17 @@ class Empresa(Oficina): # PRACTICAS
 
     def __unicode__(self):
         from django.utils.timezone import localtime, now
-
         return '{0} (Restante: {1} dias)'.format(self.nombre, (self.fin-localtime(now()).date()).days)
+
+def generate_evidencia_empresa(instance, filename):
+    return 'empresas/{0}/{1}'.format(instance.empresa.nombre, filename)
+
+class Evidencias_Empresa(models.Model):
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='evidencias_empresa')
+    imagen = models.ImageField(_(u'Evidencias Fotograficas'), upload_to=generate_evidencia_empresa)
+
+    def __unicode__(self):
+        return '{}'.format(self.empresa.nombre)
 
 class Informe_practicas(models.Model):
     convenio = models.FileField(upload_to='informes_practicas', validators=[valid_extension])
@@ -30,14 +39,11 @@ class Informe_practicas(models.Model):
     class Meta:
         permissions = [
             ('view_informe_practicas', 'Puede acceder a Informe Practicas'),
-            ('reporte_convenio', 'Puede realizar el reporte de convenio')
+            ('reporte_convenio_practicas', 'Puede realizar el reporte de convenio')
         ]
 
     def __unicode__(self):
         return '{}'.format(self.convenio)
-
-def generate_path(instance, filename):
-    return 'estudiantes/user_{0}/{1}'.format(instance.estudiante.cedula, filename)
 
 class Registro_practicas(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE, related_name='registros_practicas')
@@ -47,11 +53,8 @@ class Registro_practicas(models.Model):
     fin = models.DateField(_(u'Fecha de finalización'),blank=True, null=True)
     horas = models.PositiveIntegerField(_(u'Horas completadas'), blank=True, null=True, default=0)
     calificacion = models.FloatField(_(u'Calificación del Estudiante'), blank=True, null=True, default=0)
-    solicitud = models.ImageField(_(u'Evidencia de Solicitud'), upload_to=generate_path)
-    aceptacion = models.ImageField(_(u'Evidencia de Aceptación'), upload_to=generate_path)
-    evaluacion = models.ImageField(_(u'Evidencia de Evaluación'), upload_to=generate_path, blank=True, null=True)
-    culminacion = models.ImageField(_(u'Evidencia de Culminación'), upload_to=generate_path, blank=True, null=True)
     estado = models.BooleanField(_(u'Estado del registro'), default=True )# True si esta en proceso
+    slug = models.SlugField(max_length=50, blank=True)
 
     class Meta:
         permissions = (
@@ -61,3 +64,13 @@ class Registro_practicas(models.Model):
 
     def __unicode__(self):
         return '{}'.format(self.estudiante)
+
+def generate_registro_practicas(instance, filename):
+    return 'registro_practicas/user_{0}/{1}'.format(instance.registro_practicas.estudiante.cedula, filename)
+
+class Evidencias_registro_practicas(models.Model):
+    registro_practicas = models.ForeignKey(Registro_practicas, on_delete=models.CASCADE, related_name='evidencias_registro_practicas')
+    imagen = models.ImageField(_(u'Evidencias Fotograficas'), upload_to=generate_registro_practicas)
+
+    def __unicode__(self):
+        return '{}'.format(self.registro_practicas.estudiante.nombres+' '+self.registro_practicas.estudiante.apellidos)

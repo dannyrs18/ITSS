@@ -1,8 +1,12 @@
 # coding: utf-8
+
+import random
+import string
+
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django import forms
-from .models import Informe_practicas, Empresa, Registro_practicas
+from .models import Informe_practicas, Empresa, Registro_practicas, Evidencias_Empresa, Evidencias_registro_practicas
 from ..registros.models import Carrera, Estudiante
 
 class ConvenioForm(forms.ModelForm):
@@ -52,10 +56,12 @@ class EmpresaForm(forms.ModelForm):
         from datetime import datetime
 
         instance = super(EmpresaForm, self).save(commit=False)
-        instance.usuario=user
+        instance.responsable=user
         if localtime(now()).date() >= instance.inicio and localtime(now()).date() < instance.fin:
             instance.estado = True
         instance.save()
+        aleatorio = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(15)])
+        instance.slug = '{0}{1}'.format(instance.id, aleatorio)
         if user.has_perm('registros.admin_prac'):
             instance.carreras = Carrera.objects.all()
         elif user.has_perm('registros.resp_prac'):
@@ -63,6 +69,16 @@ class EmpresaForm(forms.ModelForm):
         else:
             raise Http404
         instance.save()
+        return instance
+
+class EvidenciaEmpresaForm(forms.Form):
+    imagenes = forms.ImageField(label=_(u'Evidencia Fotografica'), widget=forms.FileInput(attrs={'class':"form-control", 'multiple': True}), required=True)
+
+    def save(self, imagenes, empresa, commit=True):
+        print imagenes
+        for imagen in imagenes:
+            print imagen
+            Evidencias_Empresa.objects.create(empresa=empresa, imagen=imagen)
 
 class RegistroForm(forms.ModelForm):
     nombres = forms.CharField(label=_(u'Nombres'))
@@ -71,18 +87,16 @@ class RegistroForm(forms.ModelForm):
     presentacion = forms.DateField(label=_(u'Fecha de Presentación') ,input_formats=settings.DATE_INPUT_FORMATS)
     class Meta:
         model = Registro_practicas
-        fields = ('estudiante', 'nombres', 'apellidos', 'cedula', 'empresa', 'presentacion', 'solicitud', 'aceptacion')
+        fields = ('estudiante', 'nombres', 'apellidos', 'cedula', 'empresa', 'presentacion')
 
         widgets = {
-            'estudiante': forms.Select(attrs={'class':"form-control js-example-basic-single"}),
-            'empresa': forms.Select(attrs={'class':"form-control js-example-basic-single"}),
-            'solicitud': forms.FileInput(attrs={'class':"form-control"}),
-            'aceptacion': forms.FileInput(attrs={'class':"form-control"}),
+            'estudiante': forms.Select(attrs={'class':"form-control search_select"}),
+            'empresa': forms.Select(attrs={'class':"form-control search_select"}),
         }
         
     def __init__(self, user, *args, **kwargs):
         super(RegistroForm, self).__init__(*args, **kwargs)
-        self.fields['empresa'].queryset = Empresa.objects.filter(estado=True, carreras=user.perfil.carrera)
+        self.fields['empresa'].queryset = Empresa.objects.filter(carreras=user.perfil.carrera)
         self.fields['estudiante'].queryset = Estudiante.objects.filter(carrera=user.perfil.carrera)
         self.fields['nombres'].widget.attrs.update({'class' : 'form-control', 'readonly':'readonly'})
         self.fields['apellidos'].widget.attrs.update({'class' : 'form-control', 'readonly':'readonly'})
@@ -99,3 +113,16 @@ class RegistroForm(forms.ModelForm):
         instance = super(RegistroForm, self).save(commit=False)
         instance.carrera = user.perfil.carrera
         instance.save()
+        aleatorio = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(15)])
+        instance.slug = '{0}{1}'.format(instance.id, aleatorio)
+        instance.save()
+        return instance
+
+class EvidenciaRegistroForm(forms.Form):
+    imagenes = forms.ImageField(label=_(u'Evidencia Fotografica'), widget=forms.FileInput(attrs={'class':"form-control", 'multiple': True}), required=True)
+
+    def save(self, imagenes, registro_practicas, commit=True):
+        print imagenes
+        for imagen in imagenes:
+            print imagen
+            Evidencias_registro_practicas.objects.create(registro_practicas=registro_practicas, imagen=imagen)

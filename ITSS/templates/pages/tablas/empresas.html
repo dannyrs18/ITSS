@@ -3,6 +3,7 @@
 {% load staticfiles %}
 
 {% block style %}
+
     {{ block.super }}
     <!-- Datatables -->
     <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
@@ -10,6 +11,8 @@
     <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Uikit -->
+    <link href="{% static 'plugins/uikit/css/uikit.css' %}" rel="stylesheet">
 
 {% endblock %}
 
@@ -51,8 +54,9 @@
                         <td>{{ empresa.fin }}</td>
                         <td>
                             {% if perms.practicas.reporte_convenio %}
-                            <a href="{% url 'practicas:reporte_convenio' pk=empresa.pk %}" class="btn btn-default btn-xs"><i class="fa  fa-file-word-o"></i></a>
+                            <a href="{% url 'practicas:reporte_convenio' empresa.slug %}" class="btn btn-default btn-xs"><i class="fa  fa-file-word-o"></i></a>
                             {% endif %}
+                            <button class="btn btn-default btn-xs" onclick="evidencia('{{ empresa.slug }}');"><i class="fa fa-eye"></i></button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -85,5 +89,28 @@
     <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
     <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
     <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+    <!-- Uikit -->
+    <script src="{% static 'plugins/uikit/js/uikit.js' %}"></script>
+    <script src="{% static 'plugins/uikit/js/uikit-icons.js' %}"></script>
+    <script>
+        function evidencia(slug){
+            $.ajax({
+                url: '{% url "practicas:evidencia_empresa" %}',
+                type: 'post',
+                data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'slug':slug},
+                success: function(data){ 
+                    console.log(data)
+                    var galeria = []
+                    for (i=0; i < data.imagen.length; i++){
+                        galeria.push({source: data.imagen[i], caption: data.nombre})
+                    }
+                    console.log(galeria)
+                    UIkit.lightboxPanel({
+                        items: galeria
+                    }).show();
+                }
+            })
+        }
+    </script>
 
 {% endblock %}

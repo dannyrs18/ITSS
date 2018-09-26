@@ -7,6 +7,7 @@ import forms_update
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404, JsonResponse
+from django.contrib import messages
 from django.db import transaction
 from ..registros.models import Estudiante
 from ..modulos.reportes import reporte_practicas
@@ -18,14 +19,20 @@ from .models import Registro_practicas, Informe_practicas, Empresa
 @transaction.atomic
 def crear(request):
     form = forms_create.RegistroForm(request.user, request.POST or None, request.FILES or None)
-    if form.is_valid():
-        form.save(request.user)
+    form2 = forms_create.EvidenciaRegistroForm(request.POST or None, request.FILES or None)
+    if form.is_valid() and form2.is_valid():
+        registro = form.save(request.user)
+        form2.save(request.FILES.getlist('imagenes'), registro)
+        messages.success(request, u'El registro se creo exitosamente!.')
         return redirect('/')
+    elif request.POST:
+        messages.error(request, u'Valores ingresados incorrectos dentro del formulario.')
     context = {
         'form': form,
+        'form2': form2,
         'title': 'REGISTRO PRACTICA'
     }
-    return render(request, 'formularios/registro.html', context)
+    return render(request, 'formularios/practicas.html', context)
 
 @login_required
 @permission_required('practicas.add_informe_practicas')
@@ -34,7 +41,10 @@ def crear_convenio(request):
     form = forms_create.ConvenioForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         form.save()
+        messages.success(request, u'El registro se creo exitosamente!.')
         return redirect('/')
+    elif request.POST:
+        messages.error(request, u'Valores ingresados incorrectos dentro del formulario.')
     context = {
         'form': form,
         'title': 'CONVENIO'
@@ -46,28 +56,40 @@ def crear_convenio(request):
 @transaction.atomic
 def crear_empresa(request):
     form = forms_create.EmpresaForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        form.save(request.user)
+    form2 = forms_create.EvidenciaEmpresaForm(request.POST or None, request.FILES or None)
+    if form.is_valid() and form2.is_valid():
+        empresa = form.save(request.user)
+        form2.save(request.FILES.getlist('imagenes'), empresa)
+        messages.success(request, u'El registro se creo exitosamente!.')
         return redirect('/')
+    elif request.POST:
+        messages.error(request, u'Valores ingresados incorrectos dentro del formulario.')
     context = {
-        'form':form,
-        'title':'NUEVA EMPRESA'
+        'form': form,
+        'form2': form2,
+        'title': 'NUEVA EMPRESA'
     }
-    return render(request, 'formulario.html', context)
+    return render(request, 'formularios/empresa.html', context)
 
 @login_required
 @permission_required('practicas.change_registro_practicas')
 @transaction.atomic
-def proceso(request, pk):
-    form = forms_update.RegistroForm(request.POST or None, request.FILES or None, instance=get_object_or_404(Registro_practicas, pk=pk, estado=True))
-    if form.is_valid():
-        form.save(request.user)
+def proceso(request, slug):
+    form = forms_update.RegistroForm(request.POST or None, request.FILES or None, instance=get_object_or_404(Registro_practicas, slug=slug, estado=True))
+    form2 = forms_create.EvidenciaRegistroForm(request.POST or None, request.FILES or None)
+    if form.is_valid() and form2.is_valid():
+        registro = form.save(request.user)
+        form2.save(request.FILES.getlist('imagenes'), registro)
+        messages.success(request, u'El proceso ha concluido exitosamente!.')
         return redirect('/')
+    elif request.POST:
+        messages.error(request, u'Valores ingresados incorrectos dentro del formulario.')
     context = {
-        'form':form,
+        'form': form,
+        'form2': form2,
         'title':'ENTREGA DE EVIDENCIAS'
     }
-    return render(request, 'formulario.html', context)
+    return render(request, 'formularios/practicas.html', context)
 
 @login_required
 @permission_required('practicas.view_registro_practicas')
@@ -90,32 +112,26 @@ def tabla_empresa(request):
     if request.user.has_perm('registros.admin_prac'):
         data = Empresa.objects.all()
     elif request.user.has_perm('registros.resp_prac'):
-        data = Empresa.objects.filter(carrera=request.user.perfil.carrera)
+        data = Empresa.objects.filter(carreras=request.user.perfil.carrera)
     context = {
         'empresas': data,
-        'title': 'Empresas'
+        'title': 'EMPRESAS'
     }
-    return render(request, 'tablas/empresas.html', context)
+    return render(request, 'tablas/oficina.html', context)
 
 @login_required
-@permission_required('practicas.reporte_convenio')
-def reporte_convenio(request, pk):
-    return reporte_practicas.convenio(pk)
+@permission_required('practicas.reporte_convenio_practicas')
+def reporte_convenio(request, slug):
+    return reporte_practicas.convenio(slug)
 
 @login_required
-def evidencia(request):
+def evidencia_empresa(request):
     if request.is_ajax():
-        evidencia = get_object_or_404(Estudiante, pk=request.POST.get('pk')).practicas.all()
-        e = []
-        for data in evidencia:
-            e.append({
-                'solicitud' : data.solicitud.url,
-                'aceptacion' : data.aceptacion.url,
-                'asistencia' : [i.evidencia.url for i in data.evidencia_asistencia.all()],
-                'anexos' : [i.evidencia.url for i in data.evidencia_anexos.all()],
-            })
+        empresa = get_object_or_404(Empresa, slug=request.POST.get('slug'))
+        data = []
         context = {
-            'galeria' : e
+            'nombre' : empresa.nombre,
+            'imagen' : [evidencia.imagen.url for evidencia in empresa.evidencias_empresa.all()],
         }
         return JsonResponse(context)
     raise Http404

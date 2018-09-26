@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import random
+import string
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import ugettext_lazy as _
@@ -29,8 +32,8 @@ class UserForm(UserCreationForm):
         super(UserForm, self).__init__(*args, **kwargs)
         for key in self.fields:
             self.fields[key].widget.attrs.update({'class' : 'form-control'})
-        self.fields['carrera'].widget.attrs.update({'class' : 'form-control js-example-basic-single'})
-        self.fields['docente'].widget.attrs.update({'class' : 'form-control js-example-basic-single'})
+        self.fields['carrera'].widget.attrs.update({'class' : 'form-control search_select'})
+        self.fields['docente'].widget.attrs.update({'class' : 'form-control search_select'})
         self.fields['first_name'].widget.attrs.update({'class' : 'form-control', 'readonly':'readonly'})
         self.fields['last_name'].widget.attrs.update({'class' : 'form-control', 'readonly':'readonly'})
         self.fields['cedula'].widget.attrs.update({'class' : 'form-control', 'readonly':'readonly'})
@@ -42,13 +45,15 @@ class UserForm(UserCreationForm):
 
     def save(self, user, commit=True):
         instance = super(UserForm, self).save(commit=True)
+        instance.refresh_from_db()  # cargar la instancia de perfil creada por la señal
         self.perms(user, instance)
         if self.cleaned_data.get('carrera', ''):
             instance.perfil.carrera = self.cleaned_data.get('carrera', '')
         if commit:
-            instance.refresh_from_db()  # cargar la instancia de perfil creada por la señal
             instance.perfil.docente = self.cleaned_data.get('docente', '')
             instance.perfil.avatar = self.cleaned_data.get('avatar')
+            aleatorio = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(15)])
+            instance.perfil.slug = '{0}{1}'.format(instance.id, aleatorio)
             instance.save()
         return instance
 

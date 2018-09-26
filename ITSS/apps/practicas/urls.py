@@ -17,11 +17,11 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    url(r'^proceso/(?P<pk>\d+)/$', views.proceso, name='proceso'),
+    url(r'^proceso/(?P<slug>[-\w]+)/$', views.proceso, name='proceso'),
 ]
 
 # Otros
 urlpatterns += [
-    url(r'^reporte_convenio/(?P<pk>\d+)/$', views.reporte_convenio, name='reporte_convenio'),
-    url(r'^evidencia/$', views.evidencia, name='evidencia'),
+    url(r'^reporte_convenio/(?P<slug>[-\w]+)/$', views.reporte_convenio, name='reporte_convenio'),
+    url(r'^evidencia_empresa/$', views.evidencia_empresa, name='evidencia_empresa'),
 ]

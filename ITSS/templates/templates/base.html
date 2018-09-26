@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load tags %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -23,6 +24,8 @@
     <link href="{% static 'vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet"/>
     <!-- Custom Theme Style -->
     <link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
+    <!-- IziToast -->
+    <link href="{% static 'plugins/iziToast/dist/css/iziToast.min.css' %}" rel="stylesheet">
     {% endblock %}
 </head>
 
@@ -69,9 +72,9 @@
                     {% if perms.registros.view_estudiante %}
                     <li><a href="{% url 'registro:tabla_estudiantes' %}"><i class="fa  fa-users"></i> <strong>Estudiantes</strong> </a></li>
                     {% endif %}
-                    {% if perms.practicas.view_informe_practicas or perms.practicas.view_informe_vinculacion %}
+                    {% if perms.practicas.view_informe_practicas or perms.vinculacion.view_informe_vinculacion %}
                     <li>
-                        <a href="{% if perms.practicas.add_informe_practicas %} {% url 'practicas:crear_convenio' %} {% elif perms.vinculacion.add_informe_vinculacion %} {% url 'vinculacion:crear_convenio' %} {% endif %}"><i class="fa fa-file-word-o"></i> <strong>Convenios</strong> </a>
+                        <a href="{% if perms.practicas.add_informe_practicas %} {% url 'practicas:crear_convenio' %} {% elif perms.vinculacion.add_informe_vinculacion %} {% url 'vinculacion:crear_convenio' %} {% endif %}"><i class="fa fa-file-word-o"></i> <strong>Convenio</strong> </a>
                     </li>
                     {% endif %}
 
@@ -107,6 +110,25 @@
                             <li><a href="{% url 'vinculacion:crear_entidad' %}">Nuevo</a></li>
                             {% endif %}
                             <li><a href="#">Buscar</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if perms.vinculacion.view_actividad_vinculacion %}
+                    <li><a><i class="fa fa-list-alt"></i> Actividades <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            {% if perms.vinculacion.add_actividad_vinculacion %}
+                            <li><a href="{% url 'vinculacion:crear_actividad' %}">Nuevo</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if perms.vinculacion.view_proyecto_vinculacion %}
+                    <li><a><i class="fa fa-list-alt"></i> Proyectos <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            {% if perms.vinculacion.add_proyecto_vinculacion %}
+                            <li><a href="{% url 'vinculacion:crear_proyecto' %}">Nuevo</a></li>
+                            {% endif %}
+                            <li><a href="{% url 'vinculacion:tabla_proceso' %}">Procesos</a></li>
                         </ul>
                     </li>
                     {% endif %}
@@ -217,5 +239,17 @@
     <!-- Custom Theme Scripts -->
     <script src="{% static 'build/js/custom.min.js' %}"></script>
     {% endblock %}
+    <!-- iziToast -->
+    <script src="{% static 'plugins/iziToast/dist/js/iziToast.min.js' %}"></script>
+    <script>
+        "{% mess messages as value %}"
+        if ('{{ value.title }}' == 'success'){
+            iziToast.success({timeout: 5000, icon: 'fa fa-thumbs-up', title: 'Exito', message: '{{ value.message }}'});
+        }else if ('{{ value.title }}' == 'error'){
+            iziToast.error({timeout: 5000, icon: 'fa fa-thumbs-down', title: 'Error', message: '{{ value.message }}'});
+        }else if ('{{ value.title }}' == 'warning'){
+            iziToast.info({color: 'yellow', position:'bottomLeft', timeout: 5000, icon: 'fa fa-comment', title: 'Informacion', message: '{{ value.message }}'});
+        }
+    </script>
 </body>
 </html>

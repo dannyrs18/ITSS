@@ -10,6 +10,7 @@
     <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+    
 {% endblock %}
 
 {% block content %}
@@ -40,7 +41,7 @@
                     {% endif %}
                     <th>Horas</th>
                     <th>Calificación</th>
-                    <th>Evidencias</th>
+                    <th>Opt.</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -61,7 +62,9 @@
                     <td></td>
                     {% endif %}
                     <td>{{ value.calificacion }}</td>
-                    <td></td>
+                    <td>
+                        <a href="#" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i>
+                    </td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -94,50 +97,5 @@
     <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
     <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
 
-    <!-- Uikit -->
-    <script src="{% static 'js/uikit/uikit.js' %}"></script>
-    <script src="{% static 'js/uikit/uikit-icons.js' %}"></script>
-    <script>
-        function evidencia(pk){
-            $.ajax({
-                url: "{% url 'practicas:evidencia' %}",
-                type: 'post',
-                data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'pk': pk},
-                success: function(data){
-                    var galeria = []
-                    for (i=0; i < data.galeria.length; i++){
-                        galeria.push({source: data.galeria[i].solicitud, caption: 'Documento de Solicitud'})
-                        galeria.push({source: data.galeria[i].aceptacion, caption: 'Documento de Aceptación'})
-                        for (c=0; c < data.galeria[i].asistencia.length; c++){
-                            galeria.push({source: data.galeria[i].asistencia[c], caption: 'Hoja de asistecia '+(c+1)})
-                        }
-                        for (c=0; c < data.galeria[i].anexos.length; c++){
-                            galeria.push({source: data.galeria[i].anexos[c], caption: 'Anexo '+(c+1)})
-                        }
-                    }
-                    console.log(galeria)
-                    UIkit.lightboxPanel({
-                        items: galeria
-                    }).show();
-                }
-            })
-        }
-        function evidencia2(pk){
-            $.ajax({
-                url: "{% url 'vinculacion:evidencia' %}",
-                type: 'post',
-                data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'pk': pk},
-                success: function(data){
-                    var galeria = []
-                    for (i=0; i < data.imagen.length; i++){
-                        galeria.push({source: data.imagen[i], caption: 'Evidencia '+(i+1)})
-                    }
-                    UIkit.lightboxPanel({
-                        items: galeria
-                    }).show();
-                }
-            })
-        }
-    </script>
 {% endblock %}
     

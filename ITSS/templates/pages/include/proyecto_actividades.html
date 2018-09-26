@@ -1,0 +1,32 @@
+<div class="form-group">
+        <label class="control-label col-md-2" >Actividad:</label>
+        <div class="col-md-10">
+            {{ formset2.management_form }} 
+            <table class="table">
+                <tbody>
+                    {% for form in formset2.forms %}
+                    <tr class="{% cycle row1 row2 %} formset2_row">
+                        {% for field in form.visible_fields %}
+                        <th>
+                            {% if forloop.first %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                            {% endif %}
+                            {{ field.errors.as_ul }}
+                            {{ field }}
+                            <br>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" >Nombre:</label>
+                                <div class="col-md-10">
+                                    <textarea name="" id="" rows="3" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </tn>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>

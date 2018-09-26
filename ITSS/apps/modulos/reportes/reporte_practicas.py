@@ -91,8 +91,8 @@ def lienzo():
 
 #############################
 
-def convenio(pk):
-    empresa = get_object_or_404(Empresa, pk=pk)
+def convenio(slug):
+    empresa = get_object_or_404(Empresa, slug=slug)
     if Informe_practicas.objects.filter(pk=1).exists():
         informe = Informe_practicas.objects.get(pk=1).convenio
     else:

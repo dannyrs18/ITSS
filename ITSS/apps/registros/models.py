@@ -62,8 +62,15 @@ class Docente(models.Model):
     def __unicode__(self):
         return '{0} {1} - {2}'.format(self.nombres.partition(" ")[0], self.apellidos.partition(" ")[0], self.cedula)
 
+class Seccion(models.Model):
+    identificador = models.CharField(max_length=4)
+    nombre = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return '{}'.format(self.identifiador)
+
 class Oficina(models.Model): # Clase abstracta que usa practicas y vinculacion desde registros
-    nombre = models.CharField(_(u'Nombre'), max_length=100, unique=True)
+    nombre = models.CharField(_(u'Nombre'), unique=True, max_length=100)
     logo = models.ImageField(_(u'Logo de la Empresa'), upload_to='logos', blank=True, null=True)
     telefono = models.CharField(_(u'Telefono'), max_length=15)
     inicio = models.DateField(_(u'Inicio del Convenio'))
@@ -73,6 +80,7 @@ class Oficina(models.Model): # Clase abstracta que usa practicas y vinculacion d
     estado = models.BooleanField(_(u'Estado'), default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(max_length=50, blank=True)
 
     class Meta:
         abstract = True
@@ -84,6 +92,7 @@ class Perfil(models.Model):
     docente = models.ForeignKey(Docente, on_delete=models.CASCADE, null=True, blank=True, related_name='perfiles')
     carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE, null=True, blank=True, related_name='perfiles')
     avatar = models.ImageField(_(u'Imagen de Perfil'), upload_to='img_perfil/', blank=True, null=True)
+    slug = models.SlugField(max_length=50, blank=True)
 
     class Meta:
         permissions = (

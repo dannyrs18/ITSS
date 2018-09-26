@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
-
 {% load staticfiles %}
+{% load tags %}
 
 {% block style %}
     {{ block.super }}
@@ -30,7 +30,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Estudiantes</h2>
+                <h2>ESTUDIANTES</h2>
                 <div class="clearfix"></div>
              </div>
             <div class="x_content">
@@ -72,7 +72,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Docentes</h2>
+                <h2>DOCENTES</h2>
                 <div class="clearfix"></div>
              </div>
             <div class="x_content">
@@ -108,7 +108,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Carreras</h2>
+                <h2>CARRERAS</h2>
                 <div class="clearfix"></div>
              </div>
             <div class="x_content">
@@ -123,6 +123,37 @@
                 {% for carrera in carreras %}
                 <tr>
                     <td>{{ carrera.nombre }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="">
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>SECCIONES</h2>
+                <div class="clearfix"></div>
+                </div>
+            <div class="x_content">
+            <table id="datatable3" class="table table-hover table-bordered" style="font-size:14px; ">
+                <thead>
+                <tr>
+                    <th>Secciones</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for seccion in secciones %}
+                <tr>
+                    <td>{{ seccion.nombre }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -162,4 +193,3 @@
         })
     </script>
 {% endblock %}
-    

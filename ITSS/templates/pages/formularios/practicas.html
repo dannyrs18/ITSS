@@ -3,13 +3,10 @@
 
 {% block style %}
     {{ block.super }}
-    <!-- bootstrap-daterangepicker -->
-    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
     <!-- Select2 -->
     <link href="{% static 'vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
-    <!-- MultiSelect -->
-    <link href="{% static 'plugins/multiSelect/css/multi-select.css' %}" rel="stylesheet">
-
+    <!-- bootstrap-daterangepicker -->
+    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -31,12 +28,26 @@
                 {% for field in form %}
                 {{ field.errors }}
                     <div class="form-group">
-                        <label class="control-label col-md-3" for="{{ field.id_for_label }}" >{{ field.label_tag }}</label>
+                        <label class="control-label col-md-3" >{{ field.label_tag }}</label>
                         <div class="col-md-6">
                             {{ field }}
                             {% if field.help_text %}
                                 <p class="help">{{ field.help_text|safe }}</p>
                             {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                {% for field in form2 %}
+                {{ field.errors }}
+                    <div class="form-group">
+                        <label class="control-label col-md-3" >{{ field.label_tag }}</label>
+                        <div class="col-md-6">
+                            {{ field }}
+                            {% if field.help_text %}
+                                <p class="help">{{ field.help_text|safe }}</p>
+                            {% endif %}
+                            <div id="preview"></div>
                         </div>
                     </div>
                 {% endfor %}
@@ -59,6 +70,11 @@
 
 {% block script %}
     {{ block.super }}
+    <!-- Select2 -->
+    <script src="{% static 'vendors/select2/dist/js/select2.full.min.js' %}"></script>
+    <script>
+        $('.search_select').select2();
+    </script>
     <!-- bootstrap-daterangepicker -->
     <script src="{% static 'vendors/moment/min/moment.min.js' %}"></script>
     <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
@@ -71,30 +87,42 @@
                     format: 'DD-MM-YYYY'
                 },
             })
-            $('.fecha2').daterangepicker({
-                singleDatePicker: true,
-                showDropdowns: true,
-                locale: {
-                    format: 'DD-MM-YYYY'
-                },
-            })
-            $('.fecha3').daterangepicker({
-                singleDatePicker: true,
-                showDropdowns: true,
-                locale: {
-                    format: 'DD-MM-YYYY'
-                },
-            })
         });
     </script>
-    <!-- Select2 -->
-    <script src="{% static 'vendors/select2/dist/js/select2.full.min.js' %}"></script>
+    <!-- Ajax -->
     <script>
-        $('.search_select').select2();
+        $('#id_estudiante').change(function(){
+            $.ajax({
+                url: "{% url 'registro:ajax_estudiante' %}",
+                type: 'post',
+                data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'pk':$('#id_estudiante').val()},
+                success: function(data){
+                    console.log(data.nombres) 
+                    $('#id_nombres').val(data.nombres)
+                    $('#id_apellidos').val(data.apellidos)
+                    $('#id_cedula').val(data.cedula)
+                }
+            })
+        })
     </script>
-    <!-- MultiSelect -->
-    <script src="{% static 'plugins/multiSelect/js/jquery.multi-select.js' %}"></script>
     <script>
-        $('.multi_select').multiSelect()
+        function previewImages() {
+
+            var $preview = $('#preview').empty();
+            if (this.files) $.each(this.files, readAndPreview);
+
+            function readAndPreview(i, file) {
+                if (!/\.(jpe?g|png|gif)$/i.test(file.name)){
+                    return alert(file.name +" is not an image");
+                } // else...                
+                var reader = new FileReader();
+                $(reader).on("load", function() {
+                    $preview.append($("<img/>", {src:this.result, height:100}));
+                });
+                reader.readAsDataURL(file);
+            }
+
+        }
+        $('#id_imagenes').on("change", previewImages);
     </script>
 {% endblock %}

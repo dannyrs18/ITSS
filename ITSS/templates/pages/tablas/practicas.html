@@ -3,6 +3,7 @@
 {% load staticfiles %}
 
 {% block style %}
+
     {{ block.super }}
     <!-- Datatables -->
     <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
@@ -10,6 +11,7 @@
     <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+
 {% endblock %}
 
 {% block content %}
@@ -55,7 +57,7 @@
                     <td>{{ estudiante.paralelo }}</td>
                     {% if perms.practicas.change_registro_practicas %}
                     <td>
-                        <a href="{% url 'practicas:proceso' pk=practica.pk %}" class="btn btn-default btn-xs"><i class="fa fa-pencil-square-o"></i></a>
+                        <a href="{% url 'practicas:proceso' practica.slug %}" class="btn btn-default btn-xs"><i class="fa fa-pencil-square-o"></i></a>
                     </td>
                     {% endif %}
                 </tr>

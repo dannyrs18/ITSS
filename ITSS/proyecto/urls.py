@@ -4,6 +4,7 @@ from . import views
 from django.conf import settings
 from django.views.static import serve
 from django.conf.urls.static import static
+from django.core.urlresolvers import reverse_lazy
 
 urlpatterns = [
     url(r'^registro/', include('apps.registros.urls')),
@@ -11,7 +12,7 @@ urlpatterns = [
     url(r'^vinculacion/', include('apps.vinculacion.urls')),
     url(r'^$', views.index, name='index'),
     url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
-    url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+    url(r'^logout/$', auth_views.logout, name='logout'),
 ]
 if settings.DEBUG: # Esto se ejecutara solamente cuando el modo desarrollo este activado ("DEBUG = TRUE" en el archivo settings) 
     urlpatterns += [

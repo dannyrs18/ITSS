@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
+from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, Http404, FileResponse
 from django.db import transaction
@@ -9,7 +10,8 @@ from .forms_create import UserForm
 from .forms import EstudianteForm
 from ..modulos import web_services as _
 from ..modulos.reportes import practicas
-from .models import Estudiante, Docente, Carrera
+from .models import Estudiante, Docente, Carrera, Seccion
+from ..vinculacion.models import Entidad
 
 @login_required
 @permission_required('auth.add_user') #raise_exception=True
@@ -18,7 +20,10 @@ def crear_usuario(request):
     form = UserForm(request.user, request.POST or None, request.FILES or None)
     if form.is_valid():
         form.save(request.user)
+        messages.success(request, u'El usuario se ha creado exitosamente!.')
         return redirect('index')
+    elif request.POST:
+        messages.error(request, u'Valores ingresados incorrectos dentro del formulario')
     context = {
         'form': form,
         'title': 'CREAR USUARIO'
@@ -34,6 +39,7 @@ def tabla_registros(request):
         'estudiantes': Estudiante.objects.all(),
         'docentes' : Docente.objects.all(),
         'carreras' : Carrera.objects.all(),
+        'seccion' : Seccion.objects.all()
     }
     return render(request, 'tablas/web_services.html', context)
 
@@ -54,14 +60,17 @@ def tabla_estudiantes(request):
 
 @login_required
 @permission_required('registros.web_services')
+@transaction.atomic
 def web_services(request):
     try:
         carreras()
         estudiantes()
         docentes()
+        secciones()
+        messages.success(request, 'Sus datos se han actualizado exitosamente.')
     except :
-        pass
-    return redirect('registro:tabla_web_services')
+        messages.error(request, 'Error al obtener los datos. Por favor vuelva a intentarlo.')
+    return redirect('registro:tabla_registros')
 
 def carreras():
     carreras = _.get_data(_._carreras)
@@ -71,7 +80,6 @@ def carreras():
             instance.codigo = carrera['codigo']
             instance.nombre = carrera['nombre']
             instance.save()
-            actualizacion = True
 
 def estudiantes():
     carreras = Carrera.objects.all()
@@ -98,6 +106,15 @@ def docentes():
             instance.cedula = docente['cedula']
             instance.telefono = docente['telefono']
             instance.save()
+
+def secciones():
+    secciones = _.get_data(_._secciones)
+    for seccion in secciones:
+        if not Seccion.objects.filter(identificador=seccion['identificador']).exists():
+            seccion = Seccion()
+            seccion.identificador = seccion['identificador']
+            seccion.nombre = seccion['nombre']
+            seccion.save()
 
 @login_required
 @permission_required('registros.reporte_estudiante')
@@ -128,13 +145,23 @@ def ajax_docente(request):
 @login_required
 def ajax_estudiante(request):
     if request.is_ajax():
-        estudiante = Estudiante.objects.get(pk=request.POST.get('pk'))
+        estudiante = get_object_or_404(Estudiante, pk=request.POST.get('pk'))
         data = {
             'nombres': estudiante.nombres,
             'apellidos': estudiante.apellidos,
             'cedula': estudiante.cedula,
         }
         return JsonResponse(data)
+    raise Http404
+
+@login_required
+def ajax_entidad(request):
+    if request.is_ajax():
+        entidades = Entidad.objects.filter(carreras=request.POST.get('pk'))
+        context = {
+            'entidades' : [{'id':entidad.id, 'nombre':entidad.__unicode__()} for entidad in entidades]
+        }
+        return JsonResponse(context)
     raise Http404
 
 ### Funciones que solo sirven en desarrollo
