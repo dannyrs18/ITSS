@@ -42,3 +42,7 @@ FLUSH PRIVILEGES
 # -w == --workers (los workers son la cantidad de procesos que se le da a una app dentro del sistema normalmente se recomienda de 2 a 4 por nucleo)
 # -b == --bind (es el la direccion ip y el puert que se le otorga manuamente)
 # -n == --name (para cambiar el nombre del proceso y ubicarlo de una manera directa --debe instalarse setproctitle desde pip para que funcione)
+
+########################### habilitar las copias de seguridad y actualizaciones
+- activar la virtualizacion de python (env)
+- ejecutar python manage.py crontab add
