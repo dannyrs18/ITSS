@@ -161,19 +161,6 @@
                     {% endif %}
 
                     {% endif %} <!-- Not SuperUser -->
-
-                    {% if perms.registros.backups %}
-                    <li><a><i class="fa fa-download"></i> <strong>Backups</strong> <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            {% if perms.registros.backups_down %}
-                            <li><a href="{% url 'registro:load-data' %}">Cargar archivo</a></li>
-                            {% endif %}
-                            {% if perms.registros.backups_up %}
-                            <li><a href="{% url 'registro:dump-data' %}"><i class="fa fa-download"></i>Descargar</a></li>
-                            {% endif %}
-                        </ul>
-                    </li>
-                    {% endif %}
                 </ul>
             </div>
 

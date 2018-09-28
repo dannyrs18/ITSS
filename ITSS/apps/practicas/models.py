@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.db import models
@@ -51,8 +52,8 @@ class Registro_practicas(models.Model):
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='registros_practicas') 
     presentacion = models.DateField(_('Fecha de Presentacion')) #
     fin = models.DateField(_(u'Fecha de finalización'),blank=True, null=True)
-    horas = models.PositiveIntegerField(_(u'Horas completadas'), blank=True, null=True, default=0)
-    calificacion = models.FloatField(_(u'Calificación del Estudiante'), blank=True, null=True, default=0)
+    horas = models.PositiveIntegerField(_(u'Horas completadas'), default=0)
+    calificacion = models.FloatField(_(u'Calificación del Estudiante'), default=0, validators=[MinValueValidator(0.0), MaxValueValidator(10.0)],)
     estado = models.BooleanField(_(u'Estado del registro'), default=True )# True si esta en proceso
     slug = models.SlugField(max_length=50, blank=True)
 

@@ -1,6 +1,5 @@
 from django.conf.urls import url
 from django.conf import settings
-from ..modulos.respaldo.views import dump_data, load_data
 import views
 
 app_name='registro'
@@ -19,8 +18,6 @@ urlpatterns += [
 urlpatterns += [
     url(r'^web_services/$', views.web_services, name='web_services'),
     url(r'^reporte_estudiante/$', views.reporte_estudiante, name='reporte_estudiante'),
-    url(r'^dump/$', dump_data, name='dump-data'),
-    url(r'^load/$', load_data, name='load-data'),
     url(r'^ajax_docente/$', views.ajax_docente, name='ajax_docente'),
     url(r'^ajax_estudiante/$', views.ajax_estudiante, name='ajax_estudiante'),
     url(r'^ajax_entidad/$', views.ajax_entidad, name='ajax_entidad'),

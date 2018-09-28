@@ -16,8 +16,6 @@ def administrador_practicas():
         Permission.objects.get(codename='reporte_empresa'),
         Permission.objects.get(codename='reporte_registro_practicas'),
         Permission.objects.get(codename='reporte_convenio_practicas'),
-        Permission.objects.get(codename='backups'),
-        Permission.objects.get(codename='backups_up'),
         Permission.objects.get(codename='admin_prac'),
     )
     return perms
@@ -36,9 +34,7 @@ def administrador_vinculacion():
         Permission.objects.get(codename='add_entidad'),
         Permission.objects.get(codename='view_informe_vinculacion'),
         Permission.objects.get(codename='add_informe_vinculacion'),
-        Permission.objects.get(codename='backups'),
         Permission.objects.get(codename='view_reportes'),
-        Permission.objects.get(codename='backups_up'),
         Permission.objects.get(codename='admin_vinc'),
     )
     return perms
@@ -63,6 +59,7 @@ def responsable_vinculacion():
     perms = (
         Permission.objects.get(codename='view_actividad_vinculacion'),
         Permission.objects.get(codename='view_proyecto_vinculacion'),
+        Permission.objects.get(codename='add_proyecto_vinculacion'),
         Permission.objects.get(codename='add_componente'),
         Permission.objects.get(codename='view_estudiante'),
         Permission.objects.get(codename='view_entidad'),

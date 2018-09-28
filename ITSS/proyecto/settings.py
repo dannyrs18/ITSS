@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
+    'dbbackup',
     'apps.registros',
     'apps.practicas',
     'apps.vinculacion',
@@ -44,6 +46,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CRONJOBS  = [
+    # 
+    ('@daily' , 'apps.registros.views.update', '>> '+path('desarrollo/cron.log')), # Actualizacion diariamente
+    ('* * * 5 *' , 'django.core.management.call_command', ['dbbackup']), # Actualizacion cada 5 meses
+    ('* * * 5 *' , 'django.core.management.call_command', ['mediabackup']), # Actualizacion cada 5 meses
 ]
 
 ROOT_URLCONF = 'proyecto.urls'
@@ -134,8 +143,18 @@ LOGIN_URL = reverse_lazy('login')
 DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 
 # Servidor de correos
+EMAIL = 'dannyors18@gmail.com' # variable para reusar
 EMAIL_HOST = 'smtp.gmail.com' 
-EMAIL_HOST_USER = 'dannyors18@gmail.com' # Gmail del emisor del mensaje
+EMAIL_HOST_USER =  EMAIL# Gmail del emisor del mensaje
 EMAIL_HOST_PASSWORD = 'tarjetas18' #clave('gdqq|vruv4;') # Clave del gmail del emisor
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+# Respaldo
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_CLEANUP_KEEP = 5
+DBBACKUP_CLEANUP_KEEP_MEDIA = 5
+DBBACKUP_STORAGE_OPTIONS = {'location': path('backups')}
+
+# Cronjobs
+FAILED_RUNS_CRONJOB_EMAIL_PREFIX = EMAIL

@@ -8,7 +8,7 @@ from django.http import JsonResponse, Http404, FileResponse
 from django.db import transaction
 from .forms_create import UserForm
 from .forms import EstudianteForm
-from ..modulos import web_services as _
+from ..modulos import web_services as _, cron_jobs
 from ..modulos.reportes import practicas
 from .models import Estudiante, Docente, Carrera, Seccion
 from ..vinculacion.models import Entidad
@@ -181,3 +181,6 @@ def flush_permisos(request):
         else:
             raise Http404
     return redirect('/')
+
+def update(): # Funcion utilzada ṕara las tareas de actualizacion
+    cron_jobs.oficina()

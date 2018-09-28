@@ -97,9 +97,6 @@ class Perfil(models.Model):
     class Meta:
         permissions = (
             ("web_services", "Puede acceder a web_services"),
-            ("backups", "Puede acceder a backup"),
-            ("backups_up", "Puede cargar un Backup"),
-            ("backups_down", "Puede descargar un backup"),
             ("view_reportes", "Puede acceder a reportes"),
             ("view_perfil", "Puede acceder a perfiles"),
             ("admin_vinc", "Administrador de Vinculacion"),

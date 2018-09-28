@@ -1,6 +1,5 @@
 from django.conf.urls import url
 from . import views
-from ..modulos.respaldo.views import dump_data, load_data
 
 app_name='practicas'
 # Crear

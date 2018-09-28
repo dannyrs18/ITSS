@@ -102,24 +102,44 @@ class Objetivo(models.Model):
     componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='objectivos')
     nombre = models.TextField(_('Nombre del Componente'))
 
+    def __unicode__(self):
+        return '{}'.format(self.nombre)
+
 class Actividad(models.Model):
     componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='actividades')
     nombre = models.TextField(_('Nombre de la Actividad'))
-
-class Proceso_actividad(models.Model):
-    actividad = models.ForeignKey(Actividad, on_delete=models.CASCADE, related_name='proceso_actividades')
     realizado = models.TextField(_('Realizado'))
     meta = models.TextField(_('Meta'))
     resultado = models.TextField(_('Resultado'))
     cumplimiento = models.PositiveSmallIntegerField(_('% de Cumplimiento'), validators=[MinValueValidator(0), MaxValueValidator(100)])
 
-class Recurso(models.Model):
-    componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='recursos')
-    nombre = models.CharField(_('Nombre del Recurso'), max_length=50)
+    def __unicode__(self):
+        return '{}'.format(self.nombre)
 
-class Proceso_recurso(models.Model):
-    recurso = models.ForeignKey(Recurso, on_delete=models.CASCADE, related_name='proceso_recursos')
-    nombre = models.TextField(_('Nombre de la Actividad'))
+class Recurso(models.Model):
+    cantidad = models.PositiveSmallIntegerField(_('Cantidad'), validators=[MinValueValidator(0)])
+    nombre = models.CharField(_('Nombre del Recurso'), max_length=50)
+    descripcion = models.TextField(_('Descripcion'))
+    unitario = models.FloatField(_('Valor Unitario'), validators=[MinValueValidator(0.00)])
+    total = models.FloatField(_('Valor Total'), validators=[MinValueValidator(0.00)])
+
+    def __unicode__(self):
+        return '{}'.format(self.nombre)
+
+    class Meta:
+        abstract = True
+
+class Recurso_humano(Recurso):
+    componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='recursos_humanos')
+
+class Recurso_financiero(Recurso):
+    componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='recursos_financieros')
+
+class Recurso_material(Recurso):
+    componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='recursos_materiales')
+
+class Recurso_tecnologico(Recurso):
+    componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='recursos_tecnologico')
 
 def generate_evidencia_proyecto(instance, filename):
     return 'proyectos/{0}/{1}/{2}'.format(instance.componente.proyecto_vinculacion.nombre, instance.componente.nombre, filename)
@@ -127,5 +147,8 @@ def generate_evidencia_proyecto(instance, filename):
 class Evidencia_proyecto(models.Model):
     componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='evidencias_proyecto')
     imagen = models.ImageField(upload_to=generate_evidencia_proyecto)
+
+    def __unicode__(self):
+        return '{}'.format(self.imagen.url)
 
 ###### / Proyecto vinculacion

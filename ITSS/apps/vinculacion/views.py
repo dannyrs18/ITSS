@@ -24,10 +24,8 @@ def crear_proyecto(request):
     if form.is_valid():
         proyecto = form.save(request.user)
         formset = forms_create.ComponenteFormSet(request.POST or None, request.FILES or None, instance=proyecto)
-        formset2 = forms_create.ComponenteFormSet(request.POST or None, request.FILES or None, instance=proyecto)
         if formset.is_valid() and formset2.is_valid():
             formset.save()
-            formset2.save()
             messages.success(request, u'El proyecto se ha creado con exito!.')
             return redirect('/')
     if request.POST:
@@ -50,7 +48,6 @@ def crear_componente(request, slug):
     form2 = forms_update.ComponenteForm(request.POST or None, request.FILES or None, instance=componente)
     formset = forms_create.ObjetivoFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='objetivo')
     formset2 = forms_create.ActividadFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='actividad')
-    formset3 = forms_create.ProcesoActividadFormset(request.POST or None, request.FILES or None, instance=actividad, prefix='proceso_actividad')
     if form2.is_valid() and formset.is_valid():
         print 'ok'
         pass
@@ -59,7 +56,6 @@ def crear_componente(request, slug):
         'form2': form2,
         'formset': formset,
         'formset2': formset2,
-        'formset3': formset3,
     }
     return render(request, 'formularios/vinculacion_componente.html', context)
         
@@ -112,7 +108,7 @@ def tabla_proceso(request):
     if request.user.has_perm('registros.admin_vinc'):
         proyectos = Proyecto_vinculacion.objects.filter(estado=True)
     elif request.user.has_perm('registros.resp_vinc'):
-        proyectos = Proyecto_vinculacion.objects.filter(estado=True, carrera=request.user)
+        proyectos = Proyecto_vinculacion.objects.filter(estado=True, carrera=request.user.perfil.carrera)
     context = {
         'proyectos' : proyectos
     }
@@ -135,3 +131,8 @@ def evidencia(request):
         }
         return JsonResponse(context)
     return redirect('/')
+
+
+
+
+########### pruebas

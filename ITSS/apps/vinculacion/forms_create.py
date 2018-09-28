@@ -1,24 +1,24 @@
 # coding: utf-8
 import random
 import string
+import models
 
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django import forms
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
-from .models import Informe_vinculacion, Entidad, Actividad_vinculacion, Proyecto_vinculacion, Componente, Evidencias_Entidad, Objetivo, Actividad, Proceso_actividad
 from ..registros.models import Carrera
 
 class ConvenioForm(forms.ModelForm):
     class Meta:
-        model = Informe_vinculacion
+        model = models.Informe_vinculacion
         fields = '__all__'
         widgets = {'convenio': forms.FileInput(attrs={'class':'form-control'})}
     
     def save(self, commit=True):
         instance = super(ConvenioForm, self).save(commit=False)
-        if Informe_vinculacion.objects.filter(pk=1):
-            inf = Informe_vinculacion.objects.get(pk=1)
+        if models.Informe_vinculacion.objects.filter(pk=1):
+            inf = models.Informe_vinculacion.objects.get(pk=1)
             inf.convenio = self.cleaned_data.get('convenio')
             inf.save()
         else:
@@ -28,7 +28,7 @@ class EntidadForm(forms.ModelForm):
     inicio = forms.DateField(label=_(u'Fecha de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
     fin = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
     class Meta:
-        model = Entidad
+        model = models.Entidad
         fields = ('nombre', 'encargado', 'cargo', 'correo', 'telefono', 'inicio', 'fin', 'direccion', 'descripcion', 'logo', 'carreras')
         labels = {'nombre': _(u'Nombre de la entidad')}
         widgets = {'carreras': forms.CheckboxSelectMultiple()}
@@ -60,11 +60,11 @@ class EvidenciaEntidadForm(forms.Form):
         print imagenes
         for imagen in imagenes:
             print imagen
-            Evidencias_Entidad.objects.create(entidad=entidad, imagen=imagen)
+            models.Evidencias_Entidad.objects.create(entidad=entidad, imagen=imagen)
 
 class ProyectoVinculacionForm(forms.ModelForm):
     class Meta:
-        model = Proyecto_vinculacion
+        model = models.Proyecto_vinculacion
         fields = ('nombre', 'carrera', 'entidad',)
 
     def __init__(self, user, *args, **kwargs):
@@ -74,13 +74,13 @@ class ProyectoVinculacionForm(forms.ModelForm):
         self.fields['carrera'].widget.attrs.update({'class' : 'form-control search_select'})
         if user.has_perm('registros.resp_vinc'):
             del self.fields['carrera']
-            self.fields['entidad'].queryset = Entidad.objects.filter(carrera=user.perfil.carrera) # estado
+            self.fields['entidad'].queryset = models.Entidad.objects.filter(carreras=user.perfil.carrera) # estado
         elif user.has_perm('registros.admin_vinc'):
-            self.fields['entidad'].queryset = Entidad.objects.none()
+            self.fields['entidad'].queryset = models.Entidad.objects.none()
             if self.data.get('carrera', ''):
                 try:
                     carrera_id = self.data.get('carrera')
-                    self.fields['entidad'].queryset = Entidad.objects.filter(carreras=carrera_id).order_by('nombre')
+                    self.fields['entidad'].queryset = models.Entidad.objects.filter(carreras=carrera_id).order_by('nombre')
                 except (ValueError, TypeError):
                     pass  # invalid input from the client; ignore and fallback to empty City queryset
             elif self.instance.pk:
@@ -97,7 +97,7 @@ class ProyectoVinculacionForm(forms.ModelForm):
 
 class ComponenteForm(forms.ModelForm):
     class Meta:
-        model = Componente
+        model = models.Componente
         fields = ('nombre', 'proyecto_vinculacion', )
 
     def __init__(self, *args, **kwargs):
@@ -117,41 +117,31 @@ class RequiredFormSet(BaseInlineFormSet):
         for form in self.forms:
             form.empty_permitted = False
 
-ComponenteFormSet = inlineformset_factory(Proyecto_vinculacion, Componente,
+ComponenteFormSet = inlineformset_factory(models.Proyecto_vinculacion, models.Componente,
                                             form=ComponenteForm, formset=RequiredFormSet, can_delete=False, extra=3)
-ComponenteFormSet2 = inlineformset_factory(Proyecto_vinculacion, Componente,
+ComponenteFormSet2 = inlineformset_factory(models.Proyecto_vinculacion, models.Componente,
                                             form=ComponenteForm, extra=1)
 
 class ObjetivoForm(forms.ModelForm):
     class Meta:
-        model = Objetivo
+        model = models.Objetivo
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super(ObjetivoForm, self).__init__(*args, **kwargs)
         self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows':2})
 
-ObjetivoFormSet = inlineformset_factory(Componente, Objetivo, form=ObjetivoForm, extra=1)
+ObjetivoFormSet = inlineformset_factory(models.Componente, models.Objetivo, form=ObjetivoForm, extra=1)
 
 class ActividadForm(forms.ModelForm):
     class Meta:
-        model = Actividad
+        model = models.Actividad
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super(ActividadForm, self).__init__(*args, **kwargs)
-        self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows':2})
+        for key in self.fields:
+            self.fields[key].widget.attrs.update({'class' : 'form-control'})
+        self.fields['nombre'].widget.attrs.update({'rows':2})
 
-ActividadFormSet = inlineformset_factory(Componente, Actividad, form=ActividadForm, extra=1)
-
-class ProcesoActividadForm(forms.ModelForm):
-    class Meta:
-        model = Proceso_actividad
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(ProcesoActividadForm, self).__init__(*args, **kwargs)
-        if key in self.fields:
-            self.fields[key].widget.attrs.update({'class' : 'form-control', 'rows':2})
-
-ProcesoActividadFormset = inlineformset_factory(Actividad, Proceso_actividad, form=ProcesoActividadForm, extra=1)
+ActividadFormSet = inlineformset_factory(models.Componente, models.Actividad, form=ActividadForm, extra=1)
