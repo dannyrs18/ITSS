@@ -10,7 +10,7 @@ from ..modulos.validators import valid_extension
 
 class Empresa(Oficina): # PRACTICAS
     gerente = models.CharField(_(u'Nombre del Gerente'), max_length=100)
-    descripcion = models.TextField(_(u'Descricion'))
+    descripcion = models.TextField(_(u'Descripción'))
     carreras = models.ManyToManyField(Carrera, related_name='empresas')
     responsable = models.ForeignKey(User, on_delete=models.CASCADE, related_name='empresas')
 
@@ -53,7 +53,7 @@ class Registro_practicas(models.Model):
     presentacion = models.DateField(_('Fecha de Presentacion')) #
     fin = models.DateField(_(u'Fecha de finalización'),blank=True, null=True)
     horas = models.PositiveIntegerField(_(u'Horas completadas'), default=0)
-    calificacion = models.FloatField(_(u'Calificación del Estudiante'), default=0, validators=[MinValueValidator(0.0), MaxValueValidator(10.0)],)
+    calificacion = models.FloatField(_(u'Calificación del Estudiante'), default=0, validators=[MinValueValidator(0), MaxValueValidator(10)],)
     estado = models.BooleanField(_(u'Estado del registro'), default=True )# True si esta en proceso
     slug = models.SlugField(max_length=50, blank=True)
 

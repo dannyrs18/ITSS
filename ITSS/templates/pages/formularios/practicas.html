@@ -80,7 +80,7 @@
     <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
     <script>
         $(function(){
-            $('.fecha1').daterangepicker({
+            $('.fecha').daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
                 locale: {
@@ -103,6 +103,37 @@
                     $('#id_cedula').val(data.cedula)
                 }
             })
+        })
+    </script>
+    <script>
+        $('#id_carrera').change(function(){
+            $('#id_nombres').val('')
+            $('#id_apellidos').val('')
+            $('#id_cedula').val('')
+            if (typeof $('#id_empresa').val() != "undefined"){
+                console.log('ok')
+                $('#id_empresa').html('');
+                $('#id_empresa').append('<option value="" selected="selected">---------</option>');
+                $('#id_estudiante').html('');
+                $('#id_estudiante').append('<option value="" selected="selected">---------</option>');
+                $.ajax({
+                    url: "{% url 'registro:ajax_empresa_estudiante' %}",
+                    type: 'post',
+                    data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'pk':$('#id_carrera').val()},
+                    success: function(data){
+                        var estudiantes = data.estudiantes 
+                        var empresas = data.empresas
+                        console.log(empresas)
+                        console.log(estudiantes)
+                        for(var i=0; i<empresas.length; i++){
+                            $('#id_empresa').append('<option value="'+empresas[i].id+'">'+empresas[i].nombre+'</option>');
+                        }
+                        for(var i=0; i<estudiantes.length; i++){
+                            $('#id_estudiante').append('<option value="'+estudiantes[i].id+'">'+estudiantes[i].nombre+'</option>');
+                        }
+                    }
+                })   
+            }
         })
     </script>
     <script>

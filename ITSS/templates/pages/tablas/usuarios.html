@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load tags %}
+{% load staticfiles %}
+
+{% block style %}
+
+    {{ block.super }}
+
+
+{% endblock %}
+
+{% block content %}
+
+<div class="">
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2> <strong>Administradores Activos</strong> </h2>
+                <div class="clearfix"></div>
+             </div>
+            <div class="x_content">
+            <table id="datatable" class="table table-hover table-bordered" style="font-size:14px; ">
+                <thead>
+                <tr>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Usuario</th>
+                    <th>Telefono</th>
+                    <th>Administración</th>
+                    <th>Inicio de sesión</th>
+                    <th>Opc.</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for usuario in usuarios %}
+                {% if usuario.is_active %}
+                <tr>
+                    <td>{{ usuario.first_name }}</td>
+                    <td>{{ usuario.last_name }}</td>
+                    <td>{{ usuario.username }}</td>
+                    <td>{{ usuario.perfil.docente.telefono }}</td>
+                    <td>{{ usuario|permisos }}</td>
+                    <td>{% if usuario.last_login %}{{ usuario.last_login }}{% else %}No ha iniciado sesión{% endif %}</td>
+                    <td>
+                        <a href="{% url 'registro:modificar_estado' usuario.perfil.slug %}" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></a>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="">
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2> <strong>Administradores Antiguos</strong> </h2>
+                <div class="clearfix"></div>
+                </div>
+            <div class="x_content">
+            <table id="datatable" class="table table-hover table-bordered" style="font-size:14px; ">
+                <thead>
+                <tr>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Usuario</th>
+                    <th>Telefono</th>
+                    <th>Administración</th>
+                    <th>Opc.</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for usuario in usuarios %}
+                {% if not usuario.is_active %}
+                <tr>
+                    <td>{{ usuario.first_name }}</td>
+                    <td>{{ usuario.last_name }}</td>
+                    <td>{{ usuario.username }}</td>
+                    <td>{{ usuario.perfil.docente.telefono }}</td>
+                    <td>{{ usuario|permisos }}</td>                    
+                    <td>
+                        <a href="{% url 'registro:modificar_estado' usuario.perfil.slug %}" class="btn btn-success btn-xs"><i class="fa fa-circle-o"></i></a>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+{% endblock %}
+    

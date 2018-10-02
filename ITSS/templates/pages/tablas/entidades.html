@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
+
 {% load staticfiles %}
-{% load tags %}
 
 {% block style %}
+
     {{ block.super }}
     <!-- Datatables -->
     <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
@@ -12,6 +13,7 @@
     <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
     <!-- Uikit -->
     <link href="{% static 'plugins/uikit/css/uikit.css' %}" rel="stylesheet">
+
 {% endblock %}
 
 {% block content %}
@@ -25,57 +27,42 @@
                 <h2> <strong>{{ title }}</strong> </h2>
                 <div class="clearfix"></div>
              </div>
-            <div class="x_content">
-            <table id="datatable" class="table table-hover table-bordered" style="font-size:14px; ">
-                <thead>
-                <tr>
-                    <th>Nombres</th>
-                    <th>Apellidos</th>
-                    <th>Cedula</th>
-                    {% if perms.registros.admin_prac %}
-                    <th>Carrera</th>
-                    {% endif %}
-                    {% if perms.registros.admin_prac or perms.registros.resp_prac %}
-                    <th>Empresas</th>
-                    {% elif perms.registros.admin_vinc or perms.registros.resp_vinc %}
-                    <th>Entidades</th>
-                    {% endif %}
-                    <th>Horas</th>
-                    <th>Calificación</th>
-                    <th width=5%>Opt.</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for estudiante in estudiantes %}
-                {% if perms.registros.admin_prac or perms.registros.resp_prac %}
-                    {% count_valores_practicas estudiante.registros_practicas.all as value %}
-                {% elif perms.registros.admin_vinc or perms.registros.resp_vinc %}
-                    {% count_valores_vinculacion estudiante.evaluaciones.all as value %}
-                {% endif %}
-                <tr>
-                    <td>{{ estudiante.nombres }}</td>
-                    <td>{{ estudiante.apellidos }}</td>
-                    <td>{{ estudiante.cedula }}</td>
-                    {% if perms.registros.admin_prac %}
-                    <td>{{ estudiante.carrera.nombre }}</td>
-                    {% endif %}
-                    {% if perms.registros.admin_prac or perms.registros.resp_prac %}
-                    <td>{{ estudiante.registros_practicas.count }}</td>
-                    <td>{{ value.horas }}</td>
-                    {% elif perms.registros.admin_vinc or perms.registros.resp_vinc %}
-                    <td>{{ value.count }}</td>
-                    <td>{{ value.horas }}</td>
-                    {% endif %}
-                    <td>{{ value.calificacion }}</td>
-                    <td>
-                        {% if perms.registros.admin_prac or perms.registros.resp_prac %}
-                        <button class="btn btn-default btn-xs" onclick="evidencia('{{ estudiante.id }}');"><i class="fa fa-eye"></i></button>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            <div class="x_content ">
+                <table id="datatable" class="table table-hover table-bordered" style="font-size:13px;">
+                    <thead>
+                    <tr>
+                        <th>Entidad</th>
+                        <th>Direccion</th>
+                        <th>Telefono</th>
+                        <th>Correo</th>
+                        <th>Iniciado por</th>
+                        <th>Fin. Convenio</th>
+                        <th width="11%">Opt.</th>
+                    </tr>
+                    </thead>
+                
+                    <tbody>
+                    {% for entidad in entidades %}
+                    <tr>
+                        <td>{{ entidad.nombre }}</td>
+                        <td>{{ entidad.direccion }}</td>
+                        <td>{{ entidad.telefono }}</td>
+                        <td>{{ entidad.correo }}</td>
+                        <td>{{ entidad.responsable.get_full_name }}</td>
+                        <td>{{ entidad.fin }}</td>
+                        <td>
+                            {% if perms.vinculacion.reporte_convenio_vinculacion %}
+                            <a href="{% url 'vinculacion:reporte_convenio' entidad.slug %}" class="btn btn-default btn-xs"><i class="fa  fa-file-word-o"></i></a>
+                            {% endif %}
+                            <button class="btn btn-default btn-xs" onclick="evidencia('{{ entidad.slug }}');"><i class="fa fa-eye"></i></button>
+                            {% if perms.vinculacion.change_entidad %}
+                            <a href="{% url 'vinculacion:actualizar_entidad' entidad.slug %}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
         </div>
@@ -104,18 +91,17 @@
     <script src="{% static 'plugins/uikit/js/uikit.js' %}"></script>
     <script src="{% static 'plugins/uikit/js/uikit-icons.js' %}"></script>
     <script>
-        function evidencia(id){
+        function evidencia(slug){
             $.ajax({
-                url: '{% url "registro:ajax_evidencia_estudiante" %}',
+                url: '{% url "vinculacion:ajax_evidencia_entidad" %}',
                 type: 'post',
-                data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'id':id},
+                data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'slug':slug},
                 success: function(data){ 
                     var galeria = []
-                    for (i=0; i < data.length; i++){
-                        for (c=0; c < data[i].imagen.length; c++){
-                            galeria.push({source: data[i].imagen[c], caption: data[i].nombre})
-                        }
+                    for (i=0; i < data.imagen.length; i++){
+                        galeria.push({source: data.imagen[i], caption: data.nombre})
                     }
+                    console.log(galeria)
                     UIkit.lightboxPanel({
                         items: galeria
                     }).show();
@@ -123,5 +109,5 @@
             })
         }
     </script>
+
 {% endblock %}
-    

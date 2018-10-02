@@ -7,8 +7,6 @@
     <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
     <!-- Select2 -->
     <link href="{% static 'vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
-    <!-- MultiSelect -->
-    <link href="{% static 'plugins/multiSelect/css/multi-select.css' %}" rel="stylesheet">
 
 {% endblock %}
 
@@ -64,21 +62,7 @@
     <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
     <script>
         $(function(){
-            $('.fecha1').daterangepicker({
-                singleDatePicker: true,
-                showDropdowns: true,
-                locale: {
-                    format: 'DD-MM-YYYY'
-                },
-            })
-            $('.fecha2').daterangepicker({
-                singleDatePicker: true,
-                showDropdowns: true,
-                locale: {
-                    format: 'DD-MM-YYYY'
-                },
-            })
-            $('.fecha3').daterangepicker({
+            $('.fecha').daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
                 locale: {
@@ -91,10 +75,5 @@
     <script src="{% static 'vendors/select2/dist/js/select2.full.min.js' %}"></script>
     <script>
         $('.search_select').select2();
-    </script>
-    <!-- MultiSelect -->
-    <script src="{% static 'plugins/multiSelect/js/jquery.multi-select.js' %}"></script>
-    <script>
-        $('.multi_select').multiSelect()
     </script>
 {% endblock %}

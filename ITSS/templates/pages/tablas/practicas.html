@@ -11,7 +11,8 @@
     <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
-
+    <!-- Uikit -->
+    <link href="{% static 'plugins/uikit/css/uikit.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -37,9 +38,8 @@
                     {% if perms.registros.admin_prac %}
                     <th>Carrera</th>
                     {% endif %}
-                    <th>Evidencias</th>
                     {% if perms.practicas.change_registro_practicas %}
-                    <th>Opciones</th>
+                    <th width=8%>Opc.</th>
                     {% endif %}
                 </tr>
                 </thead>
@@ -52,12 +52,12 @@
                     <td>{{ practica.estudiante.apellidos }}</td>
                     <td>{{ practica.estudiante.cedula }}</td>
                     {% if perms.registros.admin_prac %}
-                    <td>{{ practica.estudiante.carrera.nombre }}</td>
+                    <td>{{ practica.carrera.nombre }}</td>
                     {% endif %}
-                    <td>{{ estudiante.paralelo }}</td>
                     {% if perms.practicas.change_registro_practicas %}
                     <td>
                         <a href="{% url 'practicas:proceso' practica.slug %}" class="btn btn-default btn-xs"><i class="fa fa-pencil-square-o"></i></a>
+                        <button class="btn btn-default btn-xs" onclick="evidencia('{{ practica.id }}');"><i class="fa fa-eye"></i></button>
                     </td>
                     {% endif %}
                 </tr>
@@ -88,9 +88,27 @@
     <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
     <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
     <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
-    <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
-    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
-    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
-
+    <!-- Uikit -->
+    <script src="{% static 'plugins/uikit/js/uikit.js' %}"></script>
+    <script src="{% static 'plugins/uikit/js/uikit-icons.js' %}"></script>
+    <script>
+        function evidencia(id){
+            $.ajax({
+                url: '{% url "practicas:evidencia_practicas" %}',
+                type: 'post',
+                data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'id':id},
+                success: function(data){ 
+                    var galeria = []
+                    for (i=0; i < data.imagen.length; i++){
+                        galeria.push({source: data.imagen[i], caption: data.nombre})
+                    }
+                    console.log(galeria)
+                    UIkit.lightboxPanel({
+                        items: galeria
+                    }).show();
+                }
+            })
+        }
+    </script>
 {% endblock %}
     

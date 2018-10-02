@@ -8,6 +8,7 @@ from django.conf import settings
 from django import forms
 from .models import Informe_practicas, Empresa, Registro_practicas, Evidencias_Empresa, Evidencias_registro_practicas
 from ..registros.models import Carrera, Estudiante
+from django.utils.timezone import localtime, now
 
 class ConvenioForm(forms.ModelForm):
     class Meta:
@@ -41,24 +42,21 @@ class EmpresaForm(forms.ModelForm):
             self.fields[key].widget.attrs.update({'class' : 'form-control'})
         self.fields['direccion'].widget.attrs.update({'class' : 'form-control', 'rows':3})
         self.fields['descripcion'].widget.attrs.update({'class' : 'form-control', 'rows':3})
-        self.fields['inicio'].widget.attrs.update({'class' : 'form-control fecha1'})
-        self.fields['fin'].widget.attrs.update({'class' : 'form-control fecha2'})
+        self.fields['inicio'].widget.attrs.update({'class' : 'form-control fecha'})
+        self.fields['fin'].widget.attrs.update({'class' : 'form-control fecha'})
 
     def clean(self, *args, **kwargs):
-        instance = super(EmpresaForm, self).clean(*args, **kwargs)
-        estudiante = instance.get('estudiante', None)
-        if estudiante:
-            if estudiante.practicas.filter(estado=True).exists():
-                self.add_error('estudiante', 'El estudiantes se encuentra actualmente en otro proceso de practicas')
+        cleaned_data = super(EmpresaForm, self).clean(*args, **kwargs)
+        if cleaned_data.get('inicio') >= cleaned_data.get('fin'):
+            self.add_error('fin', u'La fecha de finalización debe ser mayor a la de inicio')
 
     def save(self, user, commit=True):
         from django.utils.timezone import localtime, now
-        from datetime import datetime
 
         instance = super(EmpresaForm, self).save(commit=False)
         instance.responsable=user
-        if localtime(now()).date() >= instance.inicio and localtime(now()).date() < instance.fin:
-            instance.estado = True
+        if instance.fin > localtime(now()).date():
+            instance.estado=True
         instance.save()
         aleatorio = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(15)])
         instance.slug = '{0}{1}'.format(instance.id, aleatorio)
@@ -87,21 +85,36 @@ class RegistroForm(forms.ModelForm):
     presentacion = forms.DateField(label=_(u'Fecha de Presentación') ,input_formats=settings.DATE_INPUT_FORMATS)
     class Meta:
         model = Registro_practicas
-        fields = ('estudiante', 'nombres', 'apellidos', 'cedula', 'empresa', 'presentacion')
-
+        fields = ('carrera', 'estudiante', 'nombres', 'apellidos', 'cedula', 'empresa', 'presentacion', 'carrera')
         widgets = {
             'estudiante': forms.Select(attrs={'class':"form-control search_select"}),
             'empresa': forms.Select(attrs={'class':"form-control search_select"}),
+            'carrera': forms.Select(attrs={'class':"form-control search_select"}),
         }
         
     def __init__(self, user, *args, **kwargs):
         super(RegistroForm, self).__init__(*args, **kwargs)
-        self.fields['empresa'].queryset = Empresa.objects.filter(carreras=user.perfil.carrera)
-        self.fields['estudiante'].queryset = Estudiante.objects.filter(carrera=user.perfil.carrera)
         self.fields['nombres'].widget.attrs.update({'class' : 'form-control', 'readonly':'readonly'})
         self.fields['apellidos'].widget.attrs.update({'class' : 'form-control', 'readonly':'readonly'})
         self.fields['cedula'].widget.attrs.update({'class' : 'form-control', 'readonly':'readonly'})
-        self.fields['presentacion'].widget.attrs.update({'class' : 'form-control fecha1'})
+        self.fields['presentacion'].widget.attrs.update({'class' : 'form-control fecha'})
+        if user.has_perm('registros.resp_prac'):
+            self.fields['empresa'].queryset = Empresa.objects.filter(carreras=user.perfil.carrera)
+            self.fields['estudiante'].queryset = Estudiante.objects.filter(carrera=user.perfil.carrera)
+            del self.fields['carrera']
+        else:
+            self.fields['empresa'].queryset = Empresa.objects.none()
+            self.fields['estudiante'].queryset = Estudiante.objects.none()
+            if self.data.get('carrera'):
+                try:
+                    carrera_id = self.data.get('carrera')
+                    self.fields['empresa'].queryset = Empresa.objects.filter(carreras=carrera_id).order_by('nombre')
+                    self.fields['estudiante'].queryset = Estudiante.objects.filter(carrera=carrera_id).order_by('nombres')
+                except (ValueError, TypeError):
+                    pass  # invalid input from the client; ignore and fallback to empty City queryset
+            elif self.instance.pk:
+                self.fields['empresa'].queryset = self.instance.carrera.empresas.order_by('nombre')
+                self.fields['estudiante'].queryset = self.instance.carrera.estudiantes.order_by('nombres')
 
     def clean(self, *args, **kwargs):
         instance = super(RegistroForm, self).clean(*args, **kwargs)
@@ -111,7 +124,8 @@ class RegistroForm(forms.ModelForm):
 
     def save(self, user, commit=True):
         instance = super(RegistroForm, self).save(commit=False)
-        instance.carrera = user.perfil.carrera
+        if user.has_perm('resp_prac'):
+            instance.carrera = user.perfil.carrera
         instance.save()
         aleatorio = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(15)])
         instance.slug = '{0}{1}'.format(instance.id, aleatorio)

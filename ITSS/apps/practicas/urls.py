@@ -9,18 +9,22 @@ urlpatterns = [
     url(r'^crear_empresa/$', views.crear_empresa, name='crear_empresa'),
 ]
 
+# Actualizar
+urlpatterns += [
+    url(r'^proceso/(?P<slug>[-\w]+)/$', views.proceso, name='proceso'),
+    url(r'^actualizar_empresa/(?P<slug>[-\w]+)/$', views.actualizar_empresa, name='actualizar_empresa'),
+]
+
 # Tablas
 urlpatterns += [
     url(r'^tabla/$', views.tabla, name='tabla'),
     url(r'^tabla_empresa/$', views.tabla_empresa, name='tabla_empresa'),
 ]
 
-urlpatterns += [
-    url(r'^proceso/(?P<slug>[-\w]+)/$', views.proceso, name='proceso'),
-]
-
 # Otros
 urlpatterns += [
     url(r'^reporte_convenio/(?P<slug>[-\w]+)/$', views.reporte_convenio, name='reporte_convenio'),
+    url(r'^reporte_estudiante/$', views.reporte_estudiante, name='reporte_estudiante'),
     url(r'^evidencia_empresa/$', views.evidencia_empresa, name='evidencia_empresa'),
+    url(r'^evidencia_practicas/$', views.evidencia_practicas, name='evidencia_practicas'),
 ]

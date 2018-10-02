@@ -7,6 +7,8 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch, cm
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
+from django.utils import timezone
+from functools import partial
 
 from docxtpl import DocxTemplate, InlineImage
 from docx.shared import Mm, Inches, Pt
@@ -26,46 +28,72 @@ nombre_vinculacion = "Identificacion y seleccion de la plataforma MOOCS a implem
 fecha = '23/09/2018'
 #####
 
-_s = ParagraphStyle(
+def _hb(size):
+    return ParagraphStyle(
         'identificacion',
         fontName='Helvetica-Bold',
-        fontSize=10
+        fontSize=size
     )
-_s1 = ParagraphStyle(
-        'identificacion',
-        fontName='Helvetica',
-        fontSize=10
-    )
+def _h(size):
+    return ParagraphStyle(
+            'identificacion',
+            fontName='Helvetica',
+            fontSize=size
+        )
 
 #### Inicio
 
 # Imgagenes = static/plugins/Date_Picker/js/jquery.datepicker.min.js
-def primeraPagina(c, doc):
+def primeraPagina(c, doc, titulo):
     c.saveState()
+    c.drawImage(settings.STATIC_ROOT+'/images/institucion.jpg', (PAGE_WIDTH/2-270/2), 660, width=280, height=220, preserveAspectRatio=True)
     c.setFont('Helvetica-Bold', 14)
-    c.drawImage(settings.STATIC_ROOT+'/images/institucion.jpg', (PAGE_WIDTH/2-270/2), 655, width=300, height=240, preserveAspectRatio=True)
-    c.drawRightString(PAGE_WIDTH-inch, 0.75*inch, 'Pagina {}'.format(1))
+    c.drawString(cm*2, 705, titulo.upper())
+    c.drawRightString(PAGE_WIDTH-(cm*2), 705, '{}'.format(timezone.now().date()))
+    c.setFont('Times-Roman', 11)
+    c.drawRightString(PAGE_WIDTH-(cm*2), 0.75*(cm*2), 'Pagina {}'.format(1))
     c.restoreState()
 
 def siguientePagina(c, doc):
     c.saveState()
+    c.drawImage(settings.STATIC_ROOT+'/images/logo_practicas.jpg', PAGE_WIDTH-inch*1.5, PAGE_HEIGHT-inch*1.5, width=80, preserveAspectRatio=True)
     c.setFont('Times-Roman', 11)
-    image_width, image_height = 75*8, 70*8
-    #c.drawImage('logo_vinculacion.png', PAGE_WIDTH/2-image_width/2, PAGE_HEIGHT/2-image_height/2, width=image_width, height=image_height, mask=[-3,-3,-3,-3,-3,-3])
     c.drawRightString(PAGE_WIDTH-inch, 0.75*inch, 'Pagina {}'.format(doc.page))
     c.restoreState()
 
-def encabezado():
-    data = [
-        [Paragraph('ETAPA DEL INFORME:', _s), Paragraph('{}° Componente: {}'.format(numero_etapa, nombre_vinculacion), _s1)],
-        [Paragraph('FECHA:', _s), Paragraph('{}'.format(fecha), _s1)]
-    ]
-    return data
+def encabezado(story, inf):
+    data = []
+    for i in range(len(inf['data'])):
+        data.append([Paragraph(u'{}:'.format(inf['data'][i]), _hb(12)), Paragraph(u'{}'.format(inf['info'][i]), _h(10))])
+    t = Table(data, colWidths=inf['dim'])
+    t.setStyle(TableStyle([
+       ('VALIGN', (0,0), (-1, -1), 'CENTER'),
+       ('ALIGN', (0,0), (-1, -1), 'CENTER'),
+    ]))
+    story.append(t)
 
-def lienzo():
+def tabla(story, inf):
+    aux, data = [], []
+    for i in range(len(inf['data'])):
+        aux.append(Paragraph(u'{}'.format(inf['data'][i]), _hb(9)))
+    data.append(aux)
+    for i in range(len(inf['info'])):
+        aux = []
+        for x in range(len(inf['info'][i])):
+            aux.append(Paragraph(u'{}'.format(inf['info'][i][x]), _h(10)))
+        data.append(aux)
+    t = Table(data, colWidths=inf['dim'])
+    t.setStyle(TableStyle([
+        ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+        ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+        ('VALIGN',(0,0),(-1,-1),'CENTER'), # eje x
+        ('ALIGN',(0,0),(-1,-1),'CENTER'), # eje y
+    ]))
+    story.append(t)
 
+def estudiantes(estudiante):
     response = HttpResponse(content_type='application/pdf')
-    pdf_name = "reporte Vinculacion"
+    pdf_name = "Reporte Estudiantes"
     pdf_author = "dannyrs"
     response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
     buff = BytesIO()
@@ -75,16 +103,68 @@ def lienzo():
         title='DR_Reports',
         author='dannyrs'
     ) # Crear un doc
-    story = [Spacer(1,inch*1.3)]
-    data = encabezado()
-    t = Table(data, colWidths=[125, 325])
-    t.setStyle(TableStyle([
-       ('VALIGN', (0,0), (-1, -1), 'TOP'),
-    ]))
-    story.append(t)
-    story.append(Spacer(1, 12))
-    doc.build(story, onFirstPage=primeraPagina, onLaterPages=siguientePagina)
 
+    story = [Spacer(1,inch)]
+    inf = {
+        'data' :['Nombre','Apellidos','Cedula', 'Carrera'],
+        'info' :[
+            estudiante.nombres, 
+            estudiante.apellidos, 
+            estudiante.cedula,
+            estudiante.carrera.nombre    
+        ],
+        'dim'  :[100, 390]
+    }
+    encabezado(story, inf)
+
+    story.append(Spacer(1, 13))
+    inf = {
+        'data' :['EMPRESA', 'INICIO', u'CULMINACIÓN', u'CALIFICACIÓN', 'T. HORAS'],
+        'info' :[[registro.empresa.nombre, registro.presentacion, registro.fin or '------', registro.calificacion, registro.horas] for registro in estudiante.registros_practicas.all() ],
+        'dim'  :[160, 80, 80, 80, 80]
+    }
+    data = tabla(story, inf)
+
+    doc.build(story, onFirstPage=partial(primeraPagina, titulo='Reporte general del estudiante'), onLaterPages=siguientePagina)
+    response.write(buff.getvalue())
+    buff.close()
+    return response
+
+def empresas():
+    response = HttpResponse(content_type='application/pdf')
+    pdf_name = "Reporte Empresas"
+    pdf_author = "dannyrs"
+    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    buff = BytesIO()
+    doc = SimpleDocTemplate(
+        buff, 
+        pagesize=A4,
+        title='DR_Reports',
+        author='dannyrs'
+    ) # Crear un doc
+
+    story = [Spacer(1,inch)]
+    inf = {
+        'data' :['Nombre','Apellidos','Cedula', 'Carrera'],
+        'info' :[
+            estudiante.nombres, 
+            estudiante.apellidos, 
+            estudiante.cedula,
+            estudiante.carrera.nombre    
+        ],
+        'dim'  :[100, 390]
+    }
+    encabezado(story, inf)
+
+    story.append(Spacer(1, 13))
+    inf = {
+        'data' :['EMPRESA', 'INICIO', u'CULMINACIÓN', u'CALIFICACIÓN', 'T. HORAS'],
+        'info' :[[registro.empresa.nombre, registro.presentacion, registro.fin or '------', registro.calificacion, registro.horas] for registro in estudiante.registros_practicas.all()],
+        'dim'  :[160, 80, 80, 80, 80]
+    }
+    data = tabla(story, inf)
+
+    doc.build(story, onFirstPage=partial(primeraPagina, titulo='Reporte general del estudiante'), onLaterPages=siguientePagina)
     response.write(buff.getvalue())
     buff.close()
     return response
@@ -93,11 +173,9 @@ def lienzo():
 
 def convenio(slug):
     empresa = get_object_or_404(Empresa, slug=slug)
-    if Informe_practicas.objects.filter(pk=1).exists():
-        informe = Informe_practicas.objects.get(pk=1).convenio
-    else:
-        informe = settings.STATIC_ROOT+'/base/Convenio.docx'
-    buffer = BytesIO()
+    if not Informe_practicas.objects.all().last():
+        return False
+    informe = Informe_practicas.objects.all().last().convenio
     tpl=DocxTemplate(informe)
     carreras = []
     for carrera in empresa.carreras.all():
@@ -120,13 +198,7 @@ def convenio(slug):
     }
     jinja_env = jinja2.Environment(autoescape=True)
     tpl.render(context, jinja_env)
-    tpl.save(buffer)
-    length = buffer.tell()
-    buffer.seek(0)
-    response = HttpResponse(
-        buffer.getvalue(),
-        content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    )
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
     response['Content-Disposition'] = 'attachment; filename=convenio {}.docx'.format(empresa.nombre)
-    response['Content-Length'] = length
+    tpl.save(response)
     return response

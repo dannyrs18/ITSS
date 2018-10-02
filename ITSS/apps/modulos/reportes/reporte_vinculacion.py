@@ -3,6 +3,15 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.rl_config import defaultPageSize
 from reportlab.lib.units import inch, cm
 from reportlab.lib import colors
+from django.http import HttpResponse
+
+from docxtpl import DocxTemplate, InlineImage
+from docx.shared import Mm, Inches, Pt
+import jinja2
+from jinja2.utils import Markup
+from django.shortcuts import get_object_or_404
+
+from ...vinculacion.models import Entidad, Informe_vinculacion
 
 #### Inicio
 
@@ -88,3 +97,37 @@ def tabla():
     story.append(t)
     story.append(t)
     doc.build(story)
+
+
+def convenio(slug):
+    entidad = get_object_or_404(Entidad, slug=slug)
+    if not Informe_vinculacion.objects.all().last():
+        return False
+    informe = Informe_vinculacion.objects.all().last().convenio
+    tpl=DocxTemplate(informe)
+    carreras = []
+    for carrera in entidad.carreras.all():
+        carreras.append({
+            'nombre' : carrera.nombre
+        })
+    context = {
+        'nombre' : entidad.nombre,
+        'logo' : InlineImage(tpl, entidad.logo, height=Mm(10)),
+        'telefono' : entidad.telefono,
+        'fecha_inicio_convenio' : entidad.inicio,
+        'fecha_fin_convenio' : entidad.fin,
+        'correo' : entidad.correo,
+        'direccion' : entidad.direccion,
+        'estado' : entidad.estado,
+        'enacargado' : entidad.encargado,
+        'cargo' : entidad.cargo,
+        'descripcion' : entidad.descripcion,
+        'carreras' :  carreras,
+        'responsable' : entidad.responsable.get_full_name(),
+    }
+    jinja_env = jinja2.Environment(autoescape=True)
+    tpl.render(context, jinja_env)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment; filename=convenio {}.docx'.format(entidad.nombre)
+    tpl.save(response)
+    return response

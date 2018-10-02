@@ -41,40 +41,16 @@
                 {% endfor %}
                 <div class="form-group">
                     <label class="control-label col-md-3" >Componentes:</label>
-                    <div class="col-md-7">
-                        {{ formset.management_form }}
-                        {{ formset2.management_form }}                
+                    <div class="col-md-6">
+                        {{ formset.management_form }}    
                         <table class="table">
                             <tbody>
                                 {% for form in formset.forms %}
-                                <tr>
-                                    {% for field in form.visible_fields %}
+                                <tr id="{{ form.prefix }}-row" class="formset">
                                     <td>
-                                        {% if forloop.first %}
-                                            {% for hidden in form.hidden_fields %}
-                                                {{ hidden }}
-                                            {% endfor %}
-                                        {% endif %}
-                                        {{ field.errors.as_ul }}
-                                        {{ field }}
+                                        {{ form.nombre.errors.as_ul }}
+                                        {{ form.nombre }}
                                     </td>
-                                    <td>Obligatorio</td>
-                                    {% endfor %}
-                                </tr>
-                                {% endfor %}
-                                {% for form in formset2.forms %}
-                                <tr class="{% cycle row1 row2 %} formset_row">
-                                    {% for field in form.visible_fields %}
-                                    <td>
-                                        {% if forloop.first %}
-                                            {% for hidden in form.hidden_fields %}
-                                                {{ hidden }}
-                                            {% endfor %}
-                                        {% endif %}
-                                        {{ field.errors.as_ul }}
-                                        {{ field }}
-                                    </td>
-                                    {% endfor %}
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -108,10 +84,10 @@
     <!-- Formset -->
     <script src="{% static 'plugins/formset/jquery.formset.js' %}"></script>
     <script>
-        $('.formset_row').formset({
+        $('.formset').formset({
             addText: '<span class="btn btn-default">Agregar</span>',
             deleteText: '<span class="btn btn-danger">Eliminar</span>',
-            prefix: 'componente'
+            prefix: '{{ formset.prefix }}'
         })
     </script>
     <script>

@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from ..registros.models import Oficina, Carrera, Perfil
+from ..registros.models import Oficina, Carrera, Perfil, Estudiante, Seccion
 from ..modulos.validators import valid_extension
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -88,9 +88,12 @@ class Proyecto_vinculacion(models.Model):
 
 class Componente(models.Model):
     proyecto_vinculacion = models.ForeignKey(Proyecto_vinculacion, on_delete=models.CASCADE, related_name='componentes')
-    nombre = models.TextField(_('Nombre del Componente'))
-    introduccion = models.TextField(_('Introduccion'), blank=True, null=True)
-    observacion = models.TextField(_('Observaciones'), blank=True, null=True)
+    nombre = models.TextField(_(u'Nombre del Componente'))
+    introduccion = models.TextField(_(u'Introduccion'), blank=True, null=True)
+    observacion = models.TextField(_(u'Observaciones'), blank=True, null=True)
+    inicio = models.DateField(_(u'Fecha de inicio'), blank=True, null=True)
+    fin = models.DateField(_(u'Fecha de finalización'), blank=True, null=True)
+    seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE, related_name='componentes', blank=True, null=True)
     responsable = models.ForeignKey(User, on_delete=models.CASCADE, related_name='componentes', blank=True, null=True)
     estado = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(2)], default=2)
     slug = models.SlugField(max_length=50, blank=True)
@@ -100,28 +103,28 @@ class Componente(models.Model):
 
 class Objetivo(models.Model):
     componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='objectivos')
-    nombre = models.TextField(_('Nombre del Componente'))
+    nombre = models.TextField(_('Nombre'))
 
     def __unicode__(self):
         return '{}'.format(self.nombre)
 
 class Actividad(models.Model):
     componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='actividades')
-    nombre = models.TextField(_('Nombre de la Actividad'))
-    realizado = models.TextField(_('Realizado'))
-    meta = models.TextField(_('Meta'))
-    resultado = models.TextField(_('Resultado'))
-    cumplimiento = models.PositiveSmallIntegerField(_('% de Cumplimiento'), validators=[MinValueValidator(0), MaxValueValidator(100)])
+    nombre = models.TextField(_(u'Nombre de la Actividad'))
+    realizado = models.TextField(_(u'Realizado'))
+    meta = models.TextField(_(u'Meta'))
+    resultado = models.TextField(_(u'Resultado'))
+    cumplimiento = models.PositiveSmallIntegerField(_(u'% de Cumplimiento'), validators=[MinValueValidator(0), MaxValueValidator(100)])
 
     def __unicode__(self):
         return '{}'.format(self.nombre)
 
 class Recurso(models.Model):
-    cantidad = models.PositiveSmallIntegerField(_('Cantidad'), validators=[MinValueValidator(0)])
-    nombre = models.CharField(_('Nombre del Recurso'), max_length=50)
-    descripcion = models.TextField(_('Descripcion'))
-    unitario = models.FloatField(_('Valor Unitario'), validators=[MinValueValidator(0.00)])
-    total = models.FloatField(_('Valor Total'), validators=[MinValueValidator(0.00)])
+    cantidad = models.PositiveSmallIntegerField(_(u'Cantidad'), validators=[MinValueValidator(0)])
+    nombre = models.CharField(_(u'Nombre del Recurso'), max_length=50)
+    descripcion = models.TextField(_(u'Descripcion'))
+    unitario = models.FloatField(_(u'Valor Unitario'), validators=[MinValueValidator(0.00)])
+    total = models.FloatField(_(u'Valor Total'), validators=[MinValueValidator(0.00)])
 
     def __unicode__(self):
         return '{}'.format(self.nombre)
@@ -140,6 +143,22 @@ class Recurso_material(Recurso):
 
 class Recurso_tecnologico(Recurso):
     componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='recursos_tecnologico')
+
+class Evaluacion(models.Model):
+    componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='evaluaciones')
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE, related_name='evaluaciones')
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField()
+    hora_entrada = models.TimeField()
+    hora_salida = models.TimeField()
+    total_horas = models.PositiveSmallIntegerField()
+    puntualidad = models.FloatField(_(u'Puntualidad (1)'), validators=[MinValueValidator(0), MaxValueValidator(1)])
+    asistencia = models.FloatField(_(u'Asistencia (1)'), validators=[MinValueValidator(0), MaxValueValidator(1)])
+    actitud = models.FloatField(_(u'Actitud frente a actividades (2)'), validators=[MinValueValidator(0), MaxValueValidator(2)])
+    cumplimiento = models.FloatField(_(u'Cumplimiento, Objetivos (2)'), validators=[MinValueValidator(0), MaxValueValidator(2)])
+    aplicacion = models.FloatField(_(u'Aplicacion de habilidades y destreza (2)'), validators=[MinValueValidator(0), MaxValueValidator(2)])
+    satisfaccion = models.FloatField(_(u'Nivel de satisfaccion (2)'), validators=[MinValueValidator(0), MaxValueValidator(2)])
+    promedio = models.FloatField(_(u'Promedio'), validators=[MinValueValidator(0), MaxValueValidator(10)])
 
 def generate_evidencia_proyecto(instance, filename):
     return 'proyectos/{0}/{1}/{2}'.format(instance.componente.proyecto_vinculacion.nombre, instance.componente.nombre, filename)

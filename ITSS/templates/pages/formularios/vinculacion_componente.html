@@ -2,14 +2,11 @@
 {% load staticfiles %}
 
 {% block style %}
-    {{ block.super }}
-    <!-- bootstrap-daterangepicker -->
-    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
-    <!-- Select2 -->
-    <link href="{% static 'vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
-    <!-- MultiSelect -->
-    <link href="{% static 'plugins/multiSelect/css/multi-select.css' %}" rel="stylesheet">
-
+{{ block.super }}
+<!-- Select2 -->
+<link href="{% static 'vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
+<!-- bootstrap-daterangepicker -->
+<link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -27,82 +24,369 @@
             <br/>
             <form id="demo-form2" class="form-horizontal form-label-left" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form2.non_field_errors }}
-                {% for field in form %}
-                {{ field.errors }}
-                    <div class="form-group">
-                        <label class="control-label col-md-2" >{{ field.label_tag }}</label>
-                        <div class="col-md-9">
-                            {{ field }}
-                            {% if field.help_text %}
-                                <p class="help">{{ field.help_text|safe }}</p>
-                            {% endif %}
+
+                <div class="">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_title">
+                                <h2 style="width: 93%;"> Información del Proyecto</h2>
+                            <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                {{ form2.non_field_errors }}
+                                {% for field in form %}
+                                {{ field.errors }}
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2" >{{ field.label_tag }}</label>
+                                        <div class="col-md-9">
+                                            {{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help">{{ field.help_text|safe }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
-                {% endfor %}
+                </div>
+                
+                <div class="">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_title">
+                                <h2 style="width: 93%;"> Datos del Componente</h2>
+                            <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                {% for field in form2 %}
+                                {{ field.errors }}
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2" >{{ field.label_tag }}</label>
+                                        <div class="col-md-9">
+                                            {{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help">{{ field.help_text|safe }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" >Objetivos:</label>
+                                    <div class="col-md-10">
+                                        {{ formset.management_form }}            
+                                        <table class="table">
+                                            <tbody>
+                                                {% for form in formset.forms %}
+                                                <tr class="{% cycle row1 row2 %} formset_row">
+                                                    {% for field in form.visible_fields %}
+                                                    <td>
+                                                        {% if forloop.first %}
+                                                            {% for hidden in form.hidden_fields %}
+                                                                {{ hidden }}
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                        {{ field.errors.as_ul }}
+                                                        {{ field }}
+                                                        {% if field.help_text %}
+                                                            <p class="help">{{ field.help_text|safe }}</p>
+                                                        {% endif %}
+                                                    </td>
+                                                    {% endfor %}
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_title">
+                                <h2 style="width: 93%;"> <strong> Actividad </strong></h2>
+                            <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                {{ formset2.management_form }}
+                                <div>
+                                    {% for form in formset2.forms %}
+                                        <div id="{{ formset2.prefix }}-row" class="formset2">
+                                            {% for field in form.visible_fields %}
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2" >{{ field.label_tag }}</label>
+                                                <div class="col-md-9">
+                                                    {% if forloop.first %}
+                                                    {% for hidden in form.hidden_fields %}
+                                                        {{ hidden }}
+                                                    {% endfor %}
+                                                    {% endif %}
+                                                    {{ field.errors.as_ul }}
+                                                    {{ field }}
+                                                    {% if field.help_text %}
+                                                        <p class="help">{{ field.help_text|safe }}</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                            <div class="x_title"></div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_title">
+                                <h2 style="width: 93%;"> <strong> Recurso Humano </strong></h2>
+                            <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                {{ formset3.management_form }}
+                                {% for form in formset3.forms %}
+                                    <div id="{{ formset3.prefix }}-row" class="formset3">
+                                        {% for field in form.visible_fields %}
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" >{{ field.label_tag }}</label>
+                                            <div class="col-md-9">
+                                                {% if forloop.first %}
+                                                {% for hidden in form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                                {% endif %}
+                                                {{ field.errors.as_ul }}
+                                                {{ field }}
+                                                {% if field.help_text %}
+                                                    <p class="help">{{ field.help_text|safe }}</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                        <div class="x_title"></div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <br>
-                {% for field in form2 %}
-                {{ field.errors }}
-                    <div class="form-group">
-                        <label class="control-label col-md-2" >{{ field.label_tag }}</label>
-                        <div class="col-md-9">
-                            {{ field }}
-                            {% if field.help_text %}
-                                <p class="help">{{ field.help_text|safe }}</p>
-                            {% endif %}
+                <div class="">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_title">
+                                <h2 style="width: 93%;"> <strong> Recurso Financiero </strong></h2>
+                            <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                {{ formset4.management_form }}
+                                {% for form in formset4.forms %}
+                                    <div id="{{ formset4.prefix }}-row" class="formset4">
+                                        {% for field in form.visible_fields %}
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" >{{ field.label_tag }}</label>
+                                            <div class="col-md-9">
+                                                {% if forloop.first %}
+                                                {% for hidden in form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                                {% endif %}
+                                                {{ field.errors.as_ul }}
+                                                {{ field }}
+                                                {% if field.help_text %}
+                                                    <p class="help">{{ field.help_text|safe }}</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                        <div class="x_title"></div>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
-                {% endfor %}
-                <div class="form-group">
-                    <label class="control-label col-md-2" >Objetivos:</label>
-                    <div class="col-md-10">
-                        {{ formset.management_form }}            
-                        <table class="table">
-                            <tbody>
-                                {% for form in formset.forms %}
-                                <tr class="{% cycle row1 row2 %} formset_row">
-                                    {% for field in form.visible_fields %}
-                                    <td>
-                                        {% if forloop.first %}
-                                            {% for hidden in form.hidden_fields %}
-                                                {{ hidden }}
-                                            {% endfor %}
-                                        {% endif %}
-                                        {{ field.errors.as_ul }}
-                                        {{ field }}
-                                    </td>
-                                    {% endfor %}
-                                </tr>
+                </div>
+                <br>
+                <div class="">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_title">
+                                <h2 style="width: 93%;"> <strong> Recurso Material </strong></h2>
+                            <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                {{ formset5.management_form }}
+                                {% for form in formset5.forms %}
+                                    <div id="{{ formset5.prefix }}-row" class="formset5">
+                                        {% for field in form.visible_fields %}
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" >{{ field.label_tag }}</label>
+                                            <div class="col-md-9">
+                                                {% if forloop.first %}
+                                                {% for hidden in form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                                {% endif %}
+                                                {{ field.errors.as_ul }}
+                                                {{ field }}
+                                                {% if field.help_text %}
+                                                    <p class="help">{{ field.help_text|safe }}</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                        <div class="x_title"></div>
+                                    </div>
                                 {% endfor %}
-                            </tbody>
-                        </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-md-2" >Actividad:</label>
-                    <div class="col-md-10">
-                        {{ formset2.management_form }} 
-                        <table class="table">
-                            <tbody>
-                                {% for form in formset2.forms %}
-                                <tr class="{% cycle row1 row2 %} formset2_row">
-                                    {% for field in form.visible_fields %}
-                                    <th>
-                                        {% if forloop.first %}
-                                            {% for hidden in form.hidden_fields %}
-                                                {{ hidden }}
-                                            {% endfor %}
-                                        {% endif %}
-                                        {{ field.errors.as_ul }}
-                                        {{ field }}
-                                    </tn>
-                                    {% endfor %}
-                                </tr>
+                <br>
+                <div class="">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_title">
+                                <h2 style="width: 93%;"> <strong> Recurso Tecnológico </strong></h2>
+                            <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                {{ formset6.management_form }}
+                                {% for form in formset6.forms %}
+                                    <div id="{{ formset6.prefix }}-row" class="formset6">
+                                        {% for field in form.visible_fields %}
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" >{{ field.label_tag }}</label>
+                                            <div class="col-md-9">
+                                                {% if forloop.first %}
+                                                {% for hidden in form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                                {% endif %}
+                                                {{ field.errors.as_ul }}
+                                                {{ field }}
+                                                {% if field.help_text %}
+                                                    <p class="help">{{ field.help_text|safe }}</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                        <div class="x_title"></div>
+                                    </div>
                                 {% endfor %}
-                            </tbody>
-                        </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <br>
+                <div class="">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_title">
+                                <h2 style="width: 93%;"> <strong> Evaluación </strong></h2>
+                            <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                {{ formset7.management_form }}  
+                                {% for form in formset7.forms %}
+                                    <div id="{{ formset7.prefix }}-row" class="formset7">
+                                        {% for field in form.visible_fields %}
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3" >{{ field.label_tag }}</label>
+                                            <div class="col-md-7">
+                                                {% if forloop.first %}
+                                                {% for hidden in form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                                {% endif %}
+                                                {{ field.errors.as_ul }}
+                                                {{ field }}
+                                                {% if field.help_text %}
+                                                    <p class="help">{{ field.help_text|safe }}</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                        <div class="x_title"></div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+<!--
+                <div class="">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_title">
+                                <h2 style="width: 93%;"> <strong> Resumen </strong></h2>
+                            <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3" >Recurso Humano</label>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="humano" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3" >Recurso Financiero</label>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="financiero" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3" >Recurso Material</label>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="material" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3" >Recurso Tecnologico</label>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="tecnologico" readonly>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" ></label>
+                                    <div class="col-md-8">
+                                        <table class="table table-hover table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre:</th>
+                                                <th width="20%">Total de Notas</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="estudiantes">
+                                            <tr>
+                                                <td>Danny Romero</td>
+                                                <td>12</td>
+                                            </tr>
+                                        </tbody>
+                                        </table>    
+                                    </div>
+                                </div>          
+                            </div>
+                        </div>
+                    </div>
+                </div>
+-->
                 <div class="ln_solid"></div>
                 <div class="form-group">
                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -127,6 +411,20 @@
     <script>
         $('.search_select').select2();
     </script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{% static 'vendors/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <script>
+            $(function(){
+                $('.fecha').daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    locale: {
+                        format: 'DD-MM-YYYY'
+                    },
+                })
+            });
+        </script>
     <!-- Formset -->
     <script src="{% static 'plugins/formset/jquery.formset.js' %}"></script>
     <script>
@@ -136,14 +434,73 @@
                 deleteText: '<span class="btn btn-danger">Eliminar</span>',
                 prefix: 'objetivo'
             })
-            $('.formset2_row').formset({
+            $('.formset2').formset({
                 addText: '<span class="btn btn-default">Agregar</span>',
                 deleteText: '<span class="btn btn-danger">Eliminar</span>',
-                prefix: 'actividad',
+                prefix: '{{ formset2.prefix }}',
+            })
+            $('.formset3').formset({
+                addText: '<span class="btn btn-default">Agregar</span>',
+                deleteText: '<span class="btn btn-danger">Eliminar</span>',
+                prefix: '{{ formset3.prefix }}',
+            })
+            $('.formset4').formset({
+                addText: '<span class="btn btn-default">Agregar</span>',
+                deleteText: '<span class="btn btn-danger">Eliminar</span>',
+                prefix: '{{ formset4.prefix }}',
+            })
+            $('.formset5').formset({
+                addText: '<span class="btn btn-default">Agregar</span>',
+                deleteText: '<span class="btn btn-danger">Eliminar</span>',
+                prefix: '{{ formset5.prefix }}',
+            })
+            $('.formset6').formset({
+                addText: '<span class="btn btn-default">Agregar</span>',
+                deleteText: '<span class="btn btn-danger">Eliminar</span>',
+                prefix: '{{ formset6.prefix }}',
+            })
+            $('.formset7').formset({
+                addText: '<span class="btn btn-default">Agregar</span>',
+                deleteText: '<span class="btn btn-danger">Eliminar</span>',
+                prefix: '{{ formset7.prefix }}',
             })
         })
     </script>
+    <!-- Calcular Datos -->
     <script>
+        function total(id, campo){
+            var base = id.slice(0, 12)
+            var num = id.slice(12, -(campo.length+1));
+            var campo = id.substr(12+num.length+1)
+            var unitario = $("#"+base+num+"-unitario").val()
+            var cantidad = $("#"+base+num+"-cantidad").val()
+            if (unitario != "" && cantidad != ""){
+                $("#"+base+num+"-total").val((unitario*cantidad).toFixed(2))
+            } else {
+                $("$"+base+num+"-total").val('')
+            }
+        }
+        function asistencia(id, campo){
+            var base = id.slice(0, 15)
+            var num = id.slice(15, -(campo.length+1))
+            var campo = $('#'+base+num+"-"+campo).val()
+            if (campo != ""){
+                var punt = parseFloat($('#'+base+num+"-puntualidad").val())
+                var asis = parseInt($('#'+base+num+"-asistencia").val())
+                var act = parseInt($('#'+base+num+"-actitud").val())
+                var cump = parseInt($('#'+base+num+"-cumplimiento").val())
+                var hab = parseInt($('#'+base+num+"-aplicacion").val())
+                var sat = parseInt($('#'+base+num+"-satisfaccion").val())
+                //document.getElementById(base+num+"-nota").value = 0//
+
+                $('#'+base+num+"-promedio").val((punt+asis+act+cump+hab+sat).toFixed(1))
+            } else {
+                $('#'+base+num+"-promedio").val('')
+            } 
+        }
+        $(function(){
+            $(':input[type=number]').on('mousewheel',function(e){ $(this).blur(); });
+        });
     </script>
 
 {% endblock %}

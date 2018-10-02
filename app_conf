@@ -1,0 +1,12 @@
+ITSS/proyecto/settings:
+
+## Email
+EMAIL = 'Cambiar a la direccion de donde se van a enviar los mensajes' # Posiblemente deba configurar su administrador de correos (Google, Hotmail, etc)
+EMAIL_HOST = 'direccion host si usa otro correo que no es gmail'
+EMAIL_HOST_PASSWORD = 'colocar la clave de la cuenta'
+
+## Respaldo
+PATH_BACKUP = 'Direccion donde se guardaran los respaldos'
+
+## Cron 
+PATH_BACKUP = 'Direccion donde se guardara los registros de actualizacion'

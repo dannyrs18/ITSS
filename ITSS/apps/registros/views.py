@@ -5,13 +5,18 @@ from django.contrib.auth.decorators import login_required, permission_required, 
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, Http404, FileResponse
+from django.contrib.auth import update_session_auth_hash
 from django.db import transaction
 from .forms_create import UserForm
-from .forms import EstudianteForm
+from .forms_update import PasswordForm
 from ..modulos import web_services as _, cron_jobs
-from ..modulos.reportes import practicas
-from .models import Estudiante, Docente, Carrera, Seccion
+from ..modulos.reportes import reporte_practicas
+from .models import Estudiante, Docente, Carrera, Seccion, Perfil
 from ..vinculacion.models import Entidad
+from ..practicas.models import Empresa
+from django.contrib.auth.models import Permission
+
+from django.contrib.auth.forms import PasswordChangeForm
 
 @login_required
 @permission_required('auth.add_user') #raise_exception=True
@@ -19,7 +24,7 @@ from ..vinculacion.models import Entidad
 def crear_usuario(request):
     form = UserForm(request.user, request.POST or None, request.FILES or None)
     if form.is_valid():
-        form.save(request.user)
+        form.save()
         messages.success(request, u'El usuario se ha creado exitosamente!.')
         return redirect('index')
     elif request.POST:
@@ -30,6 +35,54 @@ def crear_usuario(request):
     }
     return render(request, 'formularios/usuario.html', context)
 
+@login_required
+@permission_required('auth.change_user') 
+@transaction.atomic
+def modificar_clave(request):
+    form = PasswordForm(request.user, request.POST or None)
+    if form.is_valid():
+        user = form.save()
+        update_session_auth_hash(request, user)
+        messages.success(request, 'La clave ha sido actualizada exitosamentes')
+        return redirect('index')
+    elif request.POST:
+        messages.error(request, 'Valores ingresados incorrectos')
+    context = {
+        'form': form
+    }
+    return render(request, 'formulario.html', context)
+
+@login_required
+@permission_required('auth.change_user') 
+@transaction.atomic
+def modificar_estado(request, slug):
+    usuario = get_object_or_404(Perfil, slug=slug).user
+    if usuario.is_active:
+        usuario.is_active=False
+        usuario.save()
+        messages.success(request, 'Se ha dado al usuario {} de baja!.'.format(usuario.get_full_name()))
+    else:
+        if Permission.objects.get(codename='admin_prac').user_set.filter(id=usuario.id).exists():
+            for value in Permission.objects.get(codename='admin_prac').user_set.filter(is_active=True):
+                value.is_active=False
+                value.save()
+        elif Permission.objects.get(codename='admin_vinc').user_set.filter(id=usuario.id).exists():
+            for value in Permission.objects.get(codename='admin_vinc').user_set.filter(is_active=True):
+                value.is_active=False
+                value.save()
+        elif Permission.objects.get(codename='resp_prac').user_set.filter(id=usuario.id).exists():
+            for value in Permission.objects.get(codename='resp_prac').user_set.filter(perfil__carrera=usuario.perfil.carrera).exclude(id=usuario.id):
+                value.is_active=False
+                value.save()
+        elif Permission.objects.get(codename='resp_vinc').user_set.filter(id=usuario.id).exists():
+            for value in Permission.objects.get(codename='resp_vinc').user_set.filter(perfil__carrera=usuario.perfil.carrera).exclude(id=usuario.id):
+                value.is_active=False
+                value.save()
+        usuario.is_active=True
+        usuario.save()
+        messages.success(request, 'Se ha activado la cuenta de {} exitosamente'.format(usuario.get_full_name()))
+    return redirect('registro:tabla_usuarios')
+
 # Web Services
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -39,10 +92,27 @@ def tabla_registros(request):
         'estudiantes': Estudiante.objects.all(),
         'docentes' : Docente.objects.all(),
         'carreras' : Carrera.objects.all(),
-        'seccion' : Seccion.objects.all()
+        'secciones' : Seccion.objects.all()
     }
     return render(request, 'tablas/web_services.html', context)
 
+@login_required
+@permission_required('registros.view_perfil')
+def tabla_usuarios(request):
+    from django.contrib.auth.models import User, Permission
+    from django.db.models import Q
+    usuarios = []
+    if request.user.is_superuser:        
+        usuarios = User.objects.filter(Q(user_permissions=Permission.objects.get(codename='admin_prac'))|Q(user_permissions=Permission.objects.get(codename='admin_vinc'))).distinct()
+    elif request.user.has_perm('registros.admin_prac'):
+        usuarios = User.objects.filter(Q(user_permissions=Permission.objects.get(codename='resp_prac'))).distinct()
+    elif request.user.has_perm('registros.admin_vinc'):
+        usuarios = User.objects.filter(Q(user_permissions=Permission.objects.get(codename='resp_vinc'))).distinct()
+    context = {
+        'usuarios': usuarios
+    }
+    return render(request, 'tablas/usuarios.html', context)
+    
 @login_required
 @permission_required('registros.view_estudiante')
 def tabla_estudiantes(request):
@@ -99,8 +169,8 @@ def estudiantes():
 def docentes():
     docentes = _.get_data(_._listadoDocentesPeriodoActual)
     for docente in docentes:
-        if not Docentes.objects.filter(cedula=docente['cedula']).exists():
-            instance = Docentes()
+        if not Docente.objects.filter(cedula=docente['cedula']).exists():
+            instance = Docente()
             instance.nombres = docente['nombres']
             instance.apellidos = docente['apellidos']
             instance.cedula = docente['cedula']
@@ -111,23 +181,10 @@ def secciones():
     secciones = _.get_data(_._secciones)
     for seccion in secciones:
         if not Seccion.objects.filter(identificador=seccion['identificador']).exists():
-            seccion = Seccion()
-            seccion.identificador = seccion['identificador']
-            seccion.nombre = seccion['nombre']
-            seccion.save()
-
-@login_required
-@permission_required('registros.reporte_estudiante')
-def reporte_estudiante(request):
-    form = EstudianteForm(request.user, request.POST or None, request.FILES or None)
-    if form.is_valid():
-        response = practicas.lienzo()
-        return response
-    context = {
-        'form' : form,
-        'title' : 'REPORTE ESTUDIANTE'
-    }
-    return render(request, 'formulario.html', context)
+            instance = Seccion()
+            instance.identificador = seccion['identificador']
+            instance.nombre = seccion['nombre']
+            instance.save()
 
 @login_required
 def ajax_docente(request):
@@ -164,6 +221,31 @@ def ajax_entidad(request):
         return JsonResponse(context)
     raise Http404
 
+@login_required
+def ajax_empresa_estudiante(request):
+    if request.is_ajax():
+        empresas = Empresa.objects.filter(carreras=request.POST.get('pk'))
+        estudiantes = Estudiante.objects.filter(carrera=request.POST.get('pk'))
+        context = {
+            'empresas' : [{'id':empresa.id, 'nombre':empresa.__unicode__()} for empresa in empresas],
+            'estudiantes': [{'id':estudiante.id, 'nombre':estudiante.__unicode__()} for estudiante in estudiantes]
+        }
+        return JsonResponse(context)
+    raise Http404
+
+@login_required
+def ajax_evidencia_estudiante(request):
+    if request.is_ajax():
+        estudiante = get_object_or_404(Estudiante, id=request.POST.get('id'))
+        data = []
+        for practicas in estudiante.registros_practicas.all():
+            data.append({
+                'nombre' : practicas.empresa.nombre,
+                'imagen' : [evidencia.imagen.url for evidencia in practicas.evidencias_registro_practicas.all()],
+            })
+        return JsonResponse(data, safe=False)
+    raise Http404
+
 ### Funciones que solo sirven en desarrollo
 @login_required
 def flush_permisos(request):
@@ -178,8 +260,6 @@ def flush_permisos(request):
             user.user_permissions = permisos.administrador_vinculacion()
         elif user.has_perm('registros.resp_vinc'):
             user.user_permissions = permisos.responsable_vinculacion()
-        else:
-            raise Http404
     return redirect('/')
 
 def update(): # Funcion utilzada ṕara las tareas de actualizacion

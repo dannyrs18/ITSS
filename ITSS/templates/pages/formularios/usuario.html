@@ -37,7 +37,7 @@
                 <div class="form-group">
                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                     <a href="{% url 'index' %}" class="btn btn-primary" type="button">Cancel</a>
-                    <input type="submit" class="btn btn-success" value="Guardar">
+                    <input type="submit" id="send" class="btn btn-success" value="Guardar"/>
                 </div>
                 </div>
 
@@ -65,7 +65,6 @@
                     type: 'post',
                     data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'pk':$('#id_docente').val()},
                     success: function(data){
-                        console.log(data.nombres)          
                         $('#id_first_name').val(data.nombres)
                         $('#id_last_name').val(data.apellidos)
                         $('#id_cedula').val(data.cedula)

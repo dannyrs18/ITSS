@@ -41,9 +41,6 @@
                     <th>Apellidos</th>
                     <th>Cedula</th>
                     <th>Carrera</th>
-                    <th>Paralelo</th>
-                    <th>Ciclo</th>
-                    <th>Seccion</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -53,9 +50,6 @@
                     <td>{{ estudiante.apellidos }}</td>
                     <td>{{ estudiante.cedula }}</td>
                     <td>{{ estudiante.carrera }}</td>
-                    <td>{{ estudiante.paralelo }}</td>
-                    <td>{{ estudiante.ciclo }}</td>
-                    <td>{{ estudiante.seccion }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -182,14 +176,9 @@
     <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
     <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
     <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
-    <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
-    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
-    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
     <script>
-        $(document).ready(function(){
-            $('#datatable').DataTable();
-            $('#datatable2').DataTable();
-            $('#datatable3').DataTable();
-        })
+        $('#datatable').DataTable();
+        $('#datatable2').DataTable();
+        $('#datatable3').DataTable();
     </script>
 {% endblock %}

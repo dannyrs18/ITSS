@@ -86,7 +86,7 @@
                             {% if perms.auth.add_user %}
                             <li><a href="{% url 'registro:crear_usuario' %}">Nuevo</a></li>
                             {% endif %}
-                            <li><a href="#">Buscar</a></li>
+                            <li><a href="{% url 'registro:tabla_usuarios' %}">Buscar</a></li>
                         </ul>
                     </li>
                     {% endif %}
@@ -109,12 +109,12 @@
                             {% if perms.vinculacion.add_entidad %}
                             <li><a href="{% url 'vinculacion:crear_entidad' %}">Nuevo</a></li>
                             {% endif %}
-                            <li><a href="#">Buscar</a></li>
+                            <li><a href="{% url 'vinculacion:tabla_entidad' %}">Buscar</a></li>
                         </ul>
                     </li>
                     {% endif %}
                     {% if perms.vinculacion.view_actividad_vinculacion %}
-                    <li><a><i class="fa fa-list-alt"></i> Actividades <span class="fa fa-chevron-down"></span></a>
+                    <li><a><i class="fa fa-list-alt"></i> <strong>Actividades</strong> <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             {% if perms.vinculacion.add_actividad_vinculacion %}
                             <li><a href="{% url 'vinculacion:crear_actividad' %}">Nuevo</a></li>
@@ -123,7 +123,7 @@
                     </li>
                     {% endif %}
                     {% if perms.vinculacion.view_proyecto_vinculacion %}
-                    <li><a><i class="fa fa-list-alt"></i> Proyectos <span class="fa fa-chevron-down"></span></a>
+                    <li><a><i class="fa fa-list-alt"></i> <strong>Proyectos</strong> <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             {% if perms.vinculacion.add_proyecto_vinculacion %}
                             <li><a href="{% url 'vinculacion:crear_proyecto' %}">Nuevo</a></li>
@@ -148,7 +148,7 @@
                     <li><a><i class="fa fa-file-pdf-o"></i> <strong>Reportes</strong> <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             {% if perms.registros.reporte_estudiante %}
-                            <li><a href="{% url 'registro:reporte_estudiante' %}">Estudiante</a></li>
+                            <li><a href="{% if perms.registros.admin_prac %}{% url 'practicas:reporte_estudiante' %}{% elif perms.registros.admin_vinc %}{% endif %}">Estudiante</a></li>
                             {% endif %}
                             {% if perms.practicas.reporte_empresa %}
                             <li><a href="#"><i class="fa fa-download"> </i>Empresas</i></a></li>
@@ -185,6 +185,9 @@
                         <span class="fa fa-angle-down" style="color: white"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        {% if perms.auth.change_user %}
+                        <li><a href="{% url 'registro:modificar_clave' %}"><i class="fa fa-bars pull-right"></i>Cambiar clave</a></li>
+                        {% endif %}
                         <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesión</a></li>
                     </ul>
                 </li>
@@ -222,7 +225,6 @@
     <script src="{% static 'vendors/nprogress/nprogress.js' %}"></script>
     <!-- jQuery custom content scroller -->
     <script src="{% static 'vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js' %}"></script>
-
     <!-- Custom Theme Scripts -->
     <script src="{% static 'build/js/custom.min.js' %}"></script>
     {% endblock %}
@@ -231,9 +233,9 @@
     <script>
         "{% mess messages as value %}"
         if ('{{ value.title }}' == 'success'){
-            iziToast.success({timeout: 5000, icon: 'fa fa-thumbs-up', title: 'Exito', message: '{{ value.message }}'});
+            iziToast.success({timeout: 5000, image: '{% static "images/logo3.png" %}', title: 'Exito', message: '{{ value.message }}'});
         }else if ('{{ value.title }}' == 'error'){
-            iziToast.error({timeout: 5000, icon: 'fa fa-thumbs-down', title: 'Error', message: '{{ value.message }}'});
+            iziToast.error({timeout: 5000, image: '{% static "images/logo3.png" %}', title: 'Error', message: '{{ value.message }}'});
         }else if ('{{ value.title }}' == 'warning'){
             iziToast.info({color: 'yellow', position:'bottomLeft', timeout: 5000, icon: 'fa fa-comment', title: 'Informacion', message: '{{ value.message }}'});
         }

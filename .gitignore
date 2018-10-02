@@ -114,5 +114,8 @@ ITSS/apps/practicas/migrations/0*
 ITSS/apps/vinculacion/migrations/0*
 ITSS/apps/registros/migrations/0*
 
-# Archivo estatico
+# Carpeta estatica
 ITSS/static/
+
+# Carpeta backups
+ITSS/backups

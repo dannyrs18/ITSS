@@ -15,7 +15,7 @@ from django.db import models
 
 class Carrera(models.Model):
     codigo = models.CharField(_(u'Codigo'), max_length=10)
-    nombre = models.CharField(_(u'Nombre'), max_length=70)
+    nombre = models.TextField(_(u'Nombre'))
 
     class Meta:
         permissions = [
@@ -47,9 +47,9 @@ class Estudiante(models.Model):
         return '{} {}'.format(self.nombres, self.apellidos)
 
 class Docente(models.Model):
-    nombres = models.CharField(_(u'Nombres'), max_length=50)
-    apellidos = models.CharField(_(u'Apellidos'), max_length=50)
-    telefono = models.CharField(_(u'Telefono'), max_length=15)
+    nombres = models.TextField(_(u'Nombres'))
+    apellidos = models.TextField(_(u'Apellidos'))
+    telefono = models.TextField(_(u'Telefono'))
     cedula = models.CharField(_(u'Cedula'), max_length=15)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -64,19 +64,19 @@ class Docente(models.Model):
 
 class Seccion(models.Model):
     identificador = models.CharField(max_length=4)
-    nombre = models.CharField(max_length=50)
+    nombre = models.TextField(_(u'Nombre'))
 
     def __unicode__(self):
-        return '{}'.format(self.identifiador)
+        return '{}'.format(self.identificador)
 
 class Oficina(models.Model): # Clase abstracta que usa practicas y vinculacion desde registros
     nombre = models.CharField(_(u'Nombre'), unique=True, max_length=100)
     logo = models.ImageField(_(u'Logo de la Empresa'), upload_to='logos', blank=True, null=True)
-    telefono = models.CharField(_(u'Telefono'), max_length=15)
+    telefono = models.CharField(_(u'Teléfono'), max_length=15)
     inicio = models.DateField(_(u'Inicio del Convenio'))
     fin = models.DateField(_(u'Finalizacion del Convenio'))
     correo = models.EmailField(_(u'Correo'))
-    direccion = models.TextField(_(u'Direccion'))
+    direccion = models.TextField(_(u'Dirección'))
     estado = models.BooleanField(_(u'Estado'), default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

@@ -38,7 +38,7 @@
                         <th>Correo</th>
                         <th>Iniciado por</th>
                         <th>Fin. Convenio</th>
-                        <th>Opt.</th>
+                        <th width="11%">Opt.</th>
                     </tr>
                     </thead>
                 
@@ -53,10 +53,13 @@
                         <td>{{ empresa.responsable.get_full_name }}</td>
                         <td>{{ empresa.fin }}</td>
                         <td>
-                            {% if perms.practicas.reporte_convenio %}
+                            {% if perms.practicas.reporte_convenio_practicas %}
                             <a href="{% url 'practicas:reporte_convenio' empresa.slug %}" class="btn btn-default btn-xs"><i class="fa  fa-file-word-o"></i></a>
                             {% endif %}
                             <button class="btn btn-default btn-xs" onclick="evidencia('{{ empresa.slug }}');"><i class="fa fa-eye"></i></button>
+                            {% if perms.practicas.change_empresa %}
+                            <a href="{% url 'practicas:actualizar_empresa' empresa.slug %}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
@@ -86,9 +89,6 @@
     <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
     <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
     <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
-    <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
-    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
-    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
     <!-- Uikit -->
     <script src="{% static 'plugins/uikit/js/uikit.js' %}"></script>
     <script src="{% static 'plugins/uikit/js/uikit-icons.js' %}"></script>

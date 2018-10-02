@@ -7,7 +7,13 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django import forms
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
-from ..registros.models import Carrera
+from ..registros.models import Carrera, Estudiante
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+class TimeInput(forms.DateInput):
+    input_type = 'time'
 
 class ConvenioForm(forms.ModelForm):
     class Meta:
@@ -39,19 +45,30 @@ class EntidadForm(forms.ModelForm):
             if not key == 'carreras':
                 self.fields[key].widget.attrs.update({'class' : 'form-control'})
         self.fields['descripcion'].widget.attrs.update({'rows':5})
-        self.fields['inicio'].widget.attrs.update({'class':'form-control fecha1'})
-        self.fields['fin'].widget.attrs.update({'class':'form-control fecha2'})
+        self.fields['inicio'].widget.attrs.update({'class':'form-control fecha'})
+        self.fields['fin'].widget.attrs.update({'class':'form-control fecha'})
         self.fields['direccion'].widget.attrs.update({'rows':3})
         if user.has_perm('registros.resp_vinc'):
             del self.fields['carreras']
 
+    def clean(self, *args, **kwargs):
+        cleaned_data = super(EntidadForm, self).clean(*args, **kwargs)
+        if cleaned_data.get('inicio') >= cleaned_data.get('fin'):
+            self.add_error('fin', u'La fecha de finalización debe ser mayor a la de inicio')
+
     def save(self, user, commit=True):
-        data = super(EntidadForm, self).save()
-        data.responsable=user
+        from django.utils.timezone import localtime, now
+        
+        instance = super(EntidadForm, self).save()
+        instance.responsable=user
+        if instance.fin > localtime(now()).date():
+            instance.estado=True
         if user.has_perm('registros.resp_vinc'):
-            data.carreras.add(user.perfil.carrera)
-        data.save()
-        return data
+            instance.carreras.add(user.perfil.carrera)
+        aleatorio = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(15)])
+        instance.slug = '{0}{1}'.format(instance.id, aleatorio)
+        instance.save()
+        return instance
 
 class EvidenciaEntidadForm(forms.Form):
     imagenes = forms.ImageField(label=_(u'Evidencia Fotografica'), widget=forms.FileInput(attrs={'class':"form-control", 'multiple': True}), required=True)
@@ -111,16 +128,7 @@ class ComponenteForm(forms.ModelForm):
         instance.save()
         return instance
 
-class RequiredFormSet(BaseInlineFormSet):
-    def __init__(self, *args, **kwargs):
-        super(RequiredFormSet, self).__init__(*args, **kwargs)
-        for form in self.forms:
-            form.empty_permitted = False
-
-ComponenteFormSet = inlineformset_factory(models.Proyecto_vinculacion, models.Componente,
-                                            form=ComponenteForm, formset=RequiredFormSet, can_delete=False, extra=3)
-ComponenteFormSet2 = inlineformset_factory(models.Proyecto_vinculacion, models.Componente,
-                                            form=ComponenteForm, extra=1)
+ComponenteFormSet = inlineformset_factory(models.Proyecto_vinculacion, models.Componente, form=ComponenteForm, extra=0, min_num=3)
 
 class ObjetivoForm(forms.ModelForm):
     class Meta:
@@ -141,7 +149,90 @@ class ActividadForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ActividadForm, self).__init__(*args, **kwargs)
         for key in self.fields:
-            self.fields[key].widget.attrs.update({'class' : 'form-control'})
-        self.fields['nombre'].widget.attrs.update({'rows':2})
+            self.fields[key].widget.attrs.update({'class' : 'form-control', 'rows':2})
 
 ActividadFormSet = inlineformset_factory(models.Componente, models.Actividad, form=ActividadForm, extra=1)
+
+class RecursoHumanoForm(forms.ModelForm):
+    class Meta:
+        model = models.Recurso_humano
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(RecursoHumanoForm, self).__init__(*args, **kwargs)
+        self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows':2})
+        self.fields['descripcion'].widget.attrs.update({'class' : 'form-control', 'rows':2})
+        self.fields['cantidad'].widget.attrs.update({'class' : 'form-control', 'onkeyup':"total(this.id, 'cantidad');"})
+        self.fields['unitario'].widget.attrs.update({'class' : 'form-control', 'onkeyup':"total(this.id, 'cantidad');"})
+        self.fields['total'].widget.attrs.update({'class' : 'form-control', 'readonly': "readonly"})
+
+RecursoHumanoFormSet = inlineformset_factory(models.Componente, models.Recurso_humano, form=RecursoHumanoForm, extra=1)
+
+class RecursoFinancieroForm(forms.ModelForm):
+    class Meta:
+        model = models.Recurso_financiero
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(RecursoFinancieroForm, self).__init__(*args, **kwargs)
+        self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows':2})
+        self.fields['descripcion'].widget.attrs.update({'class' : 'form-control', 'rows':2})
+        self.fields['cantidad'].widget.attrs.update({'class' : 'form-control', 'onkeyup':"total(this.id, 'cantidad');"})
+        self.fields['unitario'].widget.attrs.update({'class' : 'form-control', 'onkeyup':"total(this.id, 'cantidad');"})
+        self.fields['total'].widget.attrs.update({'class' : 'form-control', 'readonly': "readonly"})
+
+RecursoFinancieroFormSet = inlineformset_factory(models.Componente, models.Recurso_financiero, form=RecursoFinancieroForm, extra=1)
+
+class RecursoMaterialForm(forms.ModelForm):
+    class Meta:
+        model = models.Recurso_material
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(RecursoMaterialForm, self).__init__(*args, **kwargs)
+        self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows':2})
+        self.fields['descripcion'].widget.attrs.update({'class' : 'form-control', 'rows':2})
+        self.fields['cantidad'].widget.attrs.update({'class' : 'form-control', 'onkeyup':"total(this.id, 'cantidad');"})
+        self.fields['unitario'].widget.attrs.update({'class' : 'form-control', 'onkeyup':"total(this.id, 'cantidad');"})
+        self.fields['total'].widget.attrs.update({'class' : 'form-control', 'readonly': "readonly"})
+
+RecursoMaterialFormSet = inlineformset_factory(models.Componente, models.Recurso_material, form=RecursoMaterialForm, extra=1)
+
+class RecursoTecnologicoForm(forms.ModelForm):
+    class Meta:
+        model = models.Recurso_tecnologico
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(RecursoTecnologicoForm, self).__init__(*args, **kwargs)
+        self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows':2})
+        self.fields['descripcion'].widget.attrs.update({'class' : 'form-control', 'rows':2})
+        self.fields['cantidad'].widget.attrs.update({'class' : 'form-control', 'onkeyup':"total(this.id, 'cantidad');"})
+        self.fields['unitario'].widget.attrs.update({'class' : 'form-control', 'onkeyup':"total(this.id, 'unitario');"})
+        self.fields['total'].widget.attrs.update({'class' : 'form-control', 'readonly': "readonly"})
+
+RecursoTecnologicoFormSet = inlineformset_factory(models.Componente, models.Recurso_tecnologico, form=RecursoTecnologicoForm, extra=1)
+
+class EvaluacionForm(forms.ModelForm):
+    hora_entrada = forms.TimeField(widget=TimeInput)
+    hora_salida = forms.TimeField(widget=TimeInput)
+    fecha_inicio = forms.DateField(widget=DateInput)
+    fecha_fin = forms.DateField(widget=DateInput)
+    class Meta:
+        mode = models.Evaluacion
+        fields = '__all__'
+    
+    def __init__(self, componente, *args, **kwargs):
+        super(EvaluacionForm, self).__init__(*args, **kwargs)
+        for key in self.fields:
+            self.fields[key].widget.attrs.update({'class' : 'form-control'})
+        self.fields['puntualidad'].widget.attrs.update({'onkeyup':"asistencia(this.id, 'puntualidad');"})
+        self.fields['asistencia'].widget.attrs.update({'onkeyup':"asistencia(this.id, 'asistencia');"})
+        self.fields['actitud'].widget.attrs.update({'onkeyup':"asistencia(this.id, 'actitud');"})
+        self.fields['cumplimiento'].widget.attrs.update({'onkeyup':"asistencia(this.id, 'cumplimiento');"})
+        self.fields['aplicacion'].widget.attrs.update({'onkeyup':"asistencia(this.id, 'aplicacion');"})
+        self.fields['satisfaccion'].widget.attrs.update({'onkeyup':"asistencia(this.id, 'satisfaccion');"})
+        self.fields['promedio'].widget.attrs.update({'readonly' : 'readonly'})
+        self.fields['estudiante'].queryset = Estudiante.objects.filter(carrera=componente.proyecto_vinculacion.carrera)
+
+EvaluacionFormset = inlineformset_factory(models.Componente, models.Evaluacion, form=EvaluacionForm, extra=1)

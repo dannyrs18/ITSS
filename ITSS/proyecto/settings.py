@@ -18,6 +18,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def path(dir):
     return os.path.join(BASE_DIR, dir)
+    
+def enc(key):
+    password = ''
+    for caracter in key:
+        password = password + chr(ord(caracter) - 3)
+    return password
+
+
 
 SECRET_KEY = 'y$xt2htr-dkxx8*&q65a!^$ej*kff^a6(tm9lcldbp%qr-nfk('
 
@@ -46,13 +54,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-CRONJOBS  = [
-    # 
-    ('@daily' , 'apps.registros.views.update', '>> '+path('desarrollo/cron.log')), # Actualizacion diariamente
-    ('* * * 5 *' , 'django.core.management.call_command', ['dbbackup']), # Actualizacion cada 5 meses
-    ('* * * 5 *' , 'django.core.management.call_command', ['mediabackup']), # Actualizacion cada 5 meses
 ]
 
 ROOT_URLCONF = 'proyecto.urls'
@@ -146,15 +147,22 @@ DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 EMAIL = 'dannyors18@gmail.com' # variable para reusar
 EMAIL_HOST = 'smtp.gmail.com' 
 EMAIL_HOST_USER =  EMAIL# Gmail del emisor del mensaje
-EMAIL_HOST_PASSWORD = 'tarjetas18' #clave('gdqq|vruv4;') # Clave del gmail del emisor
+EMAIL_HOST_PASSWORD = enc('wdumhwdv4;')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # Respaldo
+PATH_BACKUP = path('backups') # Direccion donde se guardara los respaldos
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_CLEANUP_KEEP = 5
 DBBACKUP_CLEANUP_KEEP_MEDIA = 5
-DBBACKUP_STORAGE_OPTIONS = {'location': path('backups')}
+DBBACKUP_STORAGE_OPTIONS = {'location': PATH_BACKUP}
 
-# Cronjobs
-FAILED_RUNS_CRONJOB_EMAIL_PREFIX = EMAIL
+# Cron
+PATH_CRON = path('desarrollo/cron.log') # Direccion donde se guardara informacion de acctualizaciones
+CRONJOBS  = [
+    # 
+    ('@daily' , 'apps.registros.views.update', '>> '+PATH_CRON), # Actualizacion diariamente
+    ('* * * 5 *' , 'django.core.management.call_command', ['dbbackup']), # Actualizacion cada 5 meses
+    ('* * * 5 *' , 'django.core.management.call_command', ['mediabackup']), # Actualizacion cada 5 meses
+]
