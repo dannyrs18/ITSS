@@ -19,6 +19,7 @@ class Entidad(Oficina):
     class Meta:
         permissions = [
             ('view_entidad', 'Puede acceder a Entidad'),
+            ('reporte_entidad', 'Puede acceder a reporte de Entidad')
         ]
 
     def __unicode__(self):
@@ -81,6 +82,7 @@ class Proyecto_vinculacion(models.Model):
     class Meta:
         permissions = [
             ('view_proyecto_vinculacion', 'Puede acceder a Registro Vinculacion'),
+            ('reporte_registro_proyectos', 'Puede acceder a reportes de Proyecto')
         ]
 
     def __unicode__(self):
@@ -145,7 +147,7 @@ class Recurso_tecnologico(Recurso):
     componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='recursos_tecnologico')
 
 class Evaluacion(models.Model):
-    componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='evaluaciones')
+    componente = models.OneToOneField(Componente, on_delete=models.CASCADE)
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE, related_name='evaluaciones')
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()

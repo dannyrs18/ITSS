@@ -56,7 +56,7 @@ def crear_convenio(request):
 @permission_required('practicas.add_empresa')
 @transaction.atomic
 def crear_empresa(request):
-    form = forms_create.EmpresaForm(request.POST or None, request.FILES or None)
+    form = forms_create.EmpresaForm(request.user, request.POST or None, request.FILES or None)
     form2 = forms_create.EvidenciaEmpresaForm(request.POST or None, request.FILES or None)
     if form.is_valid() and form2.is_valid():
         empresa = form.save(request.user)
@@ -179,5 +179,24 @@ def reporte_estudiante(request):
     context = {
         'form' : form,
         'title' : 'REPORTE ESTUDIANTE'
+    }
+    return render(request, 'formulario.html', context)
+
+@login_required
+def reporte_empresas(request):
+    empresas = Empresa.objects.all()
+    return reporte_practicas.empresas(empresas)
+
+@login_required
+def reporte_periodo(request):
+    form = forms.PeriodoRegistroForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        from django.db.models import Q
+        registro = Registro_practicas.objects.filter(Q(fin__gte=form.cleaned_data.get('inicio')) & Q(fin__lte=form.cleaned_data.get('fin')))
+        response = reporte_practicas.periodo(registro)
+        return response
+    context = {
+        'form': form,
+        'title': 'REPORTE POR PERIODO'
     }
     return render(request, 'formulario.html', context)

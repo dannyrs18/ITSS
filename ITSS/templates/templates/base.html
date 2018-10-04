@@ -148,13 +148,19 @@
                     <li><a><i class="fa fa-file-pdf-o"></i> <strong>Reportes</strong> <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             {% if perms.registros.reporte_estudiante %}
-                            <li><a href="{% if perms.registros.admin_prac %}{% url 'practicas:reporte_estudiante' %}{% elif perms.registros.admin_vinc %}{% endif %}">Estudiante</a></li>
+                            <li><a href="{% if perms.registros.admin_prac %}{% url 'practicas:reporte_estudiante' %}{% elif perms.registros.admin_vinc %}{% url 'vinculacion:reporte_estudiante' %}{% endif %}">Estudiante</a></li>
                             {% endif %}
                             {% if perms.practicas.reporte_empresa %}
-                            <li><a href="#"><i class="fa fa-download"> </i>Empresas</i></a></li>
+                            <li><a href="{% url 'practicas:reporte_empresas' %}"><i class="fa fa-download"> </i>Empresas</i></a></li>
+                            {% endif %}
+                            {% if perms.vinculacion.reporte_entidad %}
+                            <li><a href="{% url 'vinculacion:reporte_entidades' %}"><i class="fa fa-download"> </i>Entidades</i></a></li>
                             {% endif %}
                             {% if perms.practicas.reporte_registro_practicas %}
-                            <li><a href="#">Registro por periodo</a></li>
+                            <li><a href="{% if perms.registros.admin_prac %}{% url 'practicas:reporte_periodo' %}{% elif perms.registros.admin_vinc %}{% endif %}">Registro por periodo</a></li>
+                            {% endif %}
+                            {% if perms.vinculacion.reporte_registro_proyectos %}
+                            <li><a href="{% url 'vinculacion:reporte_periodo' %}">Registro por periodo</a></li>
                             {% endif %}
                         </ul>
                     </li> 

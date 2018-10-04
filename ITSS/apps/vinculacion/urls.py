@@ -24,5 +24,8 @@ urlpatterns += [
 # Otros
 urlpatterns += [
     url(r'^reporte_convenio/(?P<slug>[-\w]+)/$', views.reporte_convenio, name='reporte_convenio'),
+    url(r'^reporte_estudiante/$', views.reporte_estudiante, name='reporte_estudiante'),
+    url(r'^reporte_entidades/$', views.reporte_entidades, name='reporte_entidades'),
+    url(r'^reporte_periodo/$', views.reporte_periodo, name='reporte_periodo'),
     url(r'^ajax_evidencia_entidad/$', views.ajax_evidencia_entidad, name='ajax_evidencia_entidad'),
 ]

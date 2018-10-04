@@ -18,15 +18,8 @@ from django.shortcuts import get_object_or_404
 
 from ...practicas.models import Empresa, Informe_practicas
 
-
 PAGE_HEIGHT=A4[1]; PAGE_WIDTH=A4[0]
 styles = getSampleStyleSheet()
-
-##### Datos De prueba
-numero_etapa = 3
-nombre_vinculacion = "Identificacion y seleccion de la plataforma MOOCS a implementar"
-fecha = '23/09/2018'
-#####
 
 def _hb(size):
     return ParagraphStyle(
@@ -41,9 +34,6 @@ def _h(size):
             fontSize=size
         )
 
-#### Inicio
-
-# Imgagenes = static/plugins/Date_Picker/js/jquery.datepicker.min.js
 def primeraPagina(c, doc, titulo):
     c.saveState()
     c.drawImage(settings.STATIC_ROOT+'/images/institucion.jpg', (PAGE_WIDTH/2-270/2), 660, width=280, height=220, preserveAspectRatio=True)
@@ -58,7 +48,7 @@ def siguientePagina(c, doc):
     c.saveState()
     c.drawImage(settings.STATIC_ROOT+'/images/logo_practicas.jpg', PAGE_WIDTH-inch*1.5, PAGE_HEIGHT-inch*1.5, width=80, preserveAspectRatio=True)
     c.setFont('Times-Roman', 11)
-    c.drawRightString(PAGE_WIDTH-inch, 0.75*inch, 'Pagina {}'.format(doc.page))
+    c.drawRightString(PAGE_WIDTH-(cm*2), 0.75*(cm*2), 'Pagina {}'.format(doc.page))
     c.restoreState()
 
 def encabezado(story, inf):
@@ -94,7 +84,6 @@ def tabla(story, inf):
 def estudiantes(estudiante):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Estudiantes"
-    pdf_author = "dannyrs"
     response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
     buff = BytesIO()
     doc = SimpleDocTemplate(
@@ -120,7 +109,7 @@ def estudiantes(estudiante):
     story.append(Spacer(1, 13))
     inf = {
         'data' :['EMPRESA', 'INICIO', u'CULMINACIÓN', u'CALIFICACIÓN', 'T. HORAS'],
-        'info' :[[registro.empresa.nombre, registro.presentacion, registro.fin or '------', registro.calificacion, registro.horas] for registro in estudiante.registros_practicas.all() ],
+        'info' :[[u'{}'.format(registro.empresa.nombre), u'{}'.format(registro.presentacion), u'{}'.format(registro.fin or '------'), u'{0:.1f}'.format(registro.calificacion), u'{}'.format(registro.horas)] for registro in estudiante.registros_practicas.all() ],
         'dim'  :[160, 80, 80, 80, 80]
     }
     data = tabla(story, inf)
@@ -130,10 +119,48 @@ def estudiantes(estudiante):
     buff.close()
     return response
 
-def empresas():
+def empresas(empresas):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Empresas"
-    pdf_author = "dannyrs"
+    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    buff = BytesIO()
+    doc = SimpleDocTemplate(
+        buff, 
+        pagesize=A4,
+        title='DR_Reports',
+        author='dannyrs'
+    ) # Crear un doc
+    info = []
+    for empresa in empresas:
+        aux2 = ''
+        for carrera in empresa.carreras.all():
+            aux2 += u'-{}'.format(carrera.nombre)
+        estado = ''
+        if empresa.fin < timezone.now().date():
+            estado = u'Caducado'
+        elif empresa.fin < timezone.now().date()+timezone.timedelta(days=30):
+            estado = u'Por vencer'
+        elif empresa.fin > timezone.now().date():
+            estado = u'Vigente'
+        aux = [u'{}'.format(empresa.nombre), u'{}'.format(aux2), u'{}'.format(empresa.inicio), u'{}'.format(empresa.fin), u'{}'.format(estado)]
+        info.append(aux)
+
+    story = [Spacer(1,inch*1.3)]
+    inf = {
+        'data' :['EMPRESA', 'CARRERA','INICIO', u'CULMINA', 'ESTADO'],
+        'info' :info,
+        'dim'  :[120, 170, 70, 70, 70]
+    }
+    data = tabla(story, inf)
+
+    doc.build(story, onFirstPage=partial(primeraPagina, titulo='Reporte general de empresas'), onLaterPages=siguientePagina)
+    response.write(buff.getvalue())
+    buff.close()
+    return response
+
+def periodo(registros):
+    response = HttpResponse(content_type='application/pdf')
+    pdf_name = "Reporte Periodo de Practicas"
     response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
     buff = BytesIO()
     doc = SimpleDocTemplate(
@@ -143,28 +170,15 @@ def empresas():
         author='dannyrs'
     ) # Crear un doc
 
-    story = [Spacer(1,inch)]
+    story = [Spacer(1,inch*1.3)]
     inf = {
-        'data' :['Nombre','Apellidos','Cedula', 'Carrera'],
-        'info' :[
-            estudiante.nombres, 
-            estudiante.apellidos, 
-            estudiante.cedula,
-            estudiante.carrera.nombre    
-        ],
-        'dim'  :[100, 390]
-    }
-    encabezado(story, inf)
-
-    story.append(Spacer(1, 13))
-    inf = {
-        'data' :['EMPRESA', 'INICIO', u'CULMINACIÓN', u'CALIFICACIÓN', 'T. HORAS'],
-        'info' :[[registro.empresa.nombre, registro.presentacion, registro.fin or '------', registro.calificacion, registro.horas] for registro in estudiante.registros_practicas.all()],
-        'dim'  :[160, 80, 80, 80, 80]
+        'data' :['ESTUDIANTE', u'CÉDULA', 'EMPRESA', u'CALIFICACIÓN', 'HORAS'],
+        'info' :[[u'{}'.format(registro.estudiante.get_full_name()), u'{}'.format(registro.estudiante.cedula), u'{}'.format(registro.empresa.nombre), u'{}'.format(registro.calificacion), u'{}'.format(registro.horas)] for registro in registros],
+        'dim'  :[190, 70, 115, 80, 45]
     }
     data = tabla(story, inf)
 
-    doc.build(story, onFirstPage=partial(primeraPagina, titulo='Reporte general del estudiante'), onLaterPages=siguientePagina)
+    doc.build(story, onFirstPage=partial(primeraPagina, titulo='Reporte general de practicas'), onLaterPages=siguientePagina)
     response.write(buff.getvalue())
     buff.close()
     return response

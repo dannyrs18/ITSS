@@ -11,7 +11,8 @@ from django.http import Http404, JsonResponse
 from django.contrib import messages
 from django.db import transaction
 from ..modulos.reportes import reporte_vinculacion
-from .models import Proyecto_vinculacion, Componente, Actividad, Entidad
+from ..registros.models import Estudiante
+from .models import Proyecto_vinculacion, Componente, Actividad, Entidad, Proyecto_vinculacion
 
 # Create your views here.
 
@@ -172,6 +173,36 @@ def reporte_convenio(request, slug):
         messages.error(request, u'Verifique si existe modelo de convenio.')
         return redirect('vinculacion:tabla_entidad')
     return convenio
+
+@login_required
+@permission_required('registros.reporte_estudiante')
+def reporte_estudiante(request):
+    form = forms.EstudianteForm(request.user, request.POST or None, request.FILES or None)
+    if form.is_valid():
+        response = reporte_vinculacion.estudiantes(form.cleaned_data.get('estudiante'))
+        return response
+    context = {
+        'form': form
+    }
+    return render(request, 'formulario.html', context)
+
+@login_required
+@permission_required('vinculacion.reporte_entidad')
+def reporte_entidades(request):
+    entidades = Entidad.objects.all()
+    response = reporte_vinculacion.entidades(entidades)
+    return response
+
+@login_required
+def reporte_periodo(request):
+    form = forms.PeriodoRegistroForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        pass
+    context = {
+        'form': form,
+        'title': 'REPORTE POR PERIODO'
+    }
+    return render(request, 'formulario.html', context)
 
 @login_required
 def ajax_evidencia_entidad(request):

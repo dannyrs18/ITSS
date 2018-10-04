@@ -33,17 +33,21 @@ class EmpresaForm(forms.ModelForm):
     fin = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
     class Meta:
         model = Empresa
-        fields = ('nombre', 'gerente', 'correo', 'telefono', 'inicio', 'fin', 'direccion', 'descripcion', 'logo')
+        fields = ('nombre', 'gerente', 'correo', 'telefono', 'inicio', 'fin', 'direccion', 'descripcion', 'logo', 'carreras')
         labels = {'nombre': _(u'Nombre de la empresa')}
+        widgets = {'carreras': forms.CheckboxSelectMultiple()}
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(EmpresaForm, self).__init__(*args, **kwargs)
         for key in self.fields:
-            self.fields[key].widget.attrs.update({'class' : 'form-control'})
+            if not key == 'carreras':
+                self.fields[key].widget.attrs.update({'class' : 'form-control'})
         self.fields['direccion'].widget.attrs.update({'class' : 'form-control', 'rows':3})
         self.fields['descripcion'].widget.attrs.update({'class' : 'form-control', 'rows':3})
         self.fields['inicio'].widget.attrs.update({'class' : 'form-control fecha'})
         self.fields['fin'].widget.attrs.update({'class' : 'form-control fecha'})
+        if not user.has_perm('registros.admin_prac'):
+            del self.fields['carreras']
 
     def clean(self, *args, **kwargs):
         cleaned_data = super(EmpresaForm, self).clean(*args, **kwargs)
@@ -53,19 +57,15 @@ class EmpresaForm(forms.ModelForm):
     def save(self, user, commit=True):
         from django.utils.timezone import localtime, now
 
-        instance = super(EmpresaForm, self).save(commit=False)
+        instance = super(EmpresaForm, self).save()
         instance.responsable=user
         if instance.fin > localtime(now()).date():
             instance.estado=True
         instance.save()
         aleatorio = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(15)])
         instance.slug = '{0}{1}'.format(instance.id, aleatorio)
-        if user.has_perm('registros.admin_prac'):
-            instance.carreras = Carrera.objects.all()
-        elif user.has_perm('registros.resp_prac'):
+        if user.has_perm('registros.resp_prac'):
             instance.carreras.add(user.perfil.carrera)
-        else:
-            raise Http404
         instance.save()
         return instance
 

@@ -25,6 +25,8 @@ urlpatterns += [
 urlpatterns += [
     url(r'^reporte_convenio/(?P<slug>[-\w]+)/$', views.reporte_convenio, name='reporte_convenio'),
     url(r'^reporte_estudiante/$', views.reporte_estudiante, name='reporte_estudiante'),
+    url(r'^reporte_empresas/$', views.reporte_empresas, name='reporte_empresas'),
+    url(r'^reporte_periodo/$', views.reporte_periodo, name='reporte_periodo'),
     url(r'^evidencia_empresa/$', views.evidencia_empresa, name='evidencia_empresa'),
     url(r'^evidencia_practicas/$', views.evidencia_practicas, name='evidencia_practicas'),
 ]
