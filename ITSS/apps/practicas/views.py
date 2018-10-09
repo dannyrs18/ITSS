@@ -192,8 +192,12 @@ def reporte_periodo(request):
     form = forms.PeriodoRegistroForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         from django.db.models import Q
-        registro = Registro_practicas.objects.filter(Q(fin__gte=form.cleaned_data.get('inicio')) & Q(fin__lte=form.cleaned_data.get('fin')))
-        response = reporte_practicas.periodo(registro)
+        if request.user.has_perm('registros.admin_prac'):
+            registro = Registro_practicas.objects.filter(Q(presentacion__gte=form.cleaned_data.get('inicio')) & Q(presentacion__lte=form.cleaned_data.get('fin')))
+        elif request.user.has_perm('registros.resp_prac'):
+            registro = Registro_practicas.objects.filter(Q(presentacion__gte=form.cleaned_data.get('inicio')) & Q(presentacion__lte=form.cleaned_data.get('fin')))
+            registro = registro.filter(carrera=request.user.perfil.carrera)
+        response = reporte_practicas.periodo(registro, form.cleaned_data)
         return response
     context = {
         'form': form,

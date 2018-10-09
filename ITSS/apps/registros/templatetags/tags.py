@@ -44,8 +44,11 @@ def mess(messages):
 
 @register.assignment_tag
 def component(proyecto):
+    # EL ESTADO 2 ES POR DEFAULT NO COMPLETADO
+    # EL ESTADO 1 ES PENDIENTE
+    # EL ESTADO 0 ES REALIZADO
     if proyecto:
-        if not proyecto.componentes.filter(estado=1).exists():
+        if not proyecto.componentes.filter(estado=1).exists() and proyecto.componentes.filter(estado=2).exists():
             componente = proyecto.componentes.filter(estado=2).first()
             componente.estado = 1
             componente.save()

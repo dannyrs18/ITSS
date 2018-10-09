@@ -11,4 +11,4 @@ def oficina():
         if localtime(now()).date() >= empresa.fin and estado == True:
             empresa.estado = False
             empresa.save()
-    print "# Actualización {}".format(localtime(now()).date())
+    print "# Actualización {}".format(localtime(now()))

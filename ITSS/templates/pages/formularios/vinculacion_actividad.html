@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+    {{ block.super }}
+    <!-- bootstrap-daterangepicker -->
+    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="{% static 'vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
+    <!-- MultiSelect -->
+    <link href="{% static 'plugins/multiSelect/css/multi-select.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="">
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+            <h2><strong>{{ title }}<strong></h2>
+            <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+            <br />
+            <form id="demo-form2" class="form-horizontal form-label-left" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                {{ field.errors }}
+                    <div class="form-group">
+                        <label class="control-label col-md-3" >{{ field.label_tag }}</label>
+                        <div class="col-md-6">
+                            {{ field }}
+                            {% if field.help_text %}
+                                <p class="help">{{ field.help_text|safe }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="form-group">
+                    <label class="control-label col-md-3" >Objetivos Especificos:</label>
+                    <div class="col-md-7">
+                        {{ formset.management_form }}            
+                        <table class="table">
+                            <tbody>
+                                {% for form in formset.forms %}
+                                <tr class="{% cycle row1 row2 %} formset">
+                                    {% for field in form.visible_fields %}
+                                    <td>
+                                        {% if forloop.first %}
+                                            {% for hidden in form.hidden_fields %}
+                                                {{ hidden }}
+                                            {% endfor %}
+                                        {% endif %}
+                                        {{ field.errors.as_ul }}
+                                        {{ field }}
+                                        {% if field.help_text %}
+                                            <p class="help">{{ field.help_text|safe }}</p>
+                                        {% endif %}
+                                    </td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" >Objetivos Generales:</label>
+                    <div class="col-md-7">
+                        {{ formset1.management_form }}            
+                        <table class="table">
+                            <tbody>
+                                {% for form in formset1.forms %}
+                                <tr class="{% cycle row1 row2 %} formset1">
+                                    {% for field in form.visible_fields %}
+                                    <td>
+                                        {% if forloop.first %}
+                                            {% for hidden in form.hidden_fields %}
+                                                {{ hidden }}
+                                            {% endfor %}
+                                        {% endif %}
+                                        {{ field.errors.as_ul }}
+                                        {{ field }}
+                                        {% if field.help_text %}
+                                            <p class="help">{{ field.help_text|safe }}</p>
+                                        {% endif %}
+                                    </td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" >Actividades: </label>
+                    <div class="col-md-7">
+                        {{ formset2.management_form }}            
+                        <table class="table">
+                            <tbody>
+                                {% for form in formset2.forms %}
+                                <tr class="{% cycle row1 row2 %} formset2">
+                                    {% for field in form.visible_fields %}
+                                    <td>
+                                        {% if forloop.first %}
+                                            {% for hidden in form.hidden_fields %}
+                                                {{ hidden }}
+                                            {% endfor %}
+                                        {% endif %}
+                                        {{ field.errors.as_ul }}
+                                        {{ field }}
+                                        {% if field.help_text %}
+                                            <p class="help">{{ field.help_text|safe }}</p>
+                                        {% endif %}
+                                    </td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                    <a href="{% url 'index' %}" class="btn btn-primary" type="button">Cancel</a>
+                    <input type="submit" class="btn btn-success" value="Guardar">
+                </div>
+                </div>
+
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <!-- Select2 -->
+    <script src="{% static 'vendors/select2/dist/js/select2.full.min.js' %}"></script>
+    <script>
+        $('.search_select').select2();
+    </script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{% static 'vendors/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <script>
+        $(function(){
+            $('.fecha').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                locale: {
+                    format: 'DD-MM-YYYY'
+                },
+            })
+        });
+    </script>
+    <!-- Formset -->
+    <script src="{% static 'plugins/formset/jquery.formset.js' %}"></script>
+    <script>
+        $('.formset').formset({
+            addText: '<span class="btn btn-default">Agregar</span>',
+            deleteText: '<span class="btn btn-danger">Eliminar</span>',
+            prefix: '{{ formset.prefix }}'
+        })
+        $('.formset1').formset({
+            addText: '<span class="btn btn-default">Agregar</span>',
+            deleteText: '<span class="btn btn-danger">Eliminar</span>',
+            prefix: '{{ formset1.prefix }}'
+        })
+        $('.formset2').formset({
+            addText: '<span class="btn btn-default">Agregar</span>',
+            deleteText: '<span class="btn btn-danger">Eliminar</span>',
+            prefix: '{{ formset2.prefix }}'
+        })
+    </script>
+    <script>
+        $('#id_carrera').change(function(){
+            if (typeof $('#id_entidad').val() != "undefined"){
+                console.log('ok')
+                $('#id_entidad').html('');
+                $('#id_entidad').append('<option value="" selected="selected">---------</option>');
+                $.ajax({
+                    url: "{% url 'registro:ajax_entidad' %}",
+                    type: 'post',
+                    data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'pk':$('#id_carrera').val()},
+                    success: function(data){
+                        var entidades = data.entidades
+                        for(var i=0; i<entidades.length; i++){
+                            $('#id_entidad').append('<option value="'+entidades[i].id+'">'+entidades[i].nombre+'</option>');
+                        }
+                        
+                    }
+                })
+            }
+        })
+    </script>
+    </script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $("form").keypress(function(e) {
+            if (e.which == 13) {
+                return false;
+            }
+        });
+    });
+    </script>
+
+{% endblock %}

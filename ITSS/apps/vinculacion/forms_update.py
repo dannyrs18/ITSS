@@ -28,9 +28,12 @@ class ComponenteForm(forms.ModelForm):
             self.add_error('fin', u'La fecha de finalización debe ser mayor a la de inicio')
 
     def save(self, user, commit=True):
-        instance = super(ComponenteForm, self).save(commit=True)
+        instance = super(ComponenteForm, self).save()
         instance.responsable = user
         instance.estado = 0
+        if instance.id == instance.proyecto_vinculacion.componentes.last().id:
+            instance.proyecto_vinculacion.estado=0
+            instance.proyecto_vinculacion.save()
         instance.save()
         return instance
 

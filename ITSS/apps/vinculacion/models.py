@@ -12,6 +12,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Entidad(Oficina):
     encargado = models.CharField(_('Responsable'), max_length=100)
     cargo = models.CharField(_('Cargo'), max_length=100)
+    fax = models.CharField(_('Fax'), max_length=20, blank=True, null=True)
     descripcion = models.TextField(_('Descripción'))
     carreras = models.ManyToManyField(Carrera, related_name='entidades')
     responsable = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
@@ -56,10 +57,12 @@ class Informe_vinculacion(models.Model):
 
 class Actividad_vinculacion(models.Model):
     nombre = models.CharField(_(u'Nombre del Proyecto'), unique=True, max_length=150)
-    inicio = models.DateField(auto_now_add=True)
+    inicio = models.DateField(_(u'Fecha de inicio'))
+    fin = models.DateField(_(u'Fecha de culminación'))
     carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE, related_name='actividades_vinculacion')
     entidad = models.ForeignKey(Entidad, on_delete=models.CASCADE, related_name='actividades_vinculacion')
     slug = models.SlugField(max_length=50, blank=True)
+    justificacion = models.TextField(_(u'Justificación'))
     responsable = models.ForeignKey(User, on_delete=models.CASCADE, related_name='actividades_vinculacion')
 
     class Meta:
@@ -69,6 +72,27 @@ class Actividad_vinculacion(models.Model):
 
     def __unicode__(self):
         return '{}'.format(self.nombre)
+
+class Objetivo_Especifico(models.Model):
+    actividad_vinculacion = models.ForeignKey(Actividad_vinculacion, on_delete=models.CASCADE, related_name='objetivos_especificos')
+    nombre = models.TextField(_(u'Objetivos Especificos'))
+
+    def __unicode__(self):
+        return u'{}'.format(self.nombre)
+
+class Objetivo_General(models.Model):
+    actividad_vinculacion = models.ForeignKey(Actividad_vinculacion, on_delete=models.CASCADE, related_name='objetivos_generales')
+    nombre = models.TextField(_(u'Objetivos Generales'))
+
+    def __unicode__(self):
+        return u'{}'.format(self.nombre)
+
+class Actividad_Ac(models.Model):
+    actividad_vinculacion = models.ForeignKey(Actividad_vinculacion, on_delete=models.CASCADE, related_name='actividades_ac')
+    nombre = models.TextField(_(u'Actividades'))
+
+    def __unicode__(self):
+        return u'{}'.format(self.nombre)
 
 ########## Proyecto de Vinculacion
 class Proyecto_vinculacion(models.Model):
@@ -144,10 +168,10 @@ class Recurso_material(Recurso):
     componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='recursos_materiales')
 
 class Recurso_tecnologico(Recurso):
-    componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='recursos_tecnologico')
+    componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='recursos_tecnologicos')
 
 class Evaluacion(models.Model):
-    componente = models.OneToOneField(Componente, on_delete=models.CASCADE)
+    componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='evaluaciones')
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE, related_name='evaluaciones')
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
@@ -167,7 +191,7 @@ def generate_evidencia_proyecto(instance, filename):
 
 class Evidencia_proyecto(models.Model):
     componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='evidencias_proyecto')
-    imagen = models.ImageField(upload_to=generate_evidencia_proyecto)
+    imagen = models.ImageField(upload_to=generate_evidencia_proyecto, max_length=200)
 
     def __unicode__(self):
         return '{}'.format(self.imagen.url)

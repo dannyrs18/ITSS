@@ -236,3 +236,56 @@ class EvaluacionForm(forms.ModelForm):
         self.fields['estudiante'].queryset = Estudiante.objects.filter(carrera=componente.proyecto_vinculacion.carrera)
 
 EvaluacionFormset = inlineformset_factory(models.Componente, models.Evaluacion, form=EvaluacionForm, extra=1)
+
+class EvidenciaProyectoForm(forms.Form):
+    imagenes = forms.ImageField(label=_(u'Evidencia Fotografica'), widget=forms.FileInput(attrs={'class':"form-control", 'multiple': True}), required=True)
+
+    def save(self, imagenes, componente):
+        for imagen in imagenes:
+            models.Evidencia_proyecto.objects.create(componente=componente, imagen=imagen)
+
+class ActividadProyectoForm(forms.ModelForm):
+    class Meta:
+        model = models.Actividad_vinculacion
+        fields = ('nombre', 'carrera', 'entidad', 'justificacion', 'inicio', 'fin')
+
+    def __init__(self, *args, **kwargs):
+        super(ActividadProyectoForm, self).__init__(*args, **kwargs)
+        for key in self.fields:
+            self.fields[key].widget.attrs.update({'class' : 'form-control'})
+        self.fields['justificacion'].widget.attrs.update({'rows' : 3})
+        self.fields['inicio'].widget.attrs.update({'class' : 'form-control fecha'})
+        self.fields['fin'].widget.attrs.update({'class' : 'form-control fecha'})
+
+class ObjetivoEspecificoForm(forms.ModelForm):
+    class Meta:
+        model = models.Objetivo_Especifico
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(ObjetivoEspecificoForm, self).__init__(*args, **kwargs)
+        self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows': 3})
+
+ObjetivoEspecificoFormset = inlineformset_factory(models.Actividad_vinculacion, models.Objetivo_Especifico, form=ObjetivoEspecificoForm, extra=1)
+
+class ObjetivoGeneralForm(forms.ModelForm):
+    class Meta:
+        model = models.Objetivo_General
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(ObjetivoGeneralForm, self).__init__(*args, **kwargs)
+        self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows': 3})
+
+ObjetivogeneralFormset = inlineformset_factory(models.Actividad_vinculacion, models.Objetivo_Especifico, form=ObjetivoGeneralForm, extra=1)
+
+class ActividadAcForm(forms.ModelForm):
+    class Meta:
+        model = models.Actividad_Ac
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(ActividadAcForm, self).__init__(*args, **kwargs)
+        self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows': 3})
+
+ActividadAcFormset = inlineformset_factory(models.Actividad_vinculacion, models.Actividad_Ac, form=ActividadAcForm, extra=1)

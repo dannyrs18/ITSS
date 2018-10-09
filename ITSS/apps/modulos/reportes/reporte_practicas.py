@@ -112,7 +112,7 @@ def estudiantes(estudiante):
         'info' :[[u'{}'.format(registro.empresa.nombre), u'{}'.format(registro.presentacion), u'{}'.format(registro.fin or '------'), u'{0:.1f}'.format(registro.calificacion), u'{}'.format(registro.horas)] for registro in estudiante.registros_practicas.all() ],
         'dim'  :[160, 80, 80, 80, 80]
     }
-    data = tabla(story, inf)
+    tabla(story, inf)
 
     doc.build(story, onFirstPage=partial(primeraPagina, titulo='Reporte general del estudiante'), onLaterPages=siguientePagina)
     response.write(buff.getvalue())
@@ -151,14 +151,14 @@ def empresas(empresas):
         'info' :info,
         'dim'  :[120, 170, 70, 70, 70]
     }
-    data = tabla(story, inf)
+    tabla(story, inf)
 
     doc.build(story, onFirstPage=partial(primeraPagina, titulo='Reporte general de empresas'), onLaterPages=siguientePagina)
     response.write(buff.getvalue())
     buff.close()
     return response
 
-def periodo(registros):
+def periodo(registros, fecha):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Periodo de Practicas"
     response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
@@ -170,13 +170,22 @@ def periodo(registros):
         author='dannyrs'
     ) # Crear un doc
 
-    story = [Spacer(1,inch*1.3)]
+    story = [Spacer(1,inch)]
+    inf = {
+        'data' :['Periodo'],
+        'info' :[
+            u'{} - {}'.format(fecha.get('inicio'), fecha.get('fin'))
+        ],
+        'dim'  :[100, 390]
+    }
+    encabezado(story, inf)
+
     inf = {
         'data' :['ESTUDIANTE', u'CÉDULA', 'EMPRESA', u'CALIFICACIÓN', 'HORAS'],
         'info' :[[u'{}'.format(registro.estudiante.get_full_name()), u'{}'.format(registro.estudiante.cedula), u'{}'.format(registro.empresa.nombre), u'{}'.format(registro.calificacion), u'{}'.format(registro.horas)] for registro in registros],
         'dim'  :[190, 70, 115, 80, 45]
     }
-    data = tabla(story, inf)
+    tabla(story, inf)
 
     doc.build(story, onFirstPage=partial(primeraPagina, titulo='Reporte general de practicas'), onLaterPages=siguientePagina)
     response.write(buff.getvalue())

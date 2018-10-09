@@ -41,10 +41,10 @@ class Estudiante(models.Model):
         )
 
     def __unicode__(self):
-        return '{0} {1} - {2}'.format(self.nombres.partition(" ")[0], self.apellidos.partition(" ")[0], self.cedula)
+        return u'{0} {1} - {2}'.format(self.nombres.partition(" ")[0], self.apellidos.partition(" ")[0], self.cedula)
 
     def get_full_name(self):
-        return '{} {}'.format(self.nombres, self.apellidos)
+        return u'{} {}'.format(self.nombres, self.apellidos)
 
 class Docente(models.Model):
     nombres = models.TextField(_(u'Nombres'))
@@ -60,14 +60,30 @@ class Docente(models.Model):
         ]
 
     def __unicode__(self):
-        return '{0} {1} - {2}'.format(self.nombres.partition(" ")[0], self.apellidos.partition(" ")[0], self.cedula)
+        return u'{0} {1} - {2}'.format(self.nombres.partition(" ")[0], self.apellidos.partition(" ")[0], self.cedula)
+
+    def get_full_name(self):
+        return u'{0} {1}'.format(self.nombres, self.apellidos)
 
 class Seccion(models.Model):
     identificador = models.CharField(max_length=4)
     nombre = models.TextField(_(u'Nombre'))
 
     def __unicode__(self):
-        return '{}'.format(self.identificador)
+        return u'{}'.format(self.nombre)
+
+class Coordinador(models.Model):
+    docente = models.ForeignKey(Docente, on_delete=models.CASCADE, related_name='coordinadores')
+    carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE, related_name='coordinadores')
+    estado = models.BooleanField(default=True)
+
+    class Meta:
+        permissions = (
+            ("view_coordinador", "Puede acceder a coordinadores"),
+        )
+
+    def __unicode__(self):
+        return u'{} {}'.format(self.docente.nombres, self.docente.apellidos)
 
 class Oficina(models.Model): # Clase abstracta que usa practicas y vinculacion desde registros
     nombre = models.CharField(_(u'Nombre'), unique=True, max_length=100)
@@ -106,10 +122,10 @@ class Perfil(models.Model):
         )
 
     def __unicode__(self):
-        return self.user.username
+        return u'{}'.format(self.user.username)
 
     def get_simple_name(self):
-        return '{0} {1}'.format(self.user.first_name.partition(" ")[0], self.user.last_name.partition(" ")[0])
+        return u'{0} {1}'.format(self.user.first_name.partition(" ")[0], self.user.last_name.partition(" ")[0])
 
 
 @receiver(post_save, sender=User)

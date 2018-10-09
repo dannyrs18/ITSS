@@ -1,7 +1,7 @@
 # coding: utf-8
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from .models import Componente
+from .models import Componente, Proyecto_vinculacion
 from ..registros.models import Estudiante
 import time
 from django.conf import settings
@@ -34,7 +34,7 @@ class EstudianteForm(forms.Form):
         super(EstudianteForm, self).__init__(*args, **kwargs)
         self.fields['estudiante'].widget.attrs.update({'class' : 'form-control search_select'})
         if user.has_perm('registros.resp_vinc'):
-            self.fields['estudiante'].queryset = Estudiante.objects.filter(carrera=user.perfil.carrera)
+            self.fields['estudiante'].queryset = Estudiante.objects.filter(registro=user.perfil.carrera)
 
 class PeriodoRegistroForm(forms.Form):
     inicio = forms.DateField(label=_(u'Inicio de Periodo') ,input_formats=settings.DATE_INPUT_FORMATS)
@@ -49,3 +49,18 @@ class PeriodoRegistroForm(forms.Form):
         cleaned_data = super(PeriodoRegistroForm, self).clean(*args, **kwargs)
         if cleaned_data.get('inicio') >= cleaned_data.get('fin'):
             self.add_error('fin', u'La fecha de culminacion debe ser mayor a la de inicio')
+
+class AjaxChoiceField(forms.ChoiceField):
+    def valid_value(self, value):
+        return True
+
+class ComponenteReporteForm(forms.Form):
+    registro = forms.ModelChoiceField(queryset=Proyecto_vinculacion.objects.none())
+    componente = AjaxChoiceField(choices=((None, '---------'),))
+    reporte = AjaxChoiceField(choices=((None, '---------'),))
+
+    def __init__(self, *args, **kwargs):
+        super(ComponenteReporteForm, self).__init__(*args, **kwargs)
+        for key in self.fields:
+            self.fields[key].widget.attrs.update({'class' : 'form-control search_select'})
+        self.fields['registro'].queryset = Proyecto_vinculacion.objects.all()

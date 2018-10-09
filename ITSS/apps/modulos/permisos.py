@@ -2,6 +2,7 @@ from django.contrib.auth.models import Permission
 
 def administrador_practicas():
     perms = (
+        Permission.objects.get(codename='view_coordinador'),
         Permission.objects.get(codename='change_user'),
         Permission.objects.get(codename='add_informe_practicas'),
         Permission.objects.get(codename='view_estudiante'),
@@ -25,6 +26,7 @@ def administrador_practicas():
 
 def administrador_vinculacion():
     perms = (
+        Permission.objects.get(codename='view_coordinador'),
         Permission.objects.get(codename='change_user'),
         Permission.objects.get(codename='view_estudiante'),
         Permission.objects.get(codename='view_perfil'),
@@ -50,6 +52,7 @@ def administrador_vinculacion():
 
 def responsable_practicas():
     perms = (
+        Permission.objects.get(codename='view_coordinador'),
         Permission.objects.get(codename='change_user'),
         Permission.objects.get(codename='view_estudiante'),
         Permission.objects.get(codename='view_empresa'),
@@ -66,6 +69,7 @@ def responsable_practicas():
 
 def responsable_vinculacion():
     perms = (
+        Permission.objects.get(codename='view_coordinador'),
         Permission.objects.get(codename='change_user'),
         Permission.objects.get(codename='view_actividad_vinculacion'),
         Permission.objects.get(codename='view_proyecto_vinculacion'),

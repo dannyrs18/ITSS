@@ -124,7 +124,7 @@ class RegistroForm(forms.ModelForm):
 
     def save(self, user, commit=True):
         instance = super(RegistroForm, self).save(commit=False)
-        if user.has_perm('resp_prac'):
+        if user.has_perm('registros.resp_prac'):
             instance.carrera = user.perfil.carrera
         instance.save()
         aleatorio = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(15)])

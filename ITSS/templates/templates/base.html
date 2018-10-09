@@ -46,12 +46,16 @@
                 {% if user.perfil.avatar %}
                 <img src="{{ user.perfil.avatar.url }}" alt="usuario" class="img-circle profile_img" width="50" height="55">
                 {% else %}
-                <img src="{% static 'images/user.png' %}" alt="{{ user.get_full_name }}" class="img-circle profile_img" width="50" height="55">
+                <img src="{% static 'images/logo3.png' %}" alt="{{ user.get_full_name }}" class="img-circle profile_img" width="50" height="55">
                 {% endif %}
             </div>
             <div class="profile_info">
                 <span>Bienvenido,</span>
+                {% if not user.perfil.docente %}
+                <h2>ADMINISTRADOR</h2>
+                {% else %}
                 <h2> {{ user.perfil.get_simple_name }}</h2>
+                {% endif %}
             </div>
             </div>
             <!-- /menu profile quick info -->
@@ -89,6 +93,17 @@
                             <li><a href="{% url 'registro:tabla_usuarios' %}">Buscar</a></li>
                         </ul>
                     </li>
+                    {% endif %}
+                    
+                    {% if perms.registros.view_coordinador %}
+                    <li><a><i class="fa fa-list-alt"></i> <strong>Coordinadores</strong> <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            {% if perms.registros.add_coordinador %}
+                            <li><a href="{% url 'registro:crear_coordinador' %}">Nuevo</a></li>
+                            {% endif %}
+                            <li><a href="{% url 'registro:tabla_coordinadores' %}">Buscar</a></li>
+                        </ul>
+                    </li> 
                     {% endif %}
 
                     {% if not user.is_superuser %} <!-- Not SuperUser -->
@@ -148,7 +163,7 @@
                     <li><a><i class="fa fa-file-pdf-o"></i> <strong>Reportes</strong> <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             {% if perms.registros.reporte_estudiante %}
-                            <li><a href="{% if perms.registros.admin_prac %}{% url 'practicas:reporte_estudiante' %}{% elif perms.registros.admin_vinc %}{% url 'vinculacion:reporte_estudiante' %}{% endif %}">Estudiante</a></li>
+                            <li><a href="{% if perms.registros.admin_prac or perms.registros.resp_prac %}{% url 'practicas:reporte_estudiante' %}{% elif perms.registros.admin_vinc or perms.registros.resp_vinc %}{% url 'vinculacion:reporte_estudiante' %}{% endif %}">Estudiante</a></li>
                             {% endif %}
                             {% if perms.practicas.reporte_empresa %}
                             <li><a href="{% url 'practicas:reporte_empresas' %}"><i class="fa fa-download"> </i>Empresas</i></a></li>
@@ -157,10 +172,13 @@
                             <li><a href="{% url 'vinculacion:reporte_entidades' %}"><i class="fa fa-download"> </i>Entidades</i></a></li>
                             {% endif %}
                             {% if perms.practicas.reporte_registro_practicas %}
-                            <li><a href="{% if perms.registros.admin_prac %}{% url 'practicas:reporte_periodo' %}{% elif perms.registros.admin_vinc %}{% endif %}">Registro por periodo</a></li>
+                            <li><a href="{% if perms.registros.admin_prac or perms.registros.resp_prac %}{% url 'practicas:reporte_periodo' %}{% elif perms.registros.admin_vinc or perms.registros.resp_vinc %}{% endif %}">Registro por periodo</a></li>
                             {% endif %}
                             {% if perms.vinculacion.reporte_registro_proyectos %}
                             <li><a href="{% url 'vinculacion:reporte_periodo' %}">Registro por periodo</a></li>
+                            {% endif %}
+                            {% if perms.vinculacion.reporte_registro_proyectos %}
+                            <li><a href="{% url 'vinculacion:reporte_componente' %}">Registro por componente</a></li>
                             {% endif %}
                         </ul>
                     </li> 
@@ -187,13 +205,21 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="">
                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <img src="{% static 'images/user.png' %}" alt=""> <strong style="color: #ffffff"> {{ user.get_full_name }}</strong>&nbsp; 
+                        {% if not user.perfil.docente %}
+                        <img src="{% static 'images/logo3.png' %}" alt=""> <strong style="color: #ffffff"> ADMINISTRADOR</strong>&nbsp; 
+                        {% else %}
+                        <img src="{% if user.perfil.avatar %}{{ user.perfil.avatar.url }}{% else %}{% static 'images/logo3.png' %}{% endif %}" alt=""> <strong style="color: #ffffff"> {{ user.get_full_name }}</strong>&nbsp; 
+                        {% endif %}
                         <span class="fa fa-angle-down" style="color: white"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        {% if perms.auth.change_user %}
-                        <li><a href="{% url 'registro:modificar_clave' %}"><i class="fa fa-bars pull-right"></i>Cambiar clave</a></li>
+                        {% if user.is_superuser %}
+                        <li><a href="{% url 'registro:modificar_usuario' user.perfil.pk %}"><i class="fa  fa-info-circle pull-right"></i>Editar perfil</a></li>
                         {% endif %}
+                        {% if perms.auth.change_user %}
+                        <li><a href="{% url 'registro:modificar_clave' %}"><i class="fa fa-gears pull-right"></i>Cambiar clave</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'registro:error' %}"><i class="fa fa-sign-out pull-right"></i> Reportar error</a></li>
                         <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesión</a></li>
                     </ul>
                 </li>

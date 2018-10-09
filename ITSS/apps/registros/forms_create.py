@@ -6,7 +6,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User, Permission
-from .models import Docente, Carrera
+from .models import Docente, Carrera, Coordinador
 from ..modulos import permisos
 
 class UserForm(UserCreationForm):
@@ -131,3 +131,22 @@ class UserForm(UserCreationForm):
         clave {}""".format(data.get('username'), data.get('password1'))
         mail = EmailMessage('Instituto tecnologico Superior Sudamericano', mensaje, to=[data.get('email')])
         mail.send()
+
+class CoordinadorForm(forms.ModelForm):
+    class Meta:
+        model = Coordinador
+        fields = ('docente', 'carrera')
+
+    def __init__(self, *args, **kwargs):
+        super(CoordinadorForm, self).__init__(*args, **kwargs)
+        for key in self.fields:
+            self.fields[key].widget.attrs.update({'class' : 'form-control search_select'})
+
+    def save(self, commit=True):
+        instance = super(CoordinadorForm, self).save(commit=False)
+        coordinador = Coordinador.objects.filter(estado=True, carrera=instance.carrera).first()
+        if coordinador:
+            coordinador.estado=False
+            coordinador.save()
+        instance.save()
+        return instance

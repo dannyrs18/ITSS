@@ -7,14 +7,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, Http404, FileResponse
 from django.contrib.auth import update_session_auth_hash
 from django.db import transaction
-from .forms_create import UserForm
-from .forms_update import PasswordForm
+from .forms_create import UserForm, CoordinadorForm
+from .forms_update import PasswordForm, UserPerfilForm
 from ..modulos import web_services as _, cron_jobs
 from ..modulos.reportes import reporte_practicas
-from .models import Estudiante, Docente, Carrera, Seccion, Perfil
+from .models import Estudiante, Docente, Carrera, Seccion, Perfil, Coordinador
 from ..vinculacion.models import Entidad
 from ..practicas.models import Empresa
 from django.contrib.auth.models import Permission
+from .forms import ErrorForm
 
 from django.contrib.auth.forms import PasswordChangeForm
 
@@ -35,6 +36,43 @@ def crear_usuario(request):
     }
     return render(request, 'formularios/usuario.html', context)
 
+
+
+@login_required
+@permission_required('registros:add_coordinador') #raise_exception=True
+@transaction.atomic
+def crear_coordinador(request):
+    form = CoordinadorForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        form.save()
+        messages.success(request, u'El coordinador se ha creado exitosamente!.')
+        return redirect('index')
+    elif request.POST:
+        messages.error(request, u'Valores ingresados incorrectos dentro del formulario')
+    context = {
+        'form': form
+    }
+    return render(request, 'formulario.html', context)
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+@transaction.atomic
+def modificar_usuario(request, pk):
+    perfil = get_object_or_404(Perfil, pk=pk)
+    form = UserPerfilForm(request.POST or None, request.FILES or None, instance=perfil)
+    if form.is_valid():
+        form.save()
+        messages.success(request, u'El usuario se ha modificado exitosamente!.')
+        return redirect('index')
+    if request.POST:
+        messages.error(request, u'Valores ingresados incorrectos dentro del formulario')
+    context = {
+        'form': form,
+        'title': 'MODIFICAR DATOS'
+    }
+    return render(request, 'formularios/usuario.html', context)
+
+
 @login_required
 @permission_required('auth.change_user') 
 @transaction.atomic
@@ -51,6 +89,7 @@ def modificar_clave(request):
         'form': form
     }
     return render(request, 'formulario.html', context)
+
 
 @login_required
 @permission_required('auth.change_user') 
@@ -127,6 +166,15 @@ def tabla_estudiantes(request):
         'title': 'ESTUDIANTES'
     }
     return render(request, 'tablas/estudiantes.html', context)
+
+@login_required
+@permission_required('registros.view_coordinador')
+def tabla_coordinadores(request):
+    coordinadores = Coordinador.objects.all()
+    context = {
+        'coordinadores': coordinadores
+    }
+    return render(request, 'tablas/coordinadores.html', context)
 
 @login_required
 @permission_required('registros.web_services')
@@ -245,6 +293,20 @@ def ajax_evidencia_estudiante(request):
             })
         return JsonResponse(data, safe=False)
     raise Http404
+
+def error(request):
+    form = ErrorForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        form.save(request.user)
+        messages.success(request, u'Mensaje enviado.')
+        return redirect('index')
+    elif request.POST:
+        messages.error(request, u'Error al llenar el formulario.')
+    context = {
+        'form': form
+    }
+    return render(request, 'formulario.html', context)
+    
 
 ### Funciones que solo sirven en desarrollo
 @login_required
