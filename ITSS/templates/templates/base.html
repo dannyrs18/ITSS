@@ -190,7 +190,8 @@
                     {% if user.is_superuser %}
                     <li><a><i class="fa fa-list-alt"></i> <strong>Respaldos</strong> <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="{% url 'registro:backup_server' %}">Server</a></li>
+                            <li><a href="{% url 'registro:create_backup' %}">Crear Registro</a></li>
+                            <li><a href="{% url 'registro:download_backup' %}">Descargar</a></li>
                         </ul>
                     </li> 
                     {% endif %}
@@ -228,7 +229,7 @@
                         {% if perms.auth.change_user %}
                         <li><a href="{% url 'registro:modificar_clave' %}"><i class="fa fa-gears pull-right"></i>Cambiar clave</a></li>
                         {% endif %}
-                        <li><a href="{% url 'registro:error' %}"><i class="fa fa-sign-out pull-right"></i> Reportar error</a></li>
+                        <li><a href="{% url 'registro:error' %}"><i class="fa  fa-bug pull-right"></i> Reportar error</a></li>
                         <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesión</a></li>
                     </ul>
                 </li>

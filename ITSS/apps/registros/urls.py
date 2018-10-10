@@ -27,7 +27,8 @@ urlpatterns += [
 # Otros
 urlpatterns += [
     url(r'^web_services/$', views.web_services, name='web_services'),
-    url(r'^backup_server/$', views.backup_server, name='backup_server'),
+    url(r'^download_backup/$', views.download_backup, name='download_backup'),
+    url(r'^create_backup/$', views.create_backup, name='create_backup'),
     url(r'^ajax_docente/$', views.ajax_docente, name='ajax_docente'),
     url(r'^ajax_estudiante/$', views.ajax_estudiante, name='ajax_estudiante'),
     url(r'^ajax_entidad/$', views.ajax_entidad, name='ajax_entidad'),

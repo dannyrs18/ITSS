@@ -58,6 +58,18 @@ def siguientePagina(c, doc):
     c.drawRightString(PAGE_WIDTH-(cm*2), 0.75*(cm*2), 'Pagina {}'.format(doc.page))
     c.restoreState()
 
+def cab_table(story, enc, align=TA_LEFT):
+    data = [
+        [Paragraph(enc, _hb(10, align))],
+    ]
+    t = Table(data, colWidths=450)
+    t.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (0,0), colors.lavender),
+        ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+        ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+    ]))
+    story.append(t)
+
 def encabezado(story, inf, hb=12, h=10):
     data = []
     for i in range(len(inf['data'])):
@@ -101,6 +113,7 @@ def estudiantes(estudiante):
     ) # Crear un doc
 
     story = [Spacer(1,inch)]
+    
     inf = {
         'data' :['Nombre','Apellidos','Cedula', 'Carrera'],
         'info' :[
@@ -112,6 +125,9 @@ def estudiantes(estudiante):
         'dim'  :[100, 390]
     }
     encabezado(story, inf)
+
+    story = [Spacer(1,13)]
+    cab_table(story, 'PROYECTOS')
 
     from django.db.models import Sum, Avg
 
@@ -137,7 +153,7 @@ def estudiantes(estudiante):
             fin = registro.componentes.all().last().fin
         info.append([u'{}'.format(registro.nombre), u'{}'.format(registro.inicio), u'{}'.format(fin), u'{0:.1f}'.format(promedio/contador), u'{}'.format(horas)])
 
-    story.append(Spacer(1, 13))
+    story.append(Spacer(1, 5))
     inf = {
         'data' :['PROYECTO', 'INICIO', u'CULMINA', u'CALIFICACIÓN', 'T. HORAS'],
         'info' :info,
@@ -244,18 +260,6 @@ def siguientePagina2(c, doc, fondo=True):
         c.drawImage(settings.STATIC_ROOT+'/images/logo_vinculacion.png', PAGE_WIDTH/2-image_width/2, PAGE_HEIGHT/2-image_height/2, width=image_width, height=image_height, mask=[-3,-3,-3,-3,-3,-3])
     c.drawRightString(PAGE_WIDTH-inch, 0.75*inch, 'Pagina {}'.format(doc.page))
     c.restoreState()
-
-def cab_table(story, enc, align=TA_LEFT):
-    data = [
-        [Paragraph(enc, _hb(10, align))],
-    ]
-    t = Table(data, colWidths=450)
-    t.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (0,0), colors.lavender),
-        ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-        ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-    ]))
-    story.append(t)
 
 def informacionX(story, inf):
     cab_table(story, inf['enc'])

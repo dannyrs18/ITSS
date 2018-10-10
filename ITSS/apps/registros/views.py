@@ -319,23 +319,42 @@ def error(request):
     }
     return render(request, 'formulario.html', context)
     
-def backup_server(request):
+
+def create_backup(request):
+    try:
+        from django.core.management import call_command
+        call_command('dbbackup')
+        try:
+            call_command('mediabackup')
+        except:
+            print 'No existe media'
+        messages.success(request, u'Respaldo creado exitosamente!')
+    except:
+        messages.error(request, u'Existio algun error!')
+    return redirect('/')
+
+def download_backup(request):
     from django.http import HttpResponse
     from django.conf import settings
     import StringIO
     import zipfile
     from os import listdir
-    s = StringIO.StringIO()
-    zf = zipfile.ZipFile(s, "w")
-    list_backups = listdir(settings.PATH_BACKUP)
-    for archivo in list_backups:
-        name = archivo
-        url = settings.PATH_BACKUP+'/'+archivo
-        zf.write(url.encode('utf-8').strip(), name)
-    zf.close()
-    response = HttpResponse(s.getvalue(), content_type="application/zip")
-    response['Content-Disposition'] = u'attachment; filename=evidencia_{}.zip'.format(list_backups[-1])
-    return response
+    try:
+        s = StringIO.StringIO()
+        zf = zipfile.ZipFile(s, "w")
+        list_backups = listdir(settings.PATH_BACKUP)
+        for archivo in list_backups:
+            name = archivo
+            url = settings.PATH_BACKUP+'/'+archivo
+            zf.write(url.encode('utf-8').strip(), name)
+        zf.close()
+        response = HttpResponse(s.getvalue(), content_type="application/zip")
+        response['Content-Disposition'] = u'attachment; filename=evidencia_{}.zip'.format(list_backups[-1])
+        return response
+    except :
+        messages.error(request, u'No se encuentra registros actualmente')
+        return redirect('/')
+
 
 ### Funciones que solo sirven en desarrollo
 @login_required
