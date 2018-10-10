@@ -61,33 +61,9 @@
     <script src="{% static 'vendors/select2/dist/js/select2.full.min.js' %}"></script>
     <script>
         $('#id_registro').change(function(){
-            $('#id_reporte').html('');
-            $('#id_reporte').append('<option value="" selected="selected">---------</option>');
-            if (typeof $(this).val() != "undefined"){
-                $('#id_componente').html('');
-                $('#id_componente').append('<option value="" selected="selected">---------</option>');
-                $.ajax({
-                    url: "{% url 'vinculacion:ajax_reporte_componente' %}",
-                    type: 'post',
-                    data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'pk':$(this).val()},
-                    success: function(data){
-                        var componentes = data.componentes
-                        for(var i=0; i<componentes.length; i++){
-                            if (componentes[i].estado == 0){
-                                $('#id_componente').append('<option value="'+componentes[i].id+'">'+componentes[i].nombre+'</option>');
-                            }else {
-                                $('#id_componente').append('<option disabled value="'+componentes[i].id+'">'+componentes[i].nombre+'</option>');
-                            }
-                        }
-                    }
-                })   
-            }
-        })
-        $('#id_componente').change(function(){
-            $('#id_reporte').html('');
-            if (typeof $(this).val() != "undefined"){
-                $('#id_reporte').append('<option value="" selected="selected">---------</option>');
-                $('#id_reporte').append('<option value="1">Componente</option>');
+            $('#id_reporte').html('<option value="" selected="selected">---------</option>');
+            if ($(this).val().length > 0){
+                $('#id_reporte').append('<option value="1">Actividad</option>');
                 $('#id_reporte').append('<option value="2">Evaluacion</option>');
                 $('#id_reporte').append('<option value="3">Evidencia</option>');
             }

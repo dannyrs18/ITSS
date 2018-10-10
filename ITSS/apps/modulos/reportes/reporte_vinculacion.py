@@ -20,6 +20,9 @@ from django.shortcuts import get_object_or_404
 
 from ...vinculacion.models import Entidad, Informe_vinculacion
 
+import StringIO
+import zipfile
+
 PAGE_HEIGHT=A4[1]; PAGE_WIDTH=A4[0]
 styles = getSampleStyleSheet()
 
@@ -220,29 +223,31 @@ def periodo(registros):
 
 #################
 
-def primeraPagina2(c, doc):
+def primeraPagina2(c, doc, titulo, fondo=True):
     c.saveState()
     c.setFont('Helvetica-Bold', 12)
     c.drawImage(settings.STATIC_ROOT+'/images/logo_vinculacion.png', inch-10, PAGE_HEIGHT-inch*1.6, width=75, height=70)
     c.drawImage(settings.STATIC_ROOT+'/images/institucion2.png', PAGE_WIDTH-inch*3, PAGE_HEIGHT-inch*1.5, width=150, height=50)
     image_width, image_height = 75*8, 70*8
-    c.drawImage(settings.STATIC_ROOT+'/images/logo_vinculacion.png', PAGE_WIDTH/2-image_width/2, PAGE_HEIGHT/2-image_height/2, width=image_width, height=image_height, mask=[-3,-3,-3,-3,-3,-3])
-    c.drawCentredString(PAGE_WIDTH/2, PAGE_HEIGHT-150, 'INFORMES DE AVANCES DE PROYECTOS DE VINCULACIÓN')
+    if fondo:
+        c.drawImage(settings.STATIC_ROOT+'/images/logo_vinculacion.png', PAGE_WIDTH/2-image_width/2, PAGE_HEIGHT/2-image_height/2, width=image_width, height=image_height, mask=[-3,-3,-3,-3,-3,-3])
+    c.drawCentredString(PAGE_WIDTH/2, PAGE_HEIGHT-150, titulo)
     c.setFont('Times-Roman', 11)
     c.drawRightString(PAGE_WIDTH-inch, 0.75*inch, 'Pagina {}'.format(1))
     c.restoreState()
 
-def siguientePagina2(c, doc):
+def siguientePagina2(c, doc, fondo=True):
     c.saveState()
     c.setFont('Times-Roman', 11)
     image_width, image_height = 75*8, 70*8
-    c.drawImage(settings.STATIC_ROOT+'/images/logo_vinculacion.png', PAGE_WIDTH/2-image_width/2, PAGE_HEIGHT/2-image_height/2, width=image_width, height=image_height, mask=[-3,-3,-3,-3,-3,-3])
+    if fondo:
+        c.drawImage(settings.STATIC_ROOT+'/images/logo_vinculacion.png', PAGE_WIDTH/2-image_width/2, PAGE_HEIGHT/2-image_height/2, width=image_width, height=image_height, mask=[-3,-3,-3,-3,-3,-3])
     c.drawRightString(PAGE_WIDTH-inch, 0.75*inch, 'Pagina {}'.format(doc.page))
     c.restoreState()
 
-def cab_table(story, enc):
+def cab_table(story, enc, align=TA_LEFT):
     data = [
-        [Paragraph(enc, _hb(10))],
+        [Paragraph(enc, _hb(10, align))],
     ]
     t = Table(data, colWidths=450)
     t.setStyle(TableStyle([
@@ -262,7 +267,8 @@ def informacionX(story, inf):
         ('BACKGROUND', (0,0), (-1,-1), colors.white),
         ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
         ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-        ('VALIGN', (0, 0), (0, -1), 'TOP'),
+        ('VALIGN',(0,0),(-1,-1),'CENTER'), # eje x
+        ('ALIGN',(0,0),(-1,-1),'CENTER'), # eje y
     ]))
     story.append(t)
 
@@ -298,8 +304,29 @@ def informacion2(story, inf):
     ]))
     story.append(t)
 
+def informacion3(story, inf):
+    if inf.get('align'):
+        cab_table(story, inf['enc'], inf['align'])
+    else:
+        cab_table(story, inf['enc'])
+    data = ['']
+    for i in range(len(inf['obj'])):
+        data.append(['', Paragraph(u'- {}'.format(inf['obj'][i]), _h(10)), ''])
+    for i in range(len(inf['rsm'])):
+        data.append(['', Paragraph('- {}'.format(inf['rsm'][i]), _h(10))])
+    data.append([''])
+    t = Table(data, colWidths=inf['dim'])
+    t.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.white),
+        ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+    ]))
+    story.append(t)
+
 def informacionY(story, inf):
-    cab_table(story, inf['enc'])
+    if inf.get('align'):
+        cab_table(story, inf['enc'], inf['align'])
+    else:
+        cab_table(story, inf['enc'])
     aux, data = [], []
     for i in range(len(inf['data'])):
         aux.append(Paragraph(inf['data'][i], _hb(10)))
@@ -320,7 +347,7 @@ def informacionY(story, inf):
     story.append(t)
 
 def firmas(story, inf):
-    aux, data = [], []
+    aux, data = [], [['' '', ''],['' '', ''],[Paragraph('...................................................................', _h(9, TA_CENTER)), '', Paragraph('.......................................................................', _h(9, TA_CENTER))]]
     for i in range(len(inf['nombre'])):
         aux = []
         for x in range(len(inf['nombre'][i])):
@@ -335,6 +362,7 @@ def firmas(story, inf):
     t.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1, -1), 'TOP'),
         ('ALIGN',(0,-1),(-1,-1),'CENTER'),
+        ('BACKGROUND', (0,0), (-1,-1), colors.white),
     ]))
     story.append(t)
 
@@ -409,8 +437,9 @@ def componentes(componente):
     story.append(Spacer(1, 20))
     if componente.recursos_humanos.all():
         inf = {
+            'align': TA_CENTER,
             'enc'  :'RECURSOS HUMANOS',
-            'data' :['Cantidad', 'Nombre del recurso', 'Descripción', 'Valor Unitario', 'Valor Total'],
+            'data' :['Cant.', 'Nombre del recurso', 'Descripción', 'Valor Unitario', 'Valor Total'],
             'info' :[[u'{}'.format(recurso.cantidad), u'{}'.format(recurso.nombre), u'{}'.format(recurso.descripcion), u'{}'.format(recurso.unitario), u'{}'.format(recurso.total)] for recurso in componente.recursos_humanos.all()],
             'dim'  :[55, 145, 150, 50, 50]
         }
@@ -418,6 +447,7 @@ def componentes(componente):
 
     if componente.recursos_financieros.all():
         inf = {
+            'align': TA_CENTER,
             'enc'  :'RECURSOS FINANCIEROS',
             'data' :['Cantidad', 'Nombre del recurso', 'Descripción', 'Valor Unitario', 'Valor Total'],
             'info' :[[u'{}'.format(recurso.cantidad), u'{}'.format(recurso.nombre), u'{}'.format(recurso.descripcion), u'{}'.format(recurso.unitario), u'{}'.format(recurso.total)] for recurso in componente.recursos_financieros.all()],
@@ -427,6 +457,7 @@ def componentes(componente):
 
     if componente.recursos_materiales.all():
         inf = {
+            'align': TA_CENTER,
             'enc'  :'RECURSOS MATERIALES',
             'data' :['Cantidad', 'Nombre del recurso', 'Descripción', 'Valor Unitario', 'Valor Total'],
             'info' :[[u'{}'.format(recurso.cantidad), u'{}'.format(recurso.nombre), u'{}'.format(recurso.descripcion), u'{}'.format(recurso.unitario), u'{}'.format(recurso.total)] for recurso in componente.recursos_materiales.all()],
@@ -436,6 +467,7 @@ def componentes(componente):
 
     if componente.recursos_tecnologicos.all():
         inf = {
+            'align': TA_CENTER,
             'enc'  :'RECURSOS TECNOLOGICOS',
             'data' :['Cantidad', 'Nombre del recurso', 'Descripción', 'Valor Unitario', 'Valor Total'],
             'info' :[[u'{}'.format(recurso.cantidad), u'{}'.format(recurso.nombre), u'{}'.format(recurso.descripcion), u'{}'.format(recurso.unitario), u'{}'.format(recurso.total)] for recurso in componente.recursos_tecnologicos.all()],
@@ -457,7 +489,7 @@ def componentes(componente):
         }
     firmas(story, inf)
 
-    doc.build(story, onFirstPage=primeraPagina2, onLaterPages=siguientePagina2)
+    doc.build(story, onFirstPage=partial(primeraPagina2, titulo='INFORMES DE AVANCES DE PROYECTOS DE VINCULACIÓN'), onLaterPages=siguientePagina2)
     response.write(buff.getvalue())
     buff.close()
     return response
@@ -627,6 +659,195 @@ def evaluacion(componente):
     buff.close()
     return response
 
+def actividad(actividad):
+    response = HttpResponse(content_type='application/pdf')
+    pdf_name = "Reporte Componente"
+    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    buff = BytesIO()
+    doc = SimpleDocTemplate(
+        buff, 
+        pagesize=A4,
+        title='DR_Reports',
+        author='dannyrs'
+    ) # Crear un doc
+    story = [Spacer(1,inch*1.3)]
+    data = [
+        [Paragraph('TEMA:', _hb(10)), Paragraph(u'{}'.format(actividad.nombre), _h(10))],
+        [Paragraph('CARRERA:', _hb(10)), Paragraph(u'{}'.format(actividad.carrera), _h(10))],
+        [Paragraph('RESPONSABLE:', _hb(10)), Paragraph(u'{}'.format(actividad.responsable.perfil.docente.get_full_name()), _h(10))],
+        [Paragraph('FECHA:', _hb(10)), Paragraph(u'{} - {}'.format(actividad.inicio.strftime('%d/%m/%Y'), actividad.fin.strftime('%d/%m/%Y')), _h(10))],
+    ]
+    t = Table(data, colWidths=[100, 350])
+    t.setStyle(TableStyle([
+       ('VALIGN', (0,0), (-1, -1), 'TOP'),
+       ('BACKGROUND', (0,0), (-1,-1), colors.white),
+    ]))
+    story.append(t)
+
+    story.append(Spacer(1, 12))
+    inf = {
+        'enc'  :'I. INFORMACION DE LA ORGANIZACION',
+        'data' :['Direccion',u'Teléfono','Fax', 'Email', 'Persona de contacto'],
+        'info' :[
+            u'{}'.format(actividad.entidad.nombre), 
+            u'{}'.format(actividad.entidad.telefono), 
+            u'{}'.format(actividad.entidad.fax or ''), 
+            u'{}'.format(actividad.entidad.correo), 
+            u'{}'.format(actividad.entidad.encargado)
+        ],
+        'dim'  :[120, 330]
+    }
+    informacionX(story, inf)
+
+    story.append(Spacer(1, 20))
+    inf = {
+        'enc'  :'II. IDENTIFICACIÓN DEL PROYECTO',
+        'data' :['Nombre de la Actividad'],
+        'info' :[u'{}'.format(actividad.nombre)],
+        'dim'  :[120, 330]
+    }
+    informacionX(story, inf)
+
+    story.append(Spacer(1, 20))
+    inf = {
+        'enc' :'III. ESTUDIANTES INVOLUCRADOS',
+        'obj' :[u'{}'.format(evaluacion.estudiante.get_full_name()) for evaluacion in actividad.evaluaciones.all()],
+        'rsm' :[],
+        'dim' :[30, 390, 30]
+    }
+    informacion3(story, inf)
+
+    story.append(Spacer(1, 20))
+    inf = {
+        'enc'  :u'IV. DESCRIPCIÓN',
+        'data' :u'{}'.format(actividad.descripcion),
+        'dim'  :[30, 390, 30]
+    }
+    informacion1(story, inf)
+
+    story.append(Spacer(1, 20))
+    inf = {
+        'enc'  :u'V. JUSTIFICACIÓN',
+        'data' :u'{}'.format(actividad.justificacion),
+        'dim'  :[30, 390, 30]
+    }
+    informacion1(story, inf)
+
+    story.append(Spacer(1, 20))
+    cab_table(story, u'VI. DESCRIPCIÓN DE LAS ACTIVIDADES PROGRAMADAS  REALIZADAS')
+
+    story.append(Spacer(1, 20))
+    inf = {
+        'align': TA_CENTER,
+        'enc' :u'OBJETIVOS GENERALES',
+        'obj' :[u'{}'.format(value.nombre) for value in actividad.objetivos_generales.all()],
+        'rsm' :[],
+        'dim' :[30, 390, 30]
+    }
+    informacion3(story, inf)
+    inf = {
+        'align': TA_CENTER,
+        'enc' :u'OBJETIVOS ESPECÍFICOS',
+        'obj' :[u'{}'.format(value.nombre) for evaluacion in actividad.objetivos_especificos.all()],
+        'rsm' :[],
+        'dim' :[30, 390, 30]
+    }
+    informacion3(story, inf)
+    inf = {
+        'align': TA_CENTER,
+        'enc' :u'ACTIVIDADES',
+        'obj' :[u'{}'.format(value.nombre) for evaluacion in actividad.actividades_ac.all()],
+        'rsm' :[],
+        'dim' :[30, 390, 30]
+    }
+    informacion3(story, inf)
+    
+    story.append(Spacer(1, 20))
+
+    inf = {
+        'cargo':[[u'RESPONSABLE DE VINCULACION CON LA SOCIEDAD CARRERA DE {}'.format(actividad.carrera.nombre).upper(), '', u'RESPONSABLE DE {}'.format(actividad.carrera.nombre).upper()]],
+        'nombre' :[[u'{}'.format(actividad.responsable.get_full_name()).upper(), '', u'{}'.format(actividad.entidad.encargado).upper()]],
+        'dim'  :[220, 40, 210] #400
+    }
+    firmas(story, inf)
+
+    doc.build(story, onFirstPage=partial(primeraPagina2, titulo=u'VINCULACIÓN CON LA COLECTIVIDAD', fondo=False), onLaterPages=partial(siguientePagina2, fondo=False))
+    response.write(buff.getvalue())
+    buff.close()
+    return response
+
+def evaluacion2(actividad):
+    response = HttpResponse(content_type='application/pdf')
+    pdf_name = "Reporte Actividad"
+    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    buff = BytesIO()
+    doc = SimpleDocTemplate(
+        buff, 
+        pagesize=landscape(A4),
+        title='DR_Reports',
+        author='dannyrs'
+    ) # Crear un doc
+    story = []
+    coordinador = actividad.carrera.coordinadores.filter(estado=True).first()
+    if coordinador:
+        coordinador = actividad.carrera.coordinadores.filter(estado=True).first().docente.get_full_name()
+    inf = {
+        'data' :[u'Nombre del Proyecto/Actividad', u'Institución y/o entidad beneficiaria', u'Responsable Institución y/o entidad beneficiaria', u'Responsable ITSS', u'Carrera', u'Fecha de ejecución'],
+        'info' :[
+            u'{}'.format(actividad.nombre),
+            u'{}'.format(actividad.entidad.nombre),
+            u'{}'.format(actividad.entidad.encargado),
+            u'{}'.format(coordinador or '-----'),
+            u'{}'.format(actividad.carrera.nombre),
+            u'{} - {}'.format(actividad.inicio.strftime('%d/%m/%Y'), actividad.fin.strftime('%d/%m/%Y'))
+        ],
+        'dim'  :[225, 525]
+    }
+    encabezado(story, inf, 9, 10)
+    
+    story.append(Spacer(1, 5))
+    inf = []
+    i = 0
+    for evaluacion in actividad.evaluaciones.all():
+        i += 1
+        inf.append([
+            u'{}'.format(i),
+            u'{}'.format(evaluacion.estudiante.get_full_name().upper()),
+            u'{}'.format(evaluacion.estudiante.cedula),
+            u'{} - {}'.format(evaluacion.fecha_inicio.strftime('%d/%m/%Y'), evaluacion.fecha_fin.strftime('%d/%m/%Y')),
+            u'{}'.format(evaluacion.hora_entrada.strftime('%H:%M')),
+            u'{}'.format(evaluacion.hora_salida.strftime('%H:%M')),
+            u'{}'.format(evaluacion.total_horas),
+            u'{}'.format(evaluacion.puntualidad),
+            u'{}'.format(evaluacion.asistencia),
+            u'{}'.format(evaluacion.actitud),
+            u'{}'.format(evaluacion.cumplimiento),
+            u'{}'.format(evaluacion.aplicacion),
+            u'{}'.format(evaluacion.satisfaccion),
+            u'{}'.format(evaluacion.promedio),
+            u'{}'.format('')
+        ])
+    tabla2(story, inf)
+
+    story.append(Spacer(1, 60))
+    coordinador = actividad.carrera.coordinadores.filter(estado=True).first()
+    docente = '-------'
+    if coordinador:
+        coordinador = coordinador.carrera.nombre
+        docente = coordinador.docente.get_full_name()
+    responsable = actividad.responsable.perfil.docente
+    inf = {
+            'cargo':[[u'COORDINACIÓN DE LA CARRERA DE {}'.format(coordinador or '-----').upper(), '', u'COORDINADOR DE {}'.format(actividad.entidad.nombre), '', u'RESPONSABLE DE VINCULACION CON SOCIEDAD CARRERA DE {}'.format(actividad.carrera.nombre).upper()]],
+            'nombre' :[[u'{}'.format(docente).upper(), '', u'{}'.format(actividad.entidad.encargado).upper(), '', u'{}'.format(responsable.get_full_name()).upper()]],
+            'dim'  :[220, 30, 220, 30, 220] #400
+        }
+    firmas(story, inf)
+
+    doc.build(story, onFirstPage=primeraPagina3, onLaterPages=siguientePagina3)
+    response.write(buff.getvalue())
+    buff.close()
+    return response
+
 #################
 
 def convenio(slug):
@@ -658,6 +879,32 @@ def convenio(slug):
     jinja_env = jinja2.Environment(autoescape=True)
     tpl.render(context, jinja_env)
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-    response['Content-Disposition'] = 'attachment; filename=convenio {}.docx'.format(entidad.nombre)
+    response['Content-Disposition'] = u'attachment; filename=convenio {}.docx'.format(entidad.nombre)
     tpl.save(response)
+    return response
+
+##### Evidencias
+def evidencia_proyecto(data):
+    s = StringIO.StringIO()
+    zf = zipfile.ZipFile(s, "w")
+    for evidencia in data.evidencias_proyecto.all():
+        name = evidencia.imagen.name.split("/")[-1]
+        url = settings.MEDIA_ROOT+'/'+evidencia.imagen.name
+        zf.write(url.encode('utf-8').strip(), name)
+    zf.close()
+    response = HttpResponse(s.getvalue(), content_type="application/zip")
+    response['Content-Disposition'] = u'attachment; filename=evidencia_{}.zip'.format(data.nombre)
+    return response
+
+
+def evidencia_actividad(data):
+    s = StringIO.StringIO()
+    zf = zipfile.ZipFile(s, "w")
+    for evidencia in data.evidencias_actividades.all():
+        name = evidencia.imagen.name.split("/")[-1]
+        url = settings.MEDIA_ROOT+'/'+evidencia.imagen.name
+        zf.write(url.encode('utf-8').strip(), name)
+    zf.close()
+    response = HttpResponse(s.getvalue(), content_type="application/zip")
+    response['Content-Disposition'] = u'attachment; filename=evidencia_{}.zip'.format(data.nombre)
     return response

@@ -62,6 +62,7 @@ class Actividad_vinculacion(models.Model):
     carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE, related_name='actividades_vinculacion')
     entidad = models.ForeignKey(Entidad, on_delete=models.CASCADE, related_name='actividades_vinculacion')
     slug = models.SlugField(max_length=50, blank=True)
+    descripcion = models.TextField(_(u'Descripción'))
     justificacion = models.TextField(_(u'Justificación'))
     responsable = models.ForeignKey(User, on_delete=models.CASCADE, related_name='actividades_vinculacion')
 
@@ -93,6 +94,16 @@ class Actividad_Ac(models.Model):
 
     def __unicode__(self):
         return u'{}'.format(self.nombre)
+
+def generate_evidencia_actividad(instance, filename):
+    return 'actividades/{0}/{1}'.format(instance.actividad.nombre, filename)
+
+class Evidencia_actividad(models.Model):
+    actividad = models.ForeignKey(Actividad_vinculacion, on_delete=models.CASCADE, related_name='evidencias_actividades')
+    imagen = models.ImageField(upload_to=generate_evidencia_actividad, max_length=200)
+
+    def __unicode__(self):
+        return '{}'.format(self.imagen.url)
 
 ########## Proyecto de Vinculacion
 class Proyecto_vinculacion(models.Model):
@@ -171,7 +182,8 @@ class Recurso_tecnologico(Recurso):
     componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='recursos_tecnologicos')
 
 class Evaluacion(models.Model):
-    componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='evaluaciones')
+    componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='evaluaciones', blank=True, null=True)
+    actividad = models.ForeignKey(Actividad_vinculacion, on_delete=models.CASCADE, related_name='evaluaciones', blank=True, null=True)
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE, related_name='evaluaciones')
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()

@@ -178,13 +178,22 @@
                             <li><a href="{% url 'vinculacion:reporte_periodo' %}">Registro por periodo</a></li>
                             {% endif %}
                             {% if perms.vinculacion.reporte_registro_proyectos %}
-                            <li><a href="{% url 'vinculacion:reporte_componente' %}">Registro por componente</a></li>
+                            <li><a href="{% url 'vinculacion:reporte_componente' %}">Componentes de proyecto</a></li>
+                            <li><a href="{% url 'vinculacion:reporte_actividad' %}">Actividades</a></li>
                             {% endif %}
                         </ul>
                     </li> 
                     {% endif %}
 
                     {% endif %} <!-- Not SuperUser -->
+
+                    {% if user.is_superuser %}
+                    <li><a><i class="fa fa-list-alt"></i> <strong>Respaldos</strong> <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="{% url 'registro:backup_server' %}">Server</a></li>
+                        </ul>
+                    </li> 
+                    {% endif %}
                 </ul>
             </div>
 

@@ -1,7 +1,7 @@
 # coding: utf-8
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from .models import Componente, Proyecto_vinculacion
+from .models import Componente, Proyecto_vinculacion, Actividad_vinculacion
 from ..registros.models import Estudiante
 import time
 from django.conf import settings
@@ -64,3 +64,13 @@ class ComponenteReporteForm(forms.Form):
         for key in self.fields:
             self.fields[key].widget.attrs.update({'class' : 'form-control search_select'})
         self.fields['registro'].queryset = Proyecto_vinculacion.objects.all()
+
+class ActividadReporteForm(forms.Form):
+    registro = forms.ModelChoiceField(queryset=Proyecto_vinculacion.objects.none())
+    reporte = AjaxChoiceField(choices=((None, '---------'),))
+
+    def __init__(self, *args, **kwargs):
+        super(ActividadReporteForm, self).__init__(*args, **kwargs)
+        for key in self.fields:
+            self.fields[key].widget.attrs.update({'class' : 'form-control search_select'})
+        self.fields['registro'].queryset = Actividad_vinculacion.objects.all()

@@ -282,6 +282,18 @@ def ajax_empresa_estudiante(request):
     raise Http404
 
 @login_required
+def ajax_entidad_estudiante(request):
+    if request.is_ajax():
+        entidades = Entidad.objects.filter(carreras=request.POST.get('pk'))
+        estudiantes = Estudiante.objects.filter(carrera=request.POST.get('pk'))
+        context = {
+            'entidades' : [{'id':entidad.id, 'nombre':entidad.__unicode__()} for entidad in entidades],
+            'estudiantes': [{'id':estudiante.id, 'nombre':estudiante.__unicode__()} for estudiante in estudiantes]
+        }
+        return JsonResponse(context)
+    raise Http404
+
+@login_required
 def ajax_evidencia_estudiante(request):
     if request.is_ajax():
         estudiante = get_object_or_404(Estudiante, id=request.POST.get('id'))
@@ -307,6 +319,23 @@ def error(request):
     }
     return render(request, 'formulario.html', context)
     
+def backup_server(request):
+    from django.http import HttpResponse
+    from django.conf import settings
+    import StringIO
+    import zipfile
+    from os import listdir
+    s = StringIO.StringIO()
+    zf = zipfile.ZipFile(s, "w")
+    list_backups = listdir(settings.PATH_BACKUP)
+    for archivo in list_backups:
+        name = archivo
+        url = settings.PATH_BACKUP+'/'+archivo
+        zf.write(url.encode('utf-8').strip(), name)
+    zf.close()
+    response = HttpResponse(s.getvalue(), content_type="application/zip")
+    response['Content-Disposition'] = u'attachment; filename=evidencia_{}.zip'.format(list_backups[-1])
+    return response
 
 ### Funciones que solo sirven en desarrollo
 @login_required

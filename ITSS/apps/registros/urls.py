@@ -27,10 +27,12 @@ urlpatterns += [
 # Otros
 urlpatterns += [
     url(r'^web_services/$', views.web_services, name='web_services'),
+    url(r'^backup_server/$', views.backup_server, name='backup_server'),
     url(r'^ajax_docente/$', views.ajax_docente, name='ajax_docente'),
     url(r'^ajax_estudiante/$', views.ajax_estudiante, name='ajax_estudiante'),
     url(r'^ajax_entidad/$', views.ajax_entidad, name='ajax_entidad'),
     url(r'^ajax_empresa_estudiante/$', views.ajax_empresa_estudiante, name='ajax_empresa_estudiante'),
+    url(r'^ajax_entidad_estudiante/$', views.ajax_entidad_estudiante, name='ajax_entidad_estudiante'),
     url(r'^ajax_evidencia_estudiante/$', views.ajax_evidencia_estudiante, name='ajax_evidencia_estudiante'),
     url(r'^error/$', views.error, name='error'),
 ]

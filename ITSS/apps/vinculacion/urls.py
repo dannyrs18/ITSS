@@ -28,6 +28,7 @@ urlpatterns += [
     url(r'^reporte_entidades/$', views.reporte_entidades, name='reporte_entidades'),
     url(r'^reporte_periodo/$', views.reporte_periodo, name='reporte_periodo'),
     url(r'^reporte_componente/$', views.reporte_componente, name='reporte_componente'),
+    url(r'^reporte_actividad/$', views.reporte_actividad, name='reporte_actividad'),
     url(r'^ajax_evidencia_entidad/$', views.ajax_evidencia_entidad, name='ajax_evidencia_entidad'),
     url(r'^ajax_reporte_componente/$', views.ajax_reporte_componente, name='ajax_reporte_componente'),
 ]

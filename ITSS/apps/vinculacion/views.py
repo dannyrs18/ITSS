@@ -89,17 +89,36 @@ def crear_componente(request, slug):
 @transaction.atomic
 def crear_actividad(request):
     actividad = Actividad_vinculacion()
-    form = forms_create.ActividadProyectoForm(request.POST or None, request.FILES or None)
+    form = forms_create.ActividadProyectoForm(request.user, request.POST or None, request.FILES or None)
+    form2 = forms_create.EvidenciaActividadForm(request.POST or None, request.FILES or None)
     formset = forms_create.ObjetivoEspecificoFormset(request.POST or None, request.FILES or None, instance=actividad, prefix='objetivo_especifico')
     formset1 = forms_create.ObjetivogeneralFormset(request.POST or None, request.FILES or None, instance=actividad, prefix='objetivo_general')
     formset2 = forms_create.ActividadAcFormset(request.POST or None, request.FILES or None, instance=actividad, prefix='actividadAc')
-    if form.is_valid() and formset.is_valid() and formset1.is_valid() and formset2.is_valid():
-        pass
+    formset3 = forms_create.Evaluacion2Formset(request.POST or None, request.FILES or None, form_kwargs={'user':request.user, 'carrera': request.POST.get('carrera')}, instance=actividad, prefix='evaluacion')
+    if form.is_valid() and form2.is_valid() and formset.is_valid() and formset1.is_valid() and formset2.is_valid() and formset3.is_valid():
+        actividad = form.save(request.user)
+        formset = forms_create.ObjetivoEspecificoFormset(request.POST, request.FILES, instance=actividad, prefix='objetivo_especifico')
+        formset1 = forms_create.ObjetivogeneralFormset(request.POST, request.FILES, instance=actividad, prefix='objetivo_general')
+        formset2 = forms_create.ActividadAcFormset(request.POST, request.FILES, instance=actividad, prefix='actividadAc')
+        formset3 = forms_create.Evaluacion2Formset(request.POST, request.FILES, form_kwargs={'user':request.user, 'carrera': request.POST.get('carrera')}, instance=actividad, prefix='evaluacion')
+        if formset.is_valid() and formset1.is_valid() and formset2.is_valid() and formset3.is_valid():
+            form2.save(request.FILES.getlist('imagenes'), actividad)
+            formset.save()
+            formset1.save()
+            formset2.save()
+            formset3.save()
+            messages.success(request, u'Se ha completado exitosamente!.')
+            return redirect('index')
+    elif request.POST:
+        messages.error(request, u'Valores ingresados incorrectos dentro del formulario.')
     context = {
         'form': form,
+        'form2': form2,
         'formset': formset,
         'formset1': formset1,
         'formset2': formset2,
+        'formset3': formset3,
+        'title': 'ACTIVIDAD'
     }
     return render(request, 'formularios/vinculacion_actividad.html', context)
 
@@ -235,7 +254,8 @@ def reporte_componente(request):
             response = reporte_vinculacion.evaluacion(componente)
             return response
         elif form.cleaned_data.get('reporte')=='3':
-            pass
+            response = reporte_vinculacion.evidencia_proyecto(componente)
+            return response
         else:
             raise Http404
     form = forms.ComponenteReporteForm()
@@ -244,6 +264,26 @@ def reporte_componente(request):
         'title': 'REPORTE POR COMPONENTE'
     }
     return render(request, 'formularios/reporte_componente.html', context)
+
+def reporte_actividad(request):
+    form = forms.ActividadReporteForm(request.POST or None)
+    if form.is_valid():
+        registro = get_object_or_404(Actividad_vinculacion, pk=form.cleaned_data.get('registro').id)
+        if form.cleaned_data.get('reporte')=='1':
+            response = reporte_vinculacion.actividad(registro)
+            return response
+        elif form.cleaned_data.get('reporte')=='2':
+            response = reporte_vinculacion.evaluacion2(registro)
+            return response
+        elif form.cleaned_data.get('reporte')=='3':
+            response = reporte_vinculacion.evidencia_actividad(registro)
+            return response
+        else:
+            raise Http404
+    context = {
+        'form': form
+    }
+    return render(request, 'formularios/reporte_actividad.html', context)
 
 @login_required
 def ajax_evidencia_entidad(request):

@@ -220,7 +220,7 @@ class EvaluacionForm(forms.ModelForm):
     fecha_fin = forms.DateField(widget=DateInput)
     class Meta:
         mode = models.Evaluacion
-        fields = '__all__'
+        exclude = ('actividad', )
     
     def __init__(self, componente, *args, **kwargs):
         super(EvaluacionForm, self).__init__(*args, **kwargs)
@@ -245,17 +245,44 @@ class EvidenciaProyectoForm(forms.Form):
             models.Evidencia_proyecto.objects.create(componente=componente, imagen=imagen)
 
 class ActividadProyectoForm(forms.ModelForm):
+    inicio = forms.DateField(label=_(u'Fecha de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
+    fin = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
     class Meta:
         model = models.Actividad_vinculacion
-        fields = ('nombre', 'carrera', 'entidad', 'justificacion', 'inicio', 'fin')
+        fields = ('nombre', 'carrera', 'entidad', 'descripcion', 'justificacion', 'inicio', 'fin')
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(ActividadProyectoForm, self).__init__(*args, **kwargs)
         for key in self.fields:
             self.fields[key].widget.attrs.update({'class' : 'form-control'})
         self.fields['justificacion'].widget.attrs.update({'rows' : 3})
+        self.fields['descripcion'].widget.attrs.update({'rows' : 3})
         self.fields['inicio'].widget.attrs.update({'class' : 'form-control fecha'})
         self.fields['fin'].widget.attrs.update({'class' : 'form-control fecha'})
+        self.fields['entidad'].widget.attrs.update({'class' : 'form-control search_select'})
+        self.fields['carrera'].widget.attrs.update({'class' : 'form-control search_select'})
+        if user.has_perm('registros.resp_vinc'):
+            del self.fields['carrera']
+            self.fields['entidad'].queryset = models.Entidad.objects.filter(carreras=user.perfil.carrera) # estado
+        elif user.has_perm('registros.admin_vinc'):
+            self.fields['entidad'].queryset = models.Entidad.objects.none()
+            if self.data.get('carrera', ''):
+                try:
+                    carrera_id = self.data.get('carrera')
+                    self.fields['entidad'].queryset = models.Entidad.objects.filter(carreras=carrera_id).order_by('nombre')
+                except (ValueError, TypeError):
+                    pass  # invalid input from the client; ignore and fallback to empty City queryset
+            elif self.instance.pk:
+                self.fields['entidad'].queryset = self.instance.carrera.entidades.order_by('nombre')
+
+    def save(self, user, commit=True):
+        data = super(ActividadProyectoForm, self).save(commit=False)
+        data.responsable=user
+        data.save()
+        if user.has_perm('registros.resp_vinc'):
+            data.carrera = user.perfil.carrera
+        data.save()
+        return data
 
 class ObjetivoEspecificoForm(forms.ModelForm):
     class Meta:
@@ -277,7 +304,7 @@ class ObjetivoGeneralForm(forms.ModelForm):
         super(ObjetivoGeneralForm, self).__init__(*args, **kwargs)
         self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows': 3})
 
-ObjetivogeneralFormset = inlineformset_factory(models.Actividad_vinculacion, models.Objetivo_Especifico, form=ObjetivoGeneralForm, extra=1)
+ObjetivogeneralFormset = inlineformset_factory(models.Actividad_vinculacion, models.Objetivo_General, form=ObjetivoGeneralForm, extra=1)
 
 class ActividadAcForm(forms.ModelForm):
     class Meta:
@@ -289,3 +316,47 @@ class ActividadAcForm(forms.ModelForm):
         self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows': 3})
 
 ActividadAcFormset = inlineformset_factory(models.Actividad_vinculacion, models.Actividad_Ac, form=ActividadAcForm, extra=1)
+
+class Evaluacion2Form(forms.ModelForm):
+    hora_entrada = forms.TimeField(widget=TimeInput)
+    hora_salida = forms.TimeField(widget=TimeInput)
+    fecha_inicio = forms.DateField(widget=DateInput)
+    fecha_fin = forms.DateField(widget=DateInput)
+    class Meta:
+        mode = models.Evaluacion
+        exclude = ('componente', )
+    
+    def __init__(self, user, carrera, *args, **kwargs):
+        self.carrera = carrera
+        super(Evaluacion2Form, self).__init__(*args, **kwargs)
+        for key in self.fields:
+            self.fields[key].widget.attrs.update({'class' : 'form-control'})
+        self.fields['puntualidad'].widget.attrs.update({'onkeyup':"asistencia(this.id, 'puntualidad');"})
+        self.fields['asistencia'].widget.attrs.update({'onkeyup':"asistencia(this.id, 'asistencia');"})
+        self.fields['actitud'].widget.attrs.update({'onkeyup':"asistencia(this.id, 'actitud');"})
+        self.fields['cumplimiento'].widget.attrs.update({'onkeyup':"asistencia(this.id, 'cumplimiento');"})
+        self.fields['aplicacion'].widget.attrs.update({'onkeyup':"asistencia(this.id, 'aplicacion');"})
+        self.fields['satisfaccion'].widget.attrs.update({'onkeyup':"asistencia(this.id, 'satisfaccion');"})
+        self.fields['promedio'].widget.attrs.update({'readonly' : 'readonly'})
+        if user.has_perm('registros.resp_vinc'):
+            self.fields['estudiante'].queryset = Estudiante.objects.filter(carrera=user.perfil.carrera)
+
+    def clean(self, *args, **kwargs):
+        cleaned_data = super(Evaluacion2Form, self).clean(*args, **kwargs)
+        print type((self.carrera))
+        print type(cleaned_data.get('estudiante').carrera.id)
+        if self.carrera:
+            if not cleaned_data.get('estudiante').carrera.id == int(self.carrera):
+                self.add_error('estudiante', u'El estudiante no pertenece a la carrera')
+                print 'True'
+        if cleaned_data.get('fecha_inicio') >= cleaned_data.get('fecha_fin'):
+            self.add_error('fecha_fin', u'La fecha de finalización debe ser mayor a la de inicio')
+
+Evaluacion2Formset = inlineformset_factory(models.Actividad_vinculacion, models.Evaluacion, form=Evaluacion2Form, extra=1)
+
+class EvidenciaActividadForm(forms.Form):
+    imagenes = forms.ImageField(label=_(u'Evidencia Fotografica'), widget=forms.FileInput(attrs={'class':"form-control", 'multiple': True}), required=True)
+
+    def save(self, imagenes, actividad):
+        for imagen in imagenes:
+            models.Evidencia_actividad.objects.create(actividad=actividad, imagen=imagen)
