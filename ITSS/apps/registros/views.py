@@ -309,9 +309,12 @@ def ajax_evidencia_estudiante(request):
 def error(request):
     form = ErrorForm(request.POST or None, request.FILES or None)
     if form.is_valid():
-        form.save(request.user)
-        messages.success(request, u'Mensaje enviado.')
-        return redirect('index')
+        try:
+            form.save(request.user)
+            messages.success(request, u'Mensaje enviado.')
+            return redirect('index')
+        except :
+            messages.error(request, u'Conexión fallida!')
     elif request.POST:
         messages.error(request, u'Error al llenar el formulario.')
     context = {

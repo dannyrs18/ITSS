@@ -81,6 +81,8 @@ def responsable_vinculacion():
         Permission.objects.get(codename='view_reportes'),
         Permission.objects.get(codename='resp_vinc'),
         Permission.objects.get(codename='reporte_convenio_vinculacion'),
+        Permission.objects.get(codename='reporte_estudiante'),
+        Permission.objects.get(codename='reporte_registro_proyectos'),
         Permission.objects.get(codename='change_entidad'),
     )
     return perms

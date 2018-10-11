@@ -46,7 +46,7 @@ def primeraPagina(c, doc, titulo):
     c.drawImage(settings.STATIC_ROOT+'/images/vinculacion.png', (PAGE_WIDTH/2-240/2), 660, width=280, height=220, preserveAspectRatio=True)
     c.setFont('Helvetica-Bold', 14)
     c.drawString(cm*2, 705, titulo.upper())
-    c.drawRightString(PAGE_WIDTH-(cm*2), 705, '{}'.format(timezone.now().date()))
+    c.drawRightString(PAGE_WIDTH-(cm*2), 705, '{}'.format(timezone.now().date().strftime('%d-%m-%Y')))
     c.setFont('Times-Roman', 11)
     c.drawRightString(PAGE_WIDTH-(cm*2), 0.75*(cm*2), 'Pagina {}'.format(1))
     c.restoreState()
@@ -58,11 +58,11 @@ def siguientePagina(c, doc):
     c.drawRightString(PAGE_WIDTH-(cm*2), 0.75*(cm*2), 'Pagina {}'.format(doc.page))
     c.restoreState()
 
-def cab_table(story, enc, align=TA_LEFT):
+def cab_table(story, enc, align=TA_LEFT, size=450):
     data = [
         [Paragraph(enc, _hb(10, align))],
     ]
-    t = Table(data, colWidths=450)
+    t = Table(data, colWidths=size)
     t.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (0,0), colors.lavender),
         ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
@@ -73,7 +73,10 @@ def cab_table(story, enc, align=TA_LEFT):
 def encabezado(story, inf, hb=12, h=10):
     data = []
     for i in range(len(inf['data'])):
-        data.append([Paragraph(u'{}:'.format(inf['data'][i]), _hb(hb)), Paragraph(u'{}'.format(inf['info'][i]), _h(h))])
+        try:
+            data.append([Paragraph(u'{}:'.format(inf['data'][i]), _hb(hb)), Paragraph(u'{}'.format(inf['info'][i]), _h(h))])
+        except :
+            data.append([Paragraph(u'{}:'.format(inf['data'][i]), _hb(hb)), Paragraph(u'{}'.format('------------'), _h(h))])
     t = Table(data, colWidths=inf['dim'])
     t.setStyle(TableStyle([
     ('VALIGN', (0,0), (-1, -1), 'CENTER'),
@@ -89,7 +92,10 @@ def tabla(story, inf):
     for i in range(len(inf['info'])):
         aux = []
         for x in range(len(inf['info'][i])):
-            aux.append(Paragraph(u'{}'.format(inf['info'][i][x]), _h(10)))
+            try:
+                aux.append(Paragraph(u'{}'.format(inf['info'][i][x]), _h(10)))
+            except:
+                aux.append(Paragraph(u'{}'.format('----------'), _h(10)))
         data.append(aux)
     t = Table(data, colWidths=inf['dim'])
     t.setStyle(TableStyle([
@@ -126,14 +132,12 @@ def estudiantes(estudiante):
     }
     encabezado(story, inf)
 
-    story = [Spacer(1,13)]
-    cab_table(story, 'PROYECTOS')
-
     from django.db.models import Sum, Avg
 
     registros = []
     for evaluacion in estudiante.evaluaciones.all():
-        registros.append(evaluacion.componente.proyecto_vinculacion)
+        if evaluacion.componente:
+            registros.append(evaluacion.componente.proyecto_vinculacion)
 
     info = []
     for registro in set(registros):
@@ -153,9 +157,27 @@ def estudiantes(estudiante):
             fin = registro.componentes.all().last().fin
         info.append([u'{}'.format(registro.nombre), u'{}'.format(registro.inicio), u'{}'.format(fin), u'{0:.1f}'.format(promedio/contador), u'{}'.format(horas)])
 
+    story.append(Spacer(1, 10))
+    cab_table(story, 'PROYECTOS', TA_CENTER, 480)
     story.append(Spacer(1, 5))
     inf = {
         'data' :['PROYECTO', 'INICIO', u'CULMINA', u'CALIFICACIÓN', 'T. HORAS'],
+        'info' :info,
+        'dim'  :[200, 70, 70, 80, 60]
+    }
+    tabla(story, inf)
+
+    story.append(Spacer(1, 20))
+    cab_table(story, 'ACTIVIDADES', TA_CENTER, 480)
+
+    info=[]
+    for evaluacion in estudiante.evaluaciones.all():
+        if evaluacion.actividad:
+            info.append([u'{}'.format('---------'), u'{}'.format(evaluacion.fecha_inicio.strftime('%d-%m-%Y')), u'{}'.format(evaluacion.fecha_fin.strftime('%d-%m-%Y')), u'{}'.format(evaluacion.promedio), u'{}'.format(evaluacion.total_horas)])
+
+    story.append(Spacer(1, 5))
+    inf = {
+        'data' :['ACTIVIDAD', 'INICIO', u'CULMINA', u'CALIFICACIÓN', 'T. HORAS'],
         'info' :info,
         'dim'  :[200, 70, 70, 80, 60]
     }
@@ -205,7 +227,7 @@ def entidades(entidades):
     buff.close()
     return response
 
-def periodo(registros):
+def periodo(registros, actividades):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Periodo de Practicas"
     response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
@@ -221,18 +243,34 @@ def periodo(registros):
     for registro in registros:
         fin = '-----'
         if registro.componentes.all().last().estado == 0:
-            fin = registro.componentes.all().last().fin
-        info.append([u'{}'.format(registro.nombre), u'{}'.format(registro.entidad.nombre), u'{}'.format(registro.componentes.count()), u'{}'.format(registro.inicio), u'{}'.format(fin), u'{}'.format(registro.carrera.nombre)])
+            fin = registro.componentes.all().last().fin.strftime('%d-%m-%Y')
+        info.append([u'{}'.format(registro.nombre), u'{}'.format(registro.entidad.nombre), u'{}'.format(registro.componentes.count()), u'{}'.format(registro.inicio.strftime('%d-%m-%Y')), u'{}'.format(fin), u'{}'.format(registro.carrera.nombre)])
 
     story = [Spacer(1,inch*1.1)]
+
+    cab_table(story, 'PROYECTOS', TA_CENTER, 505)
+    story.append(Spacer(1, 5))
+
     inf = {
         'data' :['PROYECTO', 'ENTIDAD', 'COMP.', 'INICIO', 'CULMINA', 'CARRERA'],
         'info' :info,
         'dim'  :[140, 100, 45, 65, 65, 90] #400
     }
     tabla(story, inf)
+    story.append(Spacer(1, 20))
+    cab_table(story, 'ACTIVIDADES', TA_CENTER, 505)
+    story.append(Spacer(1, 5))
+    info = []
+    for actividad in actividades:
+        info.append([u'{}'.format(actividad.nombre), u'{}'.format(actividad.entidad.nombre), u'{}'.format(actividad.inicio.strftime('%d-%m-%Y')), u'{}'.format(actividad.fin.strftime('%d-%m-%Y')), u'{}'.format(actividad.carrera.nombre)],)
+    inf = {
+        'data' :['ACTIVIDAD', 'ENTIDAD', 'INICIO', 'CULMINA', 'CARRERA'],
+        'info' :info,
+        'dim'  :[160, 125, 65, 65, 90] #400
+    }
+    tabla(story, inf)
 
-    doc.build(story, onFirstPage=partial(primeraPagina, titulo='Reporte general de practicas'), onLaterPages=siguientePagina)
+    doc.build(story, onFirstPage=partial(primeraPagina, titulo='Reporte general por periodo'), onLaterPages=siguientePagina)
     response.write(buff.getvalue())
     buff.close()
     return response
@@ -265,7 +303,10 @@ def informacionX(story, inf):
     cab_table(story, inf['enc'])
     data = []
     for i in range(len(inf['data'])):
-        data.append([Paragraph(u'{}:'.format(inf['data'][i]), _hb(10)), Paragraph(u'{}'.format(inf['info'][i]), _h(10))])
+        try:
+            data.append([Paragraph(u'{}:'.format(inf['data'][i]), _hb(10)), Paragraph(u'{}'.format(inf['info'][i]), _h(10))])
+        except :
+            data.append([Paragraph(u'{}:'.format(inf['data'][i]), _hb(10)), Paragraph(u'{}'.format('---------------'), _h(10))])
     t = Table(data, colWidths=inf['dim'])
     t.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), colors.white),
@@ -278,11 +319,18 @@ def informacionX(story, inf):
 
 def informacion1(story, inf):
     cab_table(story, inf['enc'])
-    data = [
-        [''],
-        ['',Paragraph(u'{}'.format(inf['data']), _h(10)), ''],
-        ['']
-    ]
+    try:
+        data = [
+            [''],
+            ['',Paragraph(u'{}'.format(inf['data']), _h(10)), ''],
+            ['']
+        ]
+    except :
+        data = [
+            [''],
+            ['',Paragraph(u'{}'.format('----------'), _h(10)), ''],
+            ['']
+        ]
     t = Table(data, colWidths=inf['dim'])
     t.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), colors.white),
@@ -315,7 +363,10 @@ def informacion3(story, inf):
         cab_table(story, inf['enc'])
     data = ['']
     for i in range(len(inf['obj'])):
-        data.append(['', Paragraph(u'- {}'.format(inf['obj'][i]), _h(10)), ''])
+        try:
+            data.append(['', Paragraph(u'- {}'.format(inf['obj'][i]), _h(10)), ''])
+        except :
+            data.append(['', Paragraph(u'- {}'.format('---------------'), _h(10)), ''])
     for i in range(len(inf['rsm'])):
         data.append(['', Paragraph('- {}'.format(inf['rsm'][i]), _h(10))])
     data.append([''])
@@ -482,12 +533,13 @@ def componentes(componente):
     story.append(Spacer(1, 80))
     coordinador = componente.proyecto_vinculacion.carrera.coordinadores.filter(estado=True).first()
     docente = '-------'
+    carrera = '-------'
     if coordinador:
-        coordinador = coordinador.carrera.nombre
-        docente = coordinador.docente.get_full_name()
+        carrera = coordinador.carrera.nombre
+        docente = u'{}'.format(coordinador.docente.get_full_name())
     responsable = componente.responsable.perfil.docente
     inf = {
-            'cargo':[[u'COORDINACIÓN DE LA CARRERA DE {}'.format(coordinador or '-----').upper(), '', u'RESPONSABLE DE VINCULACION CON SOCIEDAD CARRERA DE {}'.format(componente.proyecto_vinculacion.carrera.nombre).upper()]],
+            'cargo':[[u'COORDINACIÓN DE LA CARRERA DE {}'.format(carrera).upper(), '', u'RESPONSABLE DE VINCULACION CON SOCIEDAD CARRERA DE {}'.format(componente.proyecto_vinculacion.carrera.nombre).upper()]],
             'nombre' :[[u'{}'.format(docente).upper(), '', u'{}'.format(responsable.get_full_name()).upper()]],
             'dim'  :[210, 60, 210] #400
         }
@@ -646,13 +698,14 @@ def evaluacion(componente):
 
     story.append(Spacer(1, 60))
     coordinador = componente.proyecto_vinculacion.carrera.coordinadores.filter(estado=True).first()
+    carrera = '----------'
     docente = '-------'
     if coordinador:
-        coordinador = coordinador.carrera.nombre
+        carrera = coordinador.carrera.nombre
         docente = coordinador.docente.get_full_name()
     responsable = componente.responsable.perfil.docente
     inf = {
-            'cargo':[[u'COORDINACIÓN DE LA CARRERA DE {}'.format(coordinador or '-----').upper(), '', u'RESPONSABLE DE VINCULACION CON SOCIEDAD CARRERA DE {}'.format(componente.proyecto_vinculacion.carrera.nombre).upper()]],
+            'cargo':[[u'COORDINACIÓN DE LA CARRERA DE {}'.format(carrera).upper(), '', u'RESPONSABLE DE VINCULACION CON SOCIEDAD CARRERA DE {}'.format(componente.proyecto_vinculacion.carrera.nombre).upper()]],
             'nombre' :[[u'{}'.format(docente).upper(), '', u'{}'.format(responsable.get_full_name()).upper()]],
             'dim'  :[290, 100, 290] #400
         }
@@ -675,12 +728,21 @@ def actividad(actividad):
         author='dannyrs'
     ) # Crear un doc
     story = [Spacer(1,inch*1.3)]
-    data = [
-        [Paragraph('TEMA:', _hb(10)), Paragraph(u'{}'.format(actividad.nombre), _h(10))],
-        [Paragraph('CARRERA:', _hb(10)), Paragraph(u'{}'.format(actividad.carrera), _h(10))],
-        [Paragraph('RESPONSABLE:', _hb(10)), Paragraph(u'{}'.format(actividad.responsable.perfil.docente.get_full_name()), _h(10))],
-        [Paragraph('FECHA:', _hb(10)), Paragraph(u'{} - {}'.format(actividad.inicio.strftime('%d/%m/%Y'), actividad.fin.strftime('%d/%m/%Y')), _h(10))],
-    ]
+    try:
+        data = [
+            [Paragraph('TEMA:', _hb(10)), Paragraph(u'{}'.format(actividad.nombre), _h(10))],
+            [Paragraph('CARRERA:', _hb(10)), Paragraph(u'{}'.format(actividad.carrera), _h(10))],
+            [Paragraph('RESPONSABLE:', _hb(10)), Paragraph(u'{}'.format(actividad.responsable.perfil.docente.get_full_name()), _h(10))],
+            [Paragraph('FECHA:', _hb(10)), Paragraph(u'{} - {}'.format(actividad.inicio.strftime('%d/%m/%Y'), actividad.fin.strftime('%d/%m/%Y')), _h(10))],
+        ]
+    except :
+        data = [
+            [Paragraph('TEMA:', _hb(10)), Paragraph(u'{}'.format('--------------'), _h(10))],
+            [Paragraph('CARRERA:', _hb(10)), Paragraph(u'{}'.format(actividad.carrera), _h(10))],
+            [Paragraph('RESPONSABLE:', _hb(10)), Paragraph(u'{}'.format(actividad.responsable.perfil.docente.get_full_name()), _h(10))],
+            [Paragraph('FECHA:', _hb(10)), Paragraph(u'{} - {}'.format(actividad.inicio.strftime('%d/%m/%Y'), actividad.fin.strftime('%d/%m/%Y')), _h(10))],
+        ]
+        
     t = Table(data, colWidths=[100, 350])
     t.setStyle(TableStyle([
        ('VALIGN', (0,0), (-1, -1), 'TOP'),
@@ -835,13 +897,14 @@ def evaluacion2(actividad):
 
     story.append(Spacer(1, 60))
     coordinador = actividad.carrera.coordinadores.filter(estado=True).first()
+    carrera = '-------'
     docente = '-------'
     if coordinador:
-        coordinador = coordinador.carrera.nombre
+        carrera = coordinador.carrera.nombre
         docente = coordinador.docente.get_full_name()
     responsable = actividad.responsable.perfil.docente
     inf = {
-            'cargo':[[u'COORDINACIÓN DE LA CARRERA DE {}'.format(coordinador or '-----').upper(), '', u'COORDINADOR DE {}'.format(actividad.entidad.nombre), '', u'RESPONSABLE DE VINCULACION CON SOCIEDAD CARRERA DE {}'.format(actividad.carrera.nombre).upper()]],
+            'cargo':[[u'COORDINACIÓN DE LA CARRERA DE {}'.format(carrera).upper(), '', u'COORDINADOR DE {}'.format(actividad.entidad.nombre), '', u'RESPONSABLE DE VINCULACION CON SOCIEDAD CARRERA DE {}'.format(actividad.carrera.nombre).upper()]],
             'nombre' :[[u'{}'.format(docente).upper(), '', u'{}'.format(actividad.entidad.encargado).upper(), '', u'{}'.format(responsable.get_full_name()).upper()]],
             'dim'  :[220, 30, 220, 30, 220] #400
         }

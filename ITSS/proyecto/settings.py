@@ -150,6 +150,7 @@ EMAIL_HOST_USER =  EMAIL# Gmail del emisor del mensaje
 EMAIL_HOST_PASSWORD = enc('wdumhwdv4;')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+SEND_EMAIL=False # Estado para activar los correos
 
 # Respaldo
 PATH_BACKUP = path('backups') # Direccion donde se guardara los respaldos

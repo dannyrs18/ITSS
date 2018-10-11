@@ -56,7 +56,7 @@ class Informe_vinculacion(models.Model):
 ###### Registro
 
 class Actividad_vinculacion(models.Model):
-    nombre = models.CharField(_(u'Nombre del Proyecto'), unique=True, max_length=150)
+    nombre = models.CharField(_(u'Nombre de la Actividad'), max_length=300)
     inicio = models.DateField(_(u'Fecha de inicio'))
     fin = models.DateField(_(u'Fecha de culminación'))
     carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE, related_name='actividades_vinculacion')
@@ -107,7 +107,7 @@ class Evidencia_actividad(models.Model):
 
 ########## Proyecto de Vinculacion
 class Proyecto_vinculacion(models.Model):
-    nombre = models.TextField(_(u'Nombre del Proyecto'))
+    nombre = models.CharField(_(u'Nombre del Proyecto'), max_length=300)
     entidad = models.ForeignKey(Entidad, on_delete=models.CASCADE, related_name='proyectos_vinculacion')
     carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE, related_name='proyectos_vinculacion')
     estado = models.BooleanField(default=True)

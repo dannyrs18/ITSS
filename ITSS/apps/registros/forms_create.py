@@ -3,6 +3,7 @@ import random
 import string
 
 from django import forms
+from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User, Permission
@@ -87,7 +88,8 @@ class UserForm(UserCreationForm):
             instance.perfil.slug = '{0}{1}'.format(instance.id, aleatorio)
             instance.save()
             self.estado(user, instance)
-            #self.send_email(self.cleaned_data)
+            if settings.SEND_EMAIL:
+                self.send_email(self.cleaned_data)
         return instance
 
     def perms(self, user, instance):
@@ -123,14 +125,17 @@ class UserForm(UserCreationForm):
         return instance
 
     def send_email(data):
-        from django.core.mail import EmailMessage
+        try:
+            from django.core.mail import EmailMessage
 
-        data = self.cleaned_data
-        mensaje = u"""Bienvenido :
-        username: {}
-        clave {}""".format(data.get('username'), data.get('password1'))
-        mail = EmailMessage('Instituto tecnologico Superior Sudamericano', mensaje, to=[data.get('email')])
-        mail.send()
+            data = self.cleaned_data
+            mensaje = u"""Bienvenido :
+            username: {}
+            clave {}""".format(data.get('username'), data.get('password1'))
+            mail = EmailMessage('Instituto tecnologico Superior Sudamericano', mensaje, to=[data.get('email')])
+            mail.send()
+        except:
+            print 'error de envio'
 
 class CoordinadorForm(forms.ModelForm):
     class Meta:

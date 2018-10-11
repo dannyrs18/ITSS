@@ -83,6 +83,7 @@ class ProyectoVinculacionForm(forms.ModelForm):
     class Meta:
         model = models.Proyecto_vinculacion
         fields = ('nombre', 'carrera', 'entidad',)
+        widgets = {'nombre' : forms.Textarea()}
 
     def __init__(self, user, *args, **kwargs):
         super(ProyectoVinculacionForm, self).__init__(*args, **kwargs)
@@ -106,7 +107,6 @@ class ProyectoVinculacionForm(forms.ModelForm):
     def save(self, user, commit=True):
         data = super(ProyectoVinculacionForm, self).save(commit=False)
         data.responsable=user
-        data.save()
         if user.has_perm('registros.resp_vinc'):
             data.carrera = user.perfil.carrera
         data.save()
@@ -116,6 +116,7 @@ class ComponenteForm(forms.ModelForm):
     class Meta:
         model = models.Componente
         fields = ('nombre', 'proyecto_vinculacion', )
+        widgets = {'nombre' : forms.Textarea()}
 
     def __init__(self, *args, **kwargs):
         super(ComponenteForm, self).__init__(*args, **kwargs)
@@ -255,6 +256,7 @@ class ActividadProyectoForm(forms.ModelForm):
         super(ActividadProyectoForm, self).__init__(*args, **kwargs)
         for key in self.fields:
             self.fields[key].widget.attrs.update({'class' : 'form-control'})
+        self.fields['nombre'].widget.attrs.update({'rows' : 3})
         self.fields['justificacion'].widget.attrs.update({'rows' : 3})
         self.fields['descripcion'].widget.attrs.update({'rows' : 3})
         self.fields['inicio'].widget.attrs.update({'class' : 'form-control fecha'})

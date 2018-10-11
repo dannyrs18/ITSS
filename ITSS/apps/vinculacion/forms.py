@@ -34,7 +34,7 @@ class EstudianteForm(forms.Form):
         super(EstudianteForm, self).__init__(*args, **kwargs)
         self.fields['estudiante'].widget.attrs.update({'class' : 'form-control search_select'})
         if user.has_perm('registros.resp_vinc'):
-            self.fields['estudiante'].queryset = Estudiante.objects.filter(registro=user.perfil.carrera)
+            self.fields['estudiante'].queryset = Estudiante.objects.filter(carrera=user.perfil.carrera)
 
 class PeriodoRegistroForm(forms.Form):
     inicio = forms.DateField(label=_(u'Inicio de Periodo') ,input_formats=settings.DATE_INPUT_FORMATS)
@@ -59,11 +59,14 @@ class ComponenteReporteForm(forms.Form):
     componente = AjaxChoiceField(choices=((None, '---------'),))
     reporte = AjaxChoiceField(choices=((None, '---------'),))
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(ComponenteReporteForm, self).__init__(*args, **kwargs)
         for key in self.fields:
             self.fields[key].widget.attrs.update({'class' : 'form-control search_select'})
-        self.fields['registro'].queryset = Proyecto_vinculacion.objects.all()
+        if user.has_perm('registros.admin_vinc'):
+            self.fields['registro'].queryset = Proyecto_vinculacion.objects.all()
+        elif user.has_perm('registros.resp_vinc'):
+            self.fields['registro'].queryset = Proyecto_vinculacion.objects.filter(carrera=user.perfil.carrera)
 
 class ActividadReporteForm(forms.Form):
     registro = forms.ModelChoiceField(queryset=Proyecto_vinculacion.objects.none())

@@ -24,7 +24,10 @@ def count_valores_vinculacion(lista):
     for value in lista:
         horas += value.total_horas
         calificacion += value.promedio
-        aux.append(value.componente.proyecto_vinculacion)
+        if value.componente:
+            aux.append(value.componente.proyecto_vinculacion)
+        elif value.actividad:
+            aux.append(value.actividad)
     if lista:
         calificacion /= lista.count()
         count = len(set(aux))

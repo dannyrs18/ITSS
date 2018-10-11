@@ -196,7 +196,8 @@ def tabla_entidad(request):
     elif request.user.has_perm('registros.resp_vinc'):
         entidades = Entidad.objects.filter(carreras=request.user.perfil.carrera)
     context = {
-        'entidades' : entidades
+        'entidades' : entidades,
+        'title': 'ENTIDADES'
     }
     return render(request, 'tablas/entidades.html', context)
 
@@ -217,7 +218,8 @@ def reporte_estudiante(request):
         response = reporte_vinculacion.estudiantes(form.cleaned_data.get('estudiante'))
         return response
     context = {
-        'form': form
+        'form': form,
+        'title': 'REPORTE ESTUDIANTES'
     }
     return render(request, 'formulario.html', context)
 
@@ -233,8 +235,15 @@ def reporte_periodo(request):
     form = forms.PeriodoRegistroForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         from django.db.models import Q
-        registro = Proyecto_vinculacion.objects.filter(Q(inicio__gte=form.cleaned_data.get('inicio')) & Q(inicio__lte=form.cleaned_data.get('fin')))
-        response = reporte_vinculacion.periodo(registro)
+        registro = None
+        actividades = None
+        if request.user.has_perm('registros.admin_vinc'):
+            registro = Proyecto_vinculacion.objects.filter(Q(inicio__gte=form.cleaned_data.get('inicio')) & Q(inicio__lte=form.cleaned_data.get('fin')))
+            actividades = Actividad_vinculacion.objects.filter(Q(inicio__gte=form.cleaned_data.get('inicio')) & Q(inicio__lte=form.cleaned_data.get('fin')))
+        elif request.user.has_perm('registros.resp_vinc'):
+            registro = Proyecto_vinculacion.objects.filter(Q(inicio__gte=form.cleaned_data.get('inicio')) & Q(inicio__lte=form.cleaned_data.get('fin')), carrera=request.user.perfil.carrera)
+            actividades = Actividad_vinculacion.objects.filter(Q(inicio__gte=form.cleaned_data.get('inicio')) & Q(inicio__lte=form.cleaned_data.get('fin')), carrera=request.user.perfil.carrera)
+        response = reporte_vinculacion.periodo(registro, actividades)
         return response
     context = {
         'form': form,
@@ -244,7 +253,7 @@ def reporte_periodo(request):
 
 @login_required
 def reporte_componente(request):
-    form = forms.ComponenteReporteForm(request.POST or None, request.FILES or None)
+    form = forms.ComponenteReporteForm(request.user, request.POST or None, request.FILES or None)
     if form.is_valid():
         componente = get_object_or_404(Componente, pk=form.cleaned_data.get('componente'))
         if form.cleaned_data.get('reporte')=='1':
@@ -258,7 +267,7 @@ def reporte_componente(request):
             return response
         else:
             raise Http404
-    form = forms.ComponenteReporteForm()
+    form = forms.ComponenteReporteForm(request.user)
     context = {
         'form': form,
         'title': 'REPORTE POR COMPONENTE'
@@ -281,7 +290,8 @@ def reporte_actividad(request):
         else:
             raise Http404
     context = {
-        'form': form
+        'form': form,
+        'title':'REPORTE ACTIVIDAD'
     }
     return render(request, 'formularios/reporte_actividad.html', context)
 
