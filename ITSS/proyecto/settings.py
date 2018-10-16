@@ -29,7 +29,7 @@ def enc(key):
 
 SECRET_KEY = 'y$xt2htr-dkxx8*&q65a!^$ej*kff^a6(tm9lcldbp%qr-nfk('
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -81,17 +81,8 @@ WSGI_APPLICATION = 'proyecto.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'practicas',
-        'USER': 'dep_practicas',
-        'PASSWORD': 'admiN680x',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1",
-        },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     } # LA BASE DE DATOS TIENE PRIVILEGIOS LIMITADOS
 }
 
@@ -130,6 +121,7 @@ STATICFILES_DIRS = [
     path('desarrollo/assets')
 ]# si los estatics no se encuentran dentro de las aplicacion donde por default se buscan los archivos, aqui se especifican las carpetas adicionales
 STATIC_ROOT = path('static')
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # Archivos medios
 MEDIA_URL = '/media/'
