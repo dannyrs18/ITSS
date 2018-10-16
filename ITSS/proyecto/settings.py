@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'proyecto.urls'
@@ -121,7 +122,7 @@ STATICFILES_DIRS = [
     path('desarrollo/assets')
 ]# si los estatics no se encuentran dentro de las aplicacion donde por default se buscan los archivos, aqui se especifican las carpetas adicionales
 STATIC_ROOT = path('static')
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Archivos medios
 MEDIA_URL = '/media/'
