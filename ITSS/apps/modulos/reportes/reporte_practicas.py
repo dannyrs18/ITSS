@@ -10,11 +10,13 @@ from reportlab.lib import colors
 from django.utils import timezone
 from functools import partial
 
+# URL: https://docxtpl.readthedocs.io/en/latest/
 from docxtpl import DocxTemplate, InlineImage
 from docx.shared import Mm, Inches, Pt
 import jinja2
 from jinja2.utils import Markup
 from django.shortcuts import get_object_or_404
+# URL: https://docxtpl.readthedocs.io/en/latest/
 
 from ...practicas.models import Empresa, Informe_practicas
 
@@ -205,9 +207,13 @@ def convenio(slug):
         carreras.append({
             'nombre' : carrera.nombre
         })
+    logo = ''
+    if empresa.logo:
+        logo = InlineImage(tpl, empresa.logo, height=Mm(18))
+    print empresa.logo
     context = {
         'nombre' : empresa.nombre,
-        'logo' : InlineImage(tpl, empresa.logo, height=Mm(10)),
+        'logo' : logo,
         'telefono' : empresa.telefono,
         'fecha_inicio_convenio' : empresa.inicio,
         'fecha_fin_convenio' : empresa.fin,

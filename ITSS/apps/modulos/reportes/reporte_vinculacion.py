@@ -173,7 +173,7 @@ def estudiantes(estudiante):
     info=[]
     for evaluacion in estudiante.evaluaciones.all():
         if evaluacion.actividad:
-            info.append([u'{}'.format('---------'), u'{}'.format(evaluacion.fecha_inicio.strftime('%d-%m-%Y')), u'{}'.format(evaluacion.fecha_fin.strftime('%d-%m-%Y')), u'{}'.format(evaluacion.promedio), u'{}'.format(evaluacion.total_horas)])
+            info.append([u'{}'.format(evaluacion.actividad.nombre), u'{}'.format(evaluacion.fecha_inicio.strftime('%d-%m-%Y')), u'{}'.format(evaluacion.fecha_fin.strftime('%d-%m-%Y')), u'{}'.format(evaluacion.promedio), u'{}'.format(evaluacion.total_horas)])
 
     story.append(Spacer(1, 5))
     inf = {

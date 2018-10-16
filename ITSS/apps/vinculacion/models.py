@@ -5,7 +5,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from ..registros.models import Oficina, Carrera, Perfil, Estudiante, Seccion
-from ..modulos.validators import valid_extension
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -42,7 +41,7 @@ class Evidencias_Entidad(models.Model):
         return '{}'.format(self.entidad.nombre)
 
 class Informe_vinculacion(models.Model):
-    convenio = models.FileField(_('Convenio'), upload_to='informes_vinculacion', validators=[valid_extension])
+    convenio = models.FileField(_('Convenio'), upload_to='informes_vinculacion')
 
     class Meta:
         permissions = [

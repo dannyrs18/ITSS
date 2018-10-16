@@ -7,11 +7,7 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db import models
 
-#def generate_path(instance, filename):
-#    return 'estudiantes/user_{0}/{1}'.format(instance.estudiante.cedula, filename)
-#(upload_to=generate_path)
-
-##### REGISTROS
+from ..modulos.validators import valid_extension
 
 class Carrera(models.Model):
     codigo = models.CharField(_(u'Codigo'), max_length=10)
@@ -87,7 +83,7 @@ class Coordinador(models.Model):
 
 class Oficina(models.Model): # Clase abstracta que usa practicas y vinculacion desde registros
     nombre = models.CharField(_(u'Nombre'), unique=True, max_length=100)
-    logo = models.ImageField(_(u'Logo de la Empresa'), upload_to='logos', blank=True, null=True)
+    logo = models.ImageField(_(u'Logo de la Empresa'), upload_to='logos', blank=True, null=True, validators=[valid_extension])
     telefono = models.CharField(_(u'Teléfono'), max_length=15)
     inicio = models.DateField(_(u'Inicio del Convenio'))
     fin = models.DateField(_(u'Finalizacion del Convenio'))
