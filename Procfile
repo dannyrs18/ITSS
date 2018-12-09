@@ -1,1 +1,1 @@
-web: cd ITSS; gunicorn proyecto.wsgi
+web: cd ITSS; gunicorn proyecto.wsgi --log-file -

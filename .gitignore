@@ -3,7 +3,7 @@ static/
 
 # virtualenv
 env/
-heroku/
+heroku-env/
 
 # Archivos residuales
 *.pyc
