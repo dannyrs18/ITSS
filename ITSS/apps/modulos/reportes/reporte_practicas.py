@@ -204,9 +204,7 @@ def convenio(slug):
     tpl=DocxTemplate(informe)
     carreras = []
     for carrera in empresa.carreras.all():
-        carreras.append({
-            'nombre' : carrera.nombre
-        })
+        carreras.append(carrera.nombre)
     logo = ''
     if empresa.logo:
         logo = InlineImage(tpl, empresa.logo, height=Mm(18))
