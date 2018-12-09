@@ -210,7 +210,6 @@ def convenio(slug):
     logo = ''
     if empresa.logo:
         logo = InlineImage(tpl, empresa.logo, height=Mm(18))
-    print empresa.logo
     context = {
         'nombre' : empresa.nombre,
         'logo' : logo,
@@ -219,7 +218,6 @@ def convenio(slug):
         'fecha_fin_convenio' : empresa.fin,
         'correo' : empresa.correo,
         'direccion' : empresa.direccion,
-        'estado' : empresa.estado,
         'gerente' : empresa.gerente,
         'descripcion' : empresa.descripcion,
         'carreras' :  carreras,

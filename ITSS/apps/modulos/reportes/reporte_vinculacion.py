@@ -925,18 +925,18 @@ def convenio(slug):
     tpl=DocxTemplate(informe)
     carreras = []
     for carrera in entidad.carreras.all():
-        carreras.append({
-            'nombre' : carrera.nombre
-        })
+        carreras.append(carrera.nombre)
+    logo = ''
+    if entidad.logo:
+        logo = InlineImage(tpl, entidad.logo, height=Mm(18))
     context = {
         'nombre' : entidad.nombre,
-        'logo' : InlineImage(tpl, entidad.logo, height=Mm(10)),
+        'logo' : logo,
         'telefono' : entidad.telefono,
         'fecha_inicio_convenio' : entidad.inicio,
         'fecha_fin_convenio' : entidad.fin,
         'correo' : entidad.correo,
         'direccion' : entidad.direccion,
-        'estado' : entidad.estado,
         'enacargado' : entidad.encargado,
         'cargo' : entidad.cargo,
         'descripcion' : entidad.descripcion,

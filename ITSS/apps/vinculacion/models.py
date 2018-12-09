@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from ..registros.models import Oficina, Carrera, Perfil, Estudiante, Seccion
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from ..modulos.validators import valid_extension, valid_extension_docx
 
 class Entidad(Oficina):
     encargado = models.CharField(_('Responsable'), max_length=100)
@@ -41,7 +42,7 @@ class Evidencias_Entidad(models.Model):
         return '{}'.format(self.entidad.nombre)
 
 class Informe_vinculacion(models.Model):
-    convenio = models.FileField(_('Convenio'), upload_to='informes_vinculacion')
+    convenio = models.FileField(_('Convenio'), upload_to='informes_vinculacion', validators=[valid_extension_docx])
 
     class Meta:
         permissions = [

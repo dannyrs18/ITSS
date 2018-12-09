@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.db import models
 from ..registros.models import Oficina, Carrera, Perfil, Estudiante
-from ..modulos.validators import valid_extension
+from ..modulos.validators import valid_extension, valid_extension_docx
 
 class Empresa(Oficina): # PRACTICAS
     gerente = models.CharField(_(u'Nombre del Gerente'), max_length=100)
@@ -35,7 +35,7 @@ class Evidencias_Empresa(models.Model):
         return '{}'.format(self.empresa.nombre)
 
 class Informe_practicas(models.Model):
-    convenio = models.FileField(upload_to='informes_practicas', validators=[valid_extension])
+    convenio = models.FileField(upload_to='informes_practicas', validators=[valid_extension_docx])
 
     class Meta:
         permissions = [
@@ -71,7 +71,7 @@ def generate_registro_practicas(instance, filename):
 
 class Evidencias_registro_practicas(models.Model):
     registro_practicas = models.ForeignKey(Registro_practicas, on_delete=models.CASCADE, related_name='evidencias_registro_practicas')
-    imagen = models.ImageField(_(u'Evidencias Fotograficas'), upload_to=generate_registro_practicas)
+    imagen = models.ImageField(_(u'Evidencias Fotograficas'), upload_to=generate_registro_practicas, )
 
     def __unicode__(self):
         return '{}'.format(self.registro_practicas.estudiante.nombres+' '+self.registro_practicas.estudiante.apellidos)

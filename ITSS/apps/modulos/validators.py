@@ -5,3 +5,7 @@ def valid_extension(value):
         not value.name.endswith('.png')):
  
         raise ValidationError("Archivos permitidos: .jpeg, .png")
+
+def valid_extension_docx(value):
+    if (not value.name.endswith('.docx')):
+        raise ValidationError("Archivo permitido: .docx")
