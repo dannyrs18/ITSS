@@ -15,4 +15,8 @@ from whitenoise.django import DjangoWhiteNoise
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "proyecto.settings")
 
 application = get_wsgi_application()
+<<<<<<< HEAD
 application = DjangoWhiteNoise(application)
+=======
+application = DjangoWhiteNoise(application)
+>>>>>>> 98840197d5ef75ba4b0b716c9572fcee519a14df

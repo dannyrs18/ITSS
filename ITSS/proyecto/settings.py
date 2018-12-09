@@ -83,6 +83,18 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+<<<<<<< HEAD
+=======
+        #'ENGINE': 'django.db.backends.mysql',
+        #'NAME': 'practicas',
+        #'USER': 'dep_practicas',
+        #'PASSWORD': 'admiN680x',
+        #'HOST': 'localhost',
+        #'PORT': '3306',
+        #'OPTIONS': {
+        #    'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1",
+        #},
+>>>>>>> 98840197d5ef75ba4b0b716c9572fcee519a14df
     } # LA BASE DE DATOS TIENE PRIVILEGIOS LIMITADOS
 }
 

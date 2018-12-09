@@ -47,8 +47,8 @@ class Docente(models.Model):
     apellidos = models.TextField(_(u'Apellidos'))
     telefono = models.TextField(_(u'Telefono'))
     cedula = models.CharField(_(u'Cedula'), max_length=15)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         permissions = [
