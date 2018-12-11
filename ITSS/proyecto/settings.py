@@ -29,7 +29,7 @@ def enc(key):
 
 SECRET_KEY = 'y$xt2htr-dkxx8*&q65a!^$ej*kff^a6(tm9lcldbp%qr-nfk('
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 

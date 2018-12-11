@@ -58,7 +58,7 @@ class EmpresaForm(forms.ModelForm):
         self.fields['aux_nombre'].widget.attrs.update({'readonly' : 'readonly'})
         self.fields['aux_nombre'].initial = empresa.nombre
 
-    def save(self, user, commit=True):
+    def save(self, commit=True):
         from django.utils.timezone import localtime, now
         
         instance = super(EmpresaForm, self).save()
