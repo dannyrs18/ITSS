@@ -1,5 +1,6 @@
-# static 
+# asssets
 static/
+media/
 
 # virtualenv
 env/
