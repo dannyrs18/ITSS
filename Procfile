@@ -1,1 +1,1 @@
-web: cd ITSS; gunicorn proyecto.wsgi --log-file -
+web: cd ITSS; gunicorn --reload proyecto.wsgi --log-file -
