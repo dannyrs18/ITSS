@@ -57,20 +57,20 @@ def crear_convenio(request):
 @transaction.atomic
 def crear_empresa(request):
     form = forms_create.EmpresaForm(request.user, request.POST or None, request.FILES or None)
-    form2 = forms_create.EvidenciaEmpresaForm(request.POST or None, request.FILES or None)
-    if form.is_valid() and form2.is_valid():
+    #form2 = forms_create.EvidenciaEmpresaForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
         empresa = form.save(request.user)
-        form2.save(request.FILES.getlist('imagenes'), empresa)
+        #form2.save(request.FILES.getlist('imagenes'), empresa)
         messages.success(request, u'El registro se creo exitosamente!.')
         return redirect('/')
     elif request.POST:
         messages.error(request, u'Valores ingresados incorrectos dentro del formulario.')
     context = {
         'form': form,
-        'form2': form2,
+        #'form2': form2,
         'title': 'NUEVA EMPRESA'
     }
-    return render(request, 'formularios/oficina.html', context)
+    return render(request, 'formulario.html', context)
 
 @login_required
 @permission_required('practicas.change_registro_practicas')
@@ -110,6 +110,23 @@ def actualizar_empresa(request, slug):
     }
     return render(request, 'formulario.html', context)
 
+def proceso_empresa(request, slug):
+    empresa = get_object_or_404(Empresa, slug=slug)
+    form = forms_update.EmpresaProcesoForm(request.POST or None, request.FILES or None, instance=empresa)
+    form2 = forms_update.EvidenciaEmpresaForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        form.save()
+        form2.save(request.FILES.getlist('imagenes'), empresa)
+        messages.success(request, u'Se ha actualizado los datos exitosamente!.')
+        return redirect('/')
+    elif request.POST:
+        messages.error(request, u'Valores ingresados incorrectos dentro del formulario..')
+    context ={
+        'form': form,
+        'form2': form2,
+    }
+    return render(request, 'formularios/oficina.html', context)
+
 @login_required
 @permission_required('practicas.view_registro_practicas')
 def tabla(request):
@@ -137,6 +154,20 @@ def tabla_empresa(request):
         'title': 'EMPRESAS'
     }
     return render(request, 'tablas/empresas.html', context)
+
+@login_required
+@permission_required('practicas.view_empresa')
+def tabla_empresa_proceso(request):
+    data = None
+    if request.user.has_perm('registros.admin_prac'):
+        data = Empresa.objects.filter(estado=False)
+    elif request.user.has_perm('registros.resp_prac'):
+        data = Empresa.objects.filter(carreras=request.user.perfil.carrera, estado=False)
+    context = {
+        'empresas': data,
+        'title': 'EMPRESAS'
+    }
+    return render(request, 'tablas/empresas_proceso.html', context)
 
 @login_required
 @permission_required('practicas.reporte_convenio_practicas')

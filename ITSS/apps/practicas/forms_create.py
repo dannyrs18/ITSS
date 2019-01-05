@@ -29,14 +29,11 @@ class ConvenioForm(forms.ModelForm):
 
 class EmpresaForm(forms.ModelForm):
     telefono = forms.IntegerField(label=_(u'Telefono'))
-    inicio = forms.DateField(label=_(u'Inicio de Convenio') ,input_formats=settings.DATE_INPUT_FORMATS)
-    fin = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
     class Meta:
         model = Empresa
-        fields = ('nombre', 'gerente', 'correo', 'telefono', 'inicio', 'fin', 'direccion', 'descripcion', 'logo', 'carreras')
+        fields = ('nombre', 'gerente', 'correo', 'telefono', 'direccion', 'descripcion', 'logo', 'carreras')
         labels = {'nombre': _(u'Nombre de la empresa')}
         widgets = {'carreras': forms.CheckboxSelectMultiple()}
-
     def __init__(self, user, *args, **kwargs):
         super(EmpresaForm, self).__init__(*args, **kwargs)
         for key in self.fields:
@@ -44,23 +41,16 @@ class EmpresaForm(forms.ModelForm):
                 self.fields[key].widget.attrs.update({'class' : 'form-control'})
         self.fields['direccion'].widget.attrs.update({'class' : 'form-control', 'rows':3})
         self.fields['descripcion'].widget.attrs.update({'class' : 'form-control', 'rows':3})
-        self.fields['inicio'].widget.attrs.update({'class' : 'form-control fecha'})
-        self.fields['fin'].widget.attrs.update({'class' : 'form-control fecha'})
+        #self.fields['inicio'].widget.attrs.update({'class' : 'form-control fecha'})
+        #self.fields['fin'].widget.attrs.update({'class' : 'form-control fecha'})
         if not user.has_perm('registros.admin_prac'):
             del self.fields['carreras']
-
-    def clean(self, *args, **kwargs):
-        cleaned_data = super(EmpresaForm, self).clean(*args, **kwargs)
-        if cleaned_data.get('inicio') >= cleaned_data.get('fin'):
-            self.add_error('fin', u'La fecha de finalización debe ser mayor a la de inicio')
 
     def save(self, user, commit=True):
         from django.utils.timezone import localtime, now
 
         instance = super(EmpresaForm, self).save()
         instance.responsable=user
-        if instance.fin > localtime(now()).date():
-            instance.estado=True
         instance.save()
         aleatorio = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(15)])
         instance.slug = '{0}{1}'.format(instance.id, aleatorio)
@@ -68,15 +58,6 @@ class EmpresaForm(forms.ModelForm):
             instance.carreras.add(user.perfil.carrera)
         instance.save()
         return instance
-
-class EvidenciaEmpresaForm(forms.Form):
-    imagenes = forms.ImageField(label=_(u'Evidencia Fotografica'), widget=forms.FileInput(attrs={'class':"form-control", 'multiple': True}), required=True)
-
-    def save(self, imagenes, empresa, commit=True):
-        print imagenes
-        for imagen in imagenes:
-            print imagen
-            Evidencias_Empresa.objects.create(empresa=empresa, imagen=imagen)
 
 class RegistroForm(forms.ModelForm):
     nombres = forms.CharField(label=_(u'Nombres'))
@@ -99,7 +80,7 @@ class RegistroForm(forms.ModelForm):
         self.fields['cedula'].widget.attrs.update({'class' : 'form-control', 'readonly':'readonly'})
         self.fields['presentacion'].widget.attrs.update({'class' : 'form-control fecha'})
         if user.has_perm('registros.resp_prac'):
-            self.fields['empresa'].queryset = Empresa.objects.filter(carreras=user.perfil.carrera)
+            self.fields['empresa'].queryset = Empresa.objects.filter(carreras=user.perfil.carrera, estado=True)
             self.fields['estudiante'].queryset = Estudiante.objects.filter(carrera=user.perfil.carrera)
             del self.fields['carrera']
         else:

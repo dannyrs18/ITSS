@@ -12,12 +12,14 @@ urlpatterns = [
 # Actualizar
 urlpatterns += [
     url(r'^proceso/(?P<slug>[-\w]+)/$', views.proceso, name='proceso'),
+    url(r'^proceso_empresa/(?P<slug>[-\w]+)/$', views.proceso_empresa, name='proceso_empresa'),
     url(r'^actualizar_empresa/(?P<slug>[-\w]+)/$', views.actualizar_empresa, name='actualizar_empresa'),
 ]
 
 # Tablas
 urlpatterns += [
     url(r'^tabla/$', views.tabla, name='tabla'),
+    url(r'^tabla_empresa_proceso/$', views.tabla_empresa_proceso, name='tabla_empresa_proceso'),
     url(r'^tabla_empresa/$', views.tabla_empresa, name='tabla_empresa'),
 ]
 

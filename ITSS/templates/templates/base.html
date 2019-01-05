@@ -114,6 +114,7 @@
                             {% if perms.practicas.add_empresa %}
                             <li><a href=" {% url 'practicas:crear_empresa' %}">Nuevo</a></li>
                             {% endif %}
+                            <li><a href=" {% url 'practicas:tabla_empresa_proceso' %}">Proceso</a></li>
                             <li><a href="{% url 'practicas:tabla_empresa' %}">Buscar</a></li>
                         </ul>
                     </li>

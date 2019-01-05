@@ -37,31 +37,62 @@ class RegistroForm(forms.ModelForm):
 
 class EmpresaForm(forms.ModelForm):
     aux_nombre = forms.CharField(label=_(u'Nombre de la empresa'))
-    fin = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
+
     class Meta:
         model = models.Empresa
-        fields = ('aux_nombre', 'gerente', 'telefono', 'fin', 'correo', 'descripcion', 'direccion', 'logo')
-
-    def clean(self, *args, **kwargs):
-        cleaned_data = super(EmpresaForm, self).clean(*args, **kwargs)
-        if self.instance.inicio >= cleaned_data.get('fin'):
-            self.add_error('fin', u'La fecha de finalización incorrecta')
+        fields = ('aux_nombre', 'gerente', 'telefono', 'correo', 'descripcion', 'direccion', 'logo')
 
     def __init__(self, *args, **kwargs):
         super(EmpresaForm, self).__init__(*args, **kwargs)
         empresa = kwargs['instance']
         for key in self.fields:
             self.fields[key].widget.attrs.update({'class' : 'form-control'})
-        self.fields['fin'].widget.attrs.update({'class' : 'form-control fecha'})
         self.fields['descripcion'].widget.attrs.update({'rows' : 3})
         self.fields['direccion'].widget.attrs.update({'rows' : 3})
         self.fields['aux_nombre'].widget.attrs.update({'readonly' : 'readonly'})
         self.fields['aux_nombre'].initial = empresa.nombre
 
+class EmpresaProcesoForm(forms.ModelForm):
+    aux_nombre = forms.CharField(label=_(u'Nombre de la empresa'))
+    aux_gerente = forms.CharField(label=_(u'Nombre de la empresa'))
+    inicio = forms.DateField(label=_(u'Inicio de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
+    fin = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
+
+    class Meta:
+        model = models.Empresa
+        fields = ('aux_nombre', 'aux_gerente', 'inicio', 'fin')
+
+    def clean(self, *args, **kwargs):
+        cleaned_data = super(EmpresaProcesoForm, self).clean(*args, **kwargs)
+        if cleaned_data.get('inicio') >= cleaned_data.get('fin'):
+            self.add_error('fin', u'La fecha de finalización incorrecta')
+
+    def __init__(self, *args, **kwargs):
+        super(EmpresaProcesoForm, self).__init__(*args, **kwargs)
+        empresa = kwargs['instance']
+        for key in self.fields:
+            self.fields[key].widget.attrs.update({'class' : 'form-control'})
+        self.fields['inicio'].widget.attrs.update({'class' : 'form-control fecha'})
+        self.fields['fin'].widget.attrs.update({'class' : 'form-control fecha'})
+        self.fields['aux_nombre'].widget.attrs.update({'readonly' : 'readonly'})
+        self.fields['aux_gerente'].widget.attrs.update({'readonly' : 'readonly'})
+        self.fields['aux_nombre'].initial = empresa.nombre
+        self.fields['aux_gerente'].initial = empresa.gerente
+
     def save(self, commit=True):
         from django.utils.timezone import localtime, now
         
-        instance = super(EmpresaForm, self).save()
+        instance = super(EmpresaProcesoForm, self).save()
         if instance.fin > localtime(now()).date():
             instance.estado=True
+            instance.save()
         return instance
+
+class EvidenciaEmpresaForm(forms.Form):
+    imagenes = forms.ImageField(label=_(u'Evidencia Fotografica'), widget=forms.FileInput(attrs={'class':"form-control", 'multiple': True}), required=True)
+
+    def save(self, imagenes, empresa, commit=True):
+        print imagenes
+        for imagen in imagenes:
+            print imagen
+            models.Evidencias_Empresa.objects.create(empresa=empresa, imagen=imagen)

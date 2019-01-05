@@ -37,7 +37,6 @@
                         <th>Telefono</th>
                         <th>Correo</th>
                         <th>Iniciado por</th>
-                        <th>Fin. Convenio</th>
                         <th width="11%">Opt.</th>
                     </tr>
                     </thead>
@@ -51,12 +50,9 @@
                         <td>{{ empresa.telefono }}</td>
                         <td>{{ empresa.correo }}</td>
                         <td>{{ empresa.responsable.get_full_name }}</td>
-                        <td>{{ empresa.fin }}</td>
                         <td>
-                            <button class="btn btn-default btn-xs" onclick="evidencia('{{ empresa.slug }}');"><i class="fa fa-eye"></i></button>
-                            {% if perms.practicas.change_empresa %}
-                            <a href="{% url 'practicas:actualizar_empresa' empresa.slug %}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-                            {% endif %}
+                            <a href="{% url 'practicas:reporte_convenio' empresa.slug %}" class="btn btn-default btn-xs"><i class="fa  fa-file-word-o"></i></a>
+                            <a href="{% url 'practicas:proceso_empresa' empresa.slug %}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
                         </td>
                     </tr>
                     {% endfor %}
