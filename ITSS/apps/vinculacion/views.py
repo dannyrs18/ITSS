@@ -144,10 +144,10 @@ def crear_convenio(request):
 @transaction.atomic
 def crear_entidad(request):
     form = forms_create.EntidadForm(request.user, request.POST or None, request.FILES or None)
-    form2 = forms_create.EvidenciaEntidadForm(request.POST or None, request.FILES or None)
-    if form.is_valid() and form2.is_valid():
+    #form2 = forms_create.EvidenciaEntidadForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
         entidad = form.save(request.user)
-        form2.save(request.FILES.getlist('imagenes'), entidad)
+        #form2.save(request.FILES.getlist('imagenes'), entidad)
         messages.success(request, u'El registro se creo exitosamente!.')
         return redirect('/')
     elif request.POST:
@@ -155,7 +155,7 @@ def crear_entidad(request):
     context = {
         'title':'NUEVA ENTIDAD',
         'form':form,
-        'form2': form2
+        #'form2': form2
     }
     return render(request, 'formularios/oficina.html', context)
 
@@ -176,6 +176,23 @@ def actualizar_entidad(request, slug):
     }
     return render(request, 'formulario.html', context)
 
+def proceso_entidad(request, slug):
+    entidad = get_object_or_404(Entidad, slug=slug)
+    form = forms_update.EntidadProcesoForm(request.POST or None, request.FILES or None, instance=entidad)
+    form2 = forms_update.EvidenciaEntidadForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        form.save()
+        form2.save(request.FILES.getlist('imagenes'), entidad)
+        messages.success(request, u'Se ha actualizado los datos exitosamente!.')
+        return redirect('/')
+    elif request.POST:
+        messages.error(request, u'Valores ingresados incorrectos dentro del formulario..')
+    context ={
+        'form': form,
+        'form2': form2
+    }
+    return render(request, 'formularios/oficina.html', context)
+
 @login_required
 @permission_required('vinculacion.view_proyecto_vinculacion')
 def tabla_proceso(request):
@@ -192,14 +209,27 @@ def tabla_proceso(request):
 @permission_required('vinculacion.view_entidad')
 def tabla_entidad(request):
     if request.user.has_perm('registros.admin_vinc'):
-        entidades = Entidad.objects.all()
+        entidades = Entidad.objects.filter(estado=True)
     elif request.user.has_perm('registros.resp_vinc'):
-        entidades = Entidad.objects.filter(carreras=request.user.perfil.carrera)
+        entidades = Entidad.objects.filter(carreras=request.user.perfil.carrera, estado=True)
     context = {
         'entidades' : entidades,
         'title': 'ENTIDADES'
     }
     return render(request, 'tablas/entidades.html', context)
+
+@login_required
+@permission_required('vinculacion.view_entidad')
+def tabla_entidad_proceso(request):
+    if request.user.has_perm('registros.admin_vinc'):
+        entidades = Entidad.objects.filter(estado=False)
+    elif request.user.has_perm('registros.resp_vinc'):
+        entidades = Entidad.objects.filter(carreras=request.user.perfil.carrera, estado=False)
+    context = {
+        'entidades' : entidades,
+        'title': 'ENTIDADES'
+    }
+    return render(request, 'tablas/entidades_proceso.html', context)
 
 @login_required
 @permission_required('vinculacion.reporte_convenio_vinculacion')

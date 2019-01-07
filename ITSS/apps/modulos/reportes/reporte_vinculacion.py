@@ -109,7 +109,7 @@ def tabla(story, inf):
 def estudiantes(estudiante):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Estudiantes"
-    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(pdf_name)
     buff = BytesIO()
     doc = SimpleDocTemplate(
         buff, 
@@ -191,7 +191,7 @@ def estudiantes(estudiante):
 def entidades(entidades):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Entidades"
-    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(pdf_name)
     buff = BytesIO()
     doc = SimpleDocTemplate(
         buff, 
@@ -230,7 +230,7 @@ def entidades(entidades):
 def periodo(registros, actividades):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Periodo de Practicas"
-    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(pdf_name)
     buff = BytesIO()
     doc = SimpleDocTemplate(
         buff, 
@@ -424,7 +424,7 @@ def firmas(story, inf):
 def componentes(componente):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Componente"
-    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(pdf_name)
     buff = BytesIO()
     doc = SimpleDocTemplate(
         buff, 
@@ -646,7 +646,7 @@ def tabla2(story, inf):
 def evaluacion(componente):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Componente"
-    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(pdf_name)
     buff = BytesIO()
     doc = SimpleDocTemplate(
         buff, 
@@ -719,7 +719,7 @@ def evaluacion(componente):
 def actividad(actividad):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Componente"
-    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(pdf_name)
     buff = BytesIO()
     doc = SimpleDocTemplate(
         buff, 
@@ -845,7 +845,7 @@ def actividad(actividad):
 def evaluacion2(actividad):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Actividad"
-    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(pdf_name)
     buff = BytesIO()
     doc = SimpleDocTemplate(
         buff, 

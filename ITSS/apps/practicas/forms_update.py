@@ -54,7 +54,7 @@ class EmpresaForm(forms.ModelForm):
 
 class EmpresaProcesoForm(forms.ModelForm):
     aux_nombre = forms.CharField(label=_(u'Nombre de la empresa'))
-    aux_gerente = forms.CharField(label=_(u'Nombre de la empresa'))
+    aux_gerente = forms.CharField(label=_(u'Gerente'))
     inicio = forms.DateField(label=_(u'Inicio de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
     fin = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
 

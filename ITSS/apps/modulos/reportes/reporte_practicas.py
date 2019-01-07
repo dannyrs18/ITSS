@@ -86,7 +86,7 @@ def tabla(story, inf):
 def estudiantes(estudiante):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Estudiantes"
-    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(pdf_name)
     buff = BytesIO()
     doc = SimpleDocTemplate(
         buff, 
@@ -124,7 +124,7 @@ def estudiantes(estudiante):
 def empresas(empresas):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Empresas"
-    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(pdf_name)
     buff = BytesIO()
     doc = SimpleDocTemplate(
         buff, 
@@ -136,9 +136,9 @@ def empresas(empresas):
     for empresa in empresas:
         aux2 = ''
         for carrera in empresa.carreras.all():
-            aux2 += u'-{}'.format(carrera.nombre)
+            aux2 += u'-{}\n'.format(carrera.nombre)
         estado = ''
-        if empresa.fin < timezone.now().date():
+        if empresa.fin == None or empresa.fin < timezone.now().date():
             estado = u'Caducado'
         elif empresa.fin < timezone.now().date()+timezone.timedelta(days=30):
             estado = u'Por vencer'
@@ -163,7 +163,7 @@ def empresas(empresas):
 def periodo(registros, fecha):
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "Reporte Periodo de Practicas"
-    response['Content-Disposition'] = 'attachment; filename={}'.format(pdf_name)
+    response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(pdf_name)
     buff = BytesIO()
     doc = SimpleDocTemplate(
         buff, 
@@ -181,7 +181,7 @@ def periodo(registros, fecha):
         'dim'  :[100, 390]
     }
     encabezado(story, inf)
-
+    story.append(Spacer(1, 13))
     inf = {
         'data' :['ESTUDIANTE', u'CÉDULA', 'EMPRESA', u'CALIFICACIÓN', 'HORAS'],
         'info' :[[u'{}'.format(registro.estudiante.get_full_name()), u'{}'.format(registro.estudiante.cedula), u'{}'.format(registro.empresa.nombre), u'{}'.format(registro.calificacion), u'{}'.format(registro.horas)] for registro in registros],

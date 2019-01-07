@@ -60,11 +60,46 @@ class EntidadForm(forms.ModelForm):
         self.fields['aux_nombre'].widget.attrs.update({'readonly' : 'readonly'})
         self.fields['aux_nombre'].initial = entidad.nombre
 
+class EntidadProcesoForm(forms.ModelForm):
+    aux_nombre = forms.CharField(label=_(u'Nombre de la entidad'))
+    aux_responsable = forms.CharField(label=_(u'Responsable'))
+    inicio = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
+    fin = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
+    class Meta:
+        model = models.Entidad
+        fields = ('aux_nombre', 'aux_responsable', 'inicio', 'fin')
+
+    def clean(self, *args, **kwargs):
+        cleaned_data = super(EntidadProcesoForm, self).clean(*args, **kwargs)
+        if cleaned_data.get('inicio') >= cleaned_data.get('fin'):
+            self.add_error('fin', u'La fecha de finalización incorrecta')
+
+    def __init__(self, *args, **kwargs):
+        super(EntidadProcesoForm, self).__init__(*args, **kwargs)
+        entidad = kwargs['instance']
+        for key in self.fields:
+            self.fields[key].widget.attrs.update({'class' : 'form-control'})
+        self.fields['inicio'].widget.attrs.update({'class' : 'form-control fecha', 'required':True})
+        self.fields['fin'].widget.attrs.update({'class' : 'form-control fecha', 'required':True})
+        self.fields['aux_nombre'].widget.attrs.update({'readonly' : 'readonly'})
+        self.fields['aux_responsable'].widget.attrs.update({'readonly' : 'readonly'})
+        self.fields['aux_nombre'].initial = entidad.nombre
+        self.fields['aux_responsable'].initial = entidad.nombre
+
     def save(self, commit=True):
         from django.utils.timezone import localtime, now
         
-        instance = super(EntidadForm, self).save()
+        instance = super(EntidadProcesoForm, self).save()
         if instance.fin > localtime(now()).date():
             instance.estado=True
         instance.save()
         return instance
+
+class EvidenciaEntidadForm(forms.Form):
+    imagenes = forms.ImageField(label=_(u'Evidencia Fotografica'), widget=forms.FileInput(attrs={'class':"form-control", 'multiple': True}), required=True)
+
+    def save(self, imagenes, entidad, commit=True):
+        print imagenes
+        for imagen in imagenes:
+            print imagen
+            models.Evidencias_Entidad.objects.create(entidad=entidad, imagen=imagen)
