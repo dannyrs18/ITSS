@@ -125,6 +125,7 @@
                             {% if perms.vinculacion.add_entidad %}
                             <li><a href="{% url 'vinculacion:crear_entidad' %}">Nuevo</a></li>
                             {% endif %}
+                            <li><a href="{% url 'vinculacion:tabla_entidad_proceso' %}">Proceso</a></li>
                             <li><a href="{% url 'vinculacion:tabla_entidad' %}">Buscar</a></li>
                         </ul>
                     </li>

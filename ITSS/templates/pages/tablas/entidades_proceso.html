@@ -36,7 +36,6 @@
                         <th>Telefono</th>
                         <th>Correo</th>
                         <th>Iniciado por</th>
-                        <th>Fin. Convenio</th>
                         <th width="11%">Opt.</th>
                     </tr>
                     </thead>
@@ -49,12 +48,9 @@
                         <td>{{ entidad.telefono }}</td>
                         <td>{{ entidad.correo }}</td>
                         <td>{{ entidad.responsable.get_full_name }}</td>
-                        <td>{{ entidad.fin }}</td>
                         <td>
-                            <button class="btn btn-default btn-xs" onclick="evidencia('{{ entidad.slug }}');"><i class="fa fa-eye"></i></button>
-                            {% if perms.vinculacion.change_entidad %}
-                            <a href="{% url 'vinculacion:actualizar_entidad' entidad.slug %}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-                            {% endif %}
+                            <a href="{% url 'vinculacion:reporte_convenio' entidad.slug %}" class="btn btn-default btn-xs"><i class="fa  fa-file-word-o"></i></a>
+                            <a href="{% url 'vinculacion:proceso_entidad' entidad.slug %}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
                         </td>
                     </tr>
                     {% endfor %}

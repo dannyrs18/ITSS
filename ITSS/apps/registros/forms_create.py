@@ -124,7 +124,7 @@ class UserForm(UserCreationForm):
                 usuario.save()
         return instance
 
-    def send_email(data):
+    def send_email(self, data):
         try:
             from django.core.mail import EmailMessage
 

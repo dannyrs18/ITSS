@@ -31,11 +31,11 @@ class ConvenioForm(forms.ModelForm):
             instance.save()
 
 class EntidadForm(forms.ModelForm):
-    inicio = forms.DateField(label=_(u'Fecha de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
-    fin = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
+    #inicio = forms.DateField(label=_(u'Fecha de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
+    #fin = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
     class Meta:
         model = models.Entidad
-        fields = ('nombre', 'encargado', 'cargo', 'correo', 'telefono', 'inicio', 'fin', 'direccion', 'descripcion', 'logo', 'carreras')
+        fields = ('nombre', 'encargado', 'cargo', 'correo', 'telefono', 'direccion', 'descripcion', 'logo', 'carreras')
         labels = {'nombre': _(u'Nombre de la entidad')}
         widgets = {'carreras': forms.CheckboxSelectMultiple()}
 
@@ -45,39 +45,30 @@ class EntidadForm(forms.ModelForm):
             if not key == 'carreras':
                 self.fields[key].widget.attrs.update({'class' : 'form-control'})
         self.fields['descripcion'].widget.attrs.update({'rows':5})
-        self.fields['inicio'].widget.attrs.update({'class':'form-control fecha'})
-        self.fields['fin'].widget.attrs.update({'class':'form-control fecha'})
+        #self.fields['inicio'].widget.attrs.update({'class':'form-control fecha'})
+        #self.fields['fin'].widget.attrs.update({'class':'form-control fecha'})
         self.fields['direccion'].widget.attrs.update({'rows':3})
         if user.has_perm('registros.resp_vinc'):
             del self.fields['carreras']
 
-    def clean(self, *args, **kwargs):
-        cleaned_data = super(EntidadForm, self).clean(*args, **kwargs)
-        if cleaned_data.get('inicio') >= cleaned_data.get('fin'):
-            self.add_error('fin', u'La fecha de finalización debe ser mayor a la de inicio')
+    #def clean(self, *args, **kwargs):
+    #    cleaned_data = super(EntidadForm, self).clean(*args, **kwargs)
+    #    if cleaned_data.get('inicio') >= cleaned_data.get('fin'):
+    #        self.add_error('fin', u'La fecha de finalización debe ser mayor a la de inicio')
 
     def save(self, user, commit=True):
         from django.utils.timezone import localtime, now
         
         instance = super(EntidadForm, self).save()
         instance.responsable=user
-        if instance.fin > localtime(now()).date():
-            instance.estado=True
+        #if instance.fin > localtime(now()).date():
+        #    instance.estado=True
         if user.has_perm('registros.resp_vinc'):
             instance.carreras.add(user.perfil.carrera)
         aleatorio = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(15)])
         instance.slug = '{0}{1}'.format(instance.id, aleatorio)
         instance.save()
         return instance
-
-class EvidenciaEntidadForm(forms.Form):
-    imagenes = forms.ImageField(label=_(u'Evidencia Fotografica'), widget=forms.FileInput(attrs={'class':"form-control", 'multiple': True}), required=True)
-
-    def save(self, imagenes, entidad, commit=True):
-        print imagenes
-        for imagen in imagenes:
-            print imagen
-            models.Evidencias_Entidad.objects.create(entidad=entidad, imagen=imagen)
 
 class ProyectoVinculacionForm(forms.ModelForm):
     class Meta:
