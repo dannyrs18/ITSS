@@ -205,7 +205,7 @@ def entidades(entidades):
         for carrera in entidad.carreras.all():
             aux2 += u'-{}'.format(carrera.nombre)
         estado = ''
-        if entidad.fin < timezone.now().date():
+        if entidad.fin == None or entidad.fin < timezone.now().date():
             estado = u'Caducado'
         elif entidad.fin < timezone.now().date()+timezone.timedelta(days=30):
             estado = u'Por vencer'

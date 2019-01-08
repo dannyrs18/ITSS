@@ -40,14 +40,13 @@ class EmpresaForm(forms.ModelForm):
 
     class Meta:
         model = models.Empresa
-        fields = ('aux_nombre', 'gerente', 'telefono', 'correo', 'descripcion', 'direccion', 'logo')
+        fields = ('aux_nombre', 'gerente', 'telefono', 'correo', 'direccion', 'logo')
 
     def __init__(self, *args, **kwargs):
         super(EmpresaForm, self).__init__(*args, **kwargs)
         empresa = kwargs['instance']
         for key in self.fields:
             self.fields[key].widget.attrs.update({'class' : 'form-control'})
-        self.fields['descripcion'].widget.attrs.update({'rows' : 3})
         self.fields['direccion'].widget.attrs.update({'rows' : 3})
         self.fields['aux_nombre'].widget.attrs.update({'readonly' : 'readonly'})
         self.fields['aux_nombre'].initial = empresa.nombre

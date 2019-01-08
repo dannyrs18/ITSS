@@ -39,23 +39,15 @@ class ComponenteForm(forms.ModelForm):
 
 class EntidadForm(forms.ModelForm):
     aux_nombre = forms.CharField(label=_(u'Nombre de la entidad'))
-    fin = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
     class Meta:
         model = models.Entidad
-        fields = ('aux_nombre', 'encargado', 'cargo', 'telefono', 'fin', 'correo', 'descripcion', 'direccion', 'logo')
-
-    def clean(self, *args, **kwargs):
-        cleaned_data = super(EntidadForm, self).clean(*args, **kwargs)
-        if self.instance.inicio >= cleaned_data.get('fin'):
-            self.add_error('fin', u'La fecha de finalización incorrecta')
+        fields = ('aux_nombre', 'encargado', 'cargo', 'telefono', 'correo', 'direccion', 'logo')
 
     def __init__(self, *args, **kwargs):
         super(EntidadForm, self).__init__(*args, **kwargs)
         entidad = kwargs['instance']
         for key in self.fields:
             self.fields[key].widget.attrs.update({'class' : 'form-control'})
-        self.fields['fin'].widget.attrs.update({'class' : 'form-control fecha'})
-        self.fields['descripcion'].widget.attrs.update({'rows' : 3})
         self.fields['direccion'].widget.attrs.update({'rows' : 3})
         self.fields['aux_nombre'].widget.attrs.update({'readonly' : 'readonly'})
         self.fields['aux_nombre'].initial = entidad.nombre
@@ -84,7 +76,7 @@ class EntidadProcesoForm(forms.ModelForm):
         self.fields['aux_nombre'].widget.attrs.update({'readonly' : 'readonly'})
         self.fields['aux_responsable'].widget.attrs.update({'readonly' : 'readonly'})
         self.fields['aux_nombre'].initial = entidad.nombre
-        self.fields['aux_responsable'].initial = entidad.nombre
+        self.fields['aux_responsable'].initial = entidad.encargado
 
     def save(self, commit=True):
         from django.utils.timezone import localtime, now

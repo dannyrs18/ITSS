@@ -60,9 +60,7 @@ def responsable_practicas():
         Permission.objects.get(codename='view_registro_practicas'),
         Permission.objects.get(codename='add_registro_practicas'),
         Permission.objects.get(codename='change_registro_practicas'),
-        Permission.objects.get(codename='view_reportes'),
-        Permission.objects.get(codename='reporte_estudiante'),
-        Permission.objects.get(codename='reporte_registro_practicas'),
+        Permission.objects.get(codename='change_empresa'),
         Permission.objects.get(codename='resp_prac'),
     )
     return perms

@@ -199,7 +199,7 @@ class Evaluacion(models.Model):
     promedio = models.FloatField(_(u'Promedio'), validators=[MinValueValidator(0), MaxValueValidator(10)])
 
 def generate_evidencia_proyecto(instance, filename):
-    return 'proyectos/{0}/{1}/{2}'.format(instance.componente.proyecto_vinculacion.nombre, instance.componente.nombre, filename)
+    return 'proyectos/{0}/{1}'.format(instance.componente.slug, filename)
 
 class Evidencia_proyecto(models.Model):
     componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='evidencias_proyecto')
