@@ -1,0 +1,19 @@
+insert into registros_docente(id, nombres, apellidos, telefono, cedula) values(1, "Betty", "Estrella", "0987654321", "11029384756");
+insert into registros_docente(id, nombres, apellidos, telefono, cedula) values(2, "Paulina", "Martinez", "0947563821", "1103677876");
+insert into registros_docente(id, nombres, apellidos, telefono, cedula) values(3, "lorena", "Pucha", "0929399403", "1102343478");
+insert into registros_docente(id, nombres, apellidos, telefono, cedula) values(4, "Alex", "Yunga", "0934567634", "1103456545");
+
+insert into registros_carrera(id, codigo, nombre) values (1, "001", "Sistemas de automatizacion");
+insert into registros_carrera(id, codigo, nombre) values (2, "002", "Gestion Ambiental");
+insert into registros_carrera(id, codigo, nombre) values (3, "003", "Turismo");
+insert into registros_carrera(id, codigo, nombre) values (4, "004", "Seretariado trilingue");
+insert into registros_carrera(id, codigo, nombre) values (5, "005", "Finanzas");
+insert into registros_carrera(id, codigo, nombre) values (6, "006", "Gastronomia")
+
+insert into registros_estudiante(id, nombres, apellidos, genero, cedula, carrera_id) values (1, "Danny", "Romero", "Masculino", "0706433141", 1);
+insert into registros_estudiante(id, nombres, apellidos, genero, cedula, carrera_id) values (2, "Jamil", "Gonzalez", "Masculino", "1102938475", 1);
+insert into registros_estudiante(id, nombres, apellidos, genero, cedula, carrera_id) values (3, "Emilio", "Gonzalez", "Masculino", "1103948475", 1);
+insert into registros_estudiante(id, nombres, apellidos, genero, cedula, carrera_id) values (4, "Evelin", "Bustos", "Femenino", "1103454367", 3);
+insert into registros_estudiante(id, nombres, apellidos, genero, cedula, carrera_id) values (5, "Alex", "Matamoros", "Masculino", "0706543458", 2);
+insert into registros_estudiante(id, nombres, apellidos, genero, cedula, carrera_id) values (6, "Yadira", "Salinas", "Femenino", "0703748372", 4)
+
