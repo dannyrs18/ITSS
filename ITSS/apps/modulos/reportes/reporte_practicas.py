@@ -202,9 +202,6 @@ def convenio(slug):
         return False
     informe = Informe_practicas.objects.all().last().convenio
     tpl=DocxTemplate(informe)
-    carreras = []
-    for carrera in empresa.carreras.all():
-        carreras.append(u'{}'.format(carrera.nombre))
     logo = ''
     if empresa.logo:
         logo = InlineImage(tpl, empresa.logo, height=Mm(18))
@@ -212,13 +209,9 @@ def convenio(slug):
         'nombre' : empresa.nombre,
         'logo' : logo,
         'telefono' : empresa.telefono,
-        'fecha_inicio_convenio' : empresa.inicio,
-        'fecha_fin_convenio' : empresa.fin,
         'correo' : empresa.correo,
         'direccion' : empresa.direccion,
-        'gerente' : empresa.gerente,
-        'carreras' :  carreras,
-        'responsable' : empresa.responsable.get_full_name(),
+        'gerente' : empresa.gerente
     }
     jinja_env = jinja2.Environment(autoescape=True)
     tpl.render(context, jinja_env)

@@ -336,8 +336,6 @@ class Evaluacion2Form(forms.ModelForm):
 
     def clean(self, *args, **kwargs):
         cleaned_data = super(Evaluacion2Form, self).clean(*args, **kwargs)
-        print type((self.carrera))
-        print type(cleaned_data.get('estudiante').carrera.id)
         if self.carrera:
             if not cleaned_data.get('estudiante').carrera.id == int(self.carrera):
                 self.add_error('estudiante', u'El estudiante no pertenece a la carrera')
