@@ -91,7 +91,7 @@ def estudiantes(estudiante):
     doc = SimpleDocTemplate(
         buff, 
         pagesize=A4,
-        title='DR_Reports',
+        title='Devops',
         author='dannyrs'
     ) # Crear un doc
 
@@ -129,7 +129,7 @@ def empresas(empresas):
     doc = SimpleDocTemplate(
         buff, 
         pagesize=A4,
-        title='DR_Reports',
+        title='Devops',
         author='dannyrs'
     ) # Crear un doc
     info = []
@@ -168,7 +168,7 @@ def periodo(registros, fecha):
     doc = SimpleDocTemplate(
         buff, 
         pagesize=A4,
-        title='DR_Reports',
+        title='Devops',
         author='dannyrs'
     ) # Crear un doc
 
@@ -217,7 +217,6 @@ def convenio(slug):
         'correo' : empresa.correo,
         'direccion' : empresa.direccion,
         'gerente' : empresa.gerente,
-        'descripcion' : empresa.descripcion,
         'carreras' :  carreras,
         'responsable' : empresa.responsable.get_full_name(),
     }

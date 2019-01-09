@@ -31,7 +31,7 @@ class EmpresaForm(forms.ModelForm):
     telefono = forms.IntegerField(label=_(u'Telefono'))
     class Meta:
         model = Empresa
-        fields = ('nombre', 'gerente', 'correo', 'telefono', 'direccion', 'descripcion', 'logo', 'carreras')
+        fields = ('nombre', 'gerente', 'correo', 'telefono', 'direccion', 'logo', 'carreras')
         labels = {'nombre': _(u'Nombre de la empresa')}
         widgets = {'carreras': forms.CheckboxSelectMultiple()}
     def __init__(self, user, *args, **kwargs):
@@ -40,9 +40,6 @@ class EmpresaForm(forms.ModelForm):
             if not key == 'carreras':
                 self.fields[key].widget.attrs.update({'class' : 'form-control'})
         self.fields['direccion'].widget.attrs.update({'class' : 'form-control', 'rows':3})
-        self.fields['descripcion'].widget.attrs.update({'class' : 'form-control', 'rows':3})
-        #self.fields['inicio'].widget.attrs.update({'class' : 'form-control fecha'})
-        #self.fields['fin'].widget.attrs.update({'class' : 'form-control fecha'})
         if not user.has_perm('registros.admin_prac'):
             del self.fields['carreras']
 

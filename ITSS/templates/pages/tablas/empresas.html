@@ -55,7 +55,11 @@
                         <td>
                             <button class="btn btn-default btn-xs" onclick="evidencia('{{ empresa.slug }}');"><i class="fa fa-eye"></i></button>
                             {% if perms.practicas.change_empresa %}
+                            {% if perms.registros.admin_prac %}
                             <a href="{% url 'practicas:actualizar_empresa' empresa.slug %}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                            {% elif empresa.carreras.count > 1 %}
+                            <a href="{% url 'practicas:actualizar_empresa' empresa.slug %}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                            {% endif %}
                             {% endif %}
                         </td>
                     </tr>

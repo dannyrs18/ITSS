@@ -144,11 +144,11 @@ def tabla(request):
 @login_required
 @permission_required('practicas.view_empresa')
 def tabla_empresa(request):
-    data = None
+    data = []
     if request.user.has_perm('registros.admin_prac'):
-        data = Empresa.objects.all()
+        data = Empresa.objects.filter(estado=True)
     elif request.user.has_perm('registros.resp_prac'):
-        data = Empresa.objects.filter(carreras=request.user.perfil.carrera)
+        data = Empresa.objects.filter(carreras=request.user.perfil.carrera, estado=True)
     context = {
         'empresas': data,
         'title': 'EMPRESAS'
@@ -158,11 +158,13 @@ def tabla_empresa(request):
 @login_required
 @permission_required('practicas.view_empresa')
 def tabla_empresa_proceso(request):
-    data = None
+    data = []
     if request.user.has_perm('registros.admin_prac'):
         data = Empresa.objects.filter(estado=False)
     elif request.user.has_perm('registros.resp_prac'):
-        data = Empresa.objects.filter(carreras=request.user.perfil.carrera, estado=False)
+        for empresa in Empresa.objects.filter(carreras=request.user.perfil.carrera, estado=False):
+            if empresa.carreras.count() == 1:
+                data.append(empresa)
     context = {
         'empresas': data,
         'title': 'EMPRESAS'
@@ -175,7 +177,7 @@ def reporte_convenio(request, slug):
     convenio = reporte_practicas.convenio(slug)
     if not convenio:
         messages.error(request, u'Verifique si existe modelo de convenio.')
-        return redirect('practicas:tabla_empresa')
+        return redirect('practicas:tabla_empresa_proceso')
     return convenio
 
 @login_required

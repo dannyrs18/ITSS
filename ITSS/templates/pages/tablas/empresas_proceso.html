@@ -51,7 +51,9 @@
                         <td>{{ empresa.correo }}</td>
                         <td>{{ empresa.responsable.get_full_name }}</td>
                         <td>
+                            {% if empresa.carreras.count == 1 %}
                             <a href="{% url 'practicas:reporte_convenio' empresa.slug %}" class="btn btn-default btn-xs"><i class="fa  fa-file-word-o"></i></a>
+                            {% endif %}
                             <a href="{% url 'practicas:proceso_empresa' empresa.slug %}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
                         </td>
                     </tr>

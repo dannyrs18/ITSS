@@ -114,7 +114,7 @@ def estudiantes(estudiante):
     doc = SimpleDocTemplate(
         buff, 
         pagesize=A4,
-        title='DR_Reports',
+        title='Devops',
         author='dannyrs'
     ) # Crear un doc
 
@@ -196,7 +196,7 @@ def entidades(entidades):
     doc = SimpleDocTemplate(
         buff, 
         pagesize=A4,
-        title='DR_Reports',
+        title='Devops',
         author='dannyrs'
     ) # Crear un doc
     info = []
@@ -235,7 +235,7 @@ def periodo(registros, actividades):
     doc = SimpleDocTemplate(
         buff, 
         pagesize=A4,
-        title='DR_Reports',
+        title='Devops',
         author='dannyrs'
     ) # Crear un doc
 
@@ -429,7 +429,7 @@ def componentes(componente):
     doc = SimpleDocTemplate(
         buff, 
         pagesize=A4,
-        title='DR_Reports',
+        title='Devops',
         author='dannyrs'
     ) # Crear un doc
     story = [Spacer(1,inch*1.3)]
@@ -651,7 +651,7 @@ def evaluacion(componente):
     doc = SimpleDocTemplate(
         buff, 
         pagesize=landscape(A4),
-        title='DR_Reports',
+        title='Devops',
         author='dannyrs'
     ) # Crear un doc
     story = []
@@ -724,7 +724,7 @@ def actividad(actividad):
     doc = SimpleDocTemplate(
         buff, 
         pagesize=A4,
-        title='DR_Reports',
+        title='Devops',
         author='dannyrs'
     ) # Crear un doc
     story = [Spacer(1,inch*1.3)]
@@ -850,7 +850,7 @@ def evaluacion2(actividad):
     doc = SimpleDocTemplate(
         buff, 
         pagesize=landscape(A4),
-        title='DR_Reports',
+        title='Devops',
         author='dannyrs'
     ) # Crear un doc
     story = []
