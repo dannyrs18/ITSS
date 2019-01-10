@@ -55,7 +55,7 @@ class EntidadForm(forms.ModelForm):
 class EntidadProcesoForm(forms.ModelForm):
     aux_nombre = forms.CharField(label=_(u'Nombre de la entidad'))
     aux_responsable = forms.CharField(label=_(u'Responsable'))
-    inicio = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
+    inicio = forms.DateField(label=_(u'inicio de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
     fin = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
     class Meta:
         model = models.Entidad

@@ -53,6 +53,13 @@
                         <td>{{ empresa.responsable.get_full_name }}</td>
                         <td>{{ empresa.fin }}</td>
                         <td>
+                            {% if empresa.carreras.count > 1 %}
+                            Inter.
+                            {% else %}
+                            Carrera
+                            {% endif %}
+                        </td>
+                        <td>
                             <button class="btn btn-default btn-xs" onclick="evidencia('{{ empresa.slug }}');"><i class="fa fa-eye"></i></button>
                             {% if perms.practicas.change_empresa %}
                             {% if perms.registros.admin_prac %}

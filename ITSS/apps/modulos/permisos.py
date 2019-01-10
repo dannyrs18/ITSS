@@ -74,6 +74,7 @@ def responsable_vinculacion():
         Permission.objects.get(codename='view_coordinador'),
         Permission.objects.get(codename='change_user'),
         Permission.objects.get(codename='view_actividad_vinculacion'),
+        Permission.objects.get(codename='add_actividad_vinculacion'),
         Permission.objects.get(codename='view_proyecto_vinculacion'),
         Permission.objects.get(codename='add_proyecto_vinculacion'),
         Permission.objects.get(codename='add_componente'),

@@ -45,6 +45,58 @@ def crear_proyecto(request):
 def crear_componente(request, slug):
     componente = get_object_or_404(Componente, slug=slug, estado=1)
     form = forms.ComponenteForm(componente, request.user, request.POST or None, request.FILES or None)
+    if request.method == 'POST':
+        form2 = forms_update.ComponenteForm(request.POST or None, request.FILES or None, instance=componente)
+        form3 = forms_create.EvidenciaProyectoForm(request.POST or None, request.FILES or None)
+        formset = forms_create.ObjetivoFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='objetivo')
+        formset2 = forms_create.ActividadFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='actividad')
+        formset3 = forms_create.RecursoHumanoFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='recurso_humano')
+        formset4 = forms_create.RecursoFinancieroFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='recurso_financiero')
+        formset5 = forms_create.RecursoMaterialFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='recurso_material')
+        formset6 = forms_create.RecursoTecnologicoFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='recurso_tecnologico')
+        formset7 = forms_create.EvaluacionFormset(request.POST or None, request.FILES or None, form_kwargs={'componente':componente}, instance=componente, prefix='evaluacion')
+        if form2.is_valid() and form3.is_valid() and formset.is_valid() and formset2.is_valid() and formset3.is_valid() and formset4.is_valid() and formset5.is_valid() and formset6.is_valid() and formset7.is_valid():
+            componente = form2.save(request.user)
+            form3.save(request.FILES.getlist('imagenes'), componente)
+            formset.save()
+            formset2.save()
+            formset3.save()
+            formset4.save()
+            formset5.save()
+            formset6.save()
+            formset7.save()
+            messages.success(request, u'Se ha completado exitosamente!.')
+            return redirect('index')
+        else:
+            messages.error(request, u'Por seguridad los datos se formatearon.. vuelva a intentar nuevamente y registre todos los campos correctamente')
+    form2 = forms_update.ComponenteForm()
+    form3 = forms_create.EvidenciaProyectoForm()
+    formset = forms_create.ObjetivoFormSet(prefix='objetivo')        
+    formset2 = forms_create.ActividadFormSet(prefix='actividad')
+    formset3 = forms_create.RecursoHumanoFormSet(prefix='recurso_humano')
+    formset4 = forms_create.RecursoFinancieroFormSet(prefix='recurso_financiero')
+    formset5 = forms_create.RecursoMaterialFormSet(prefix='recurso_material')
+    formset6 = forms_create.RecursoTecnologicoFormSet(prefix='recurso_tecnologico')
+    formset7 = forms_create.EvaluacionFormset(form_kwargs={'componente':componente}, prefix='evaluacion')
+    context = {
+        'form': form,
+        'form2': form2,
+        'form3': form3,
+        'formset': formset,
+        'formset2': formset2,
+        'formset3': formset3,
+        'formset4': formset4,
+        'formset5': formset5,
+        'formset6': formset6,
+        'formset7': formset7,
+        'title': 'COMPONENTE'
+    }
+    return render(request, 'formularios/vinculacion_componente.html', context)
+
+"""
+def crear_componente(request, slug):
+    componente = get_object_or_404(Componente, slug=slug, estado=1)
+    form = forms.ComponenteForm(componente, request.user, request.POST or None, request.FILES or None)
     form2 = forms_update.ComponenteForm(request.POST or None, request.FILES or None, instance=componente)
     form3 = forms_create.EvidenciaProyectoForm(request.POST or None, request.FILES or None)
     formset = forms_create.ObjetivoFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='objetivo')
@@ -82,6 +134,7 @@ def crear_componente(request, slug):
         'title': 'COMPONENTE'
     }
     return render(request, 'formularios/vinculacion_componente.html', context)
+"""
 
 
 @login_required
@@ -221,12 +274,15 @@ def tabla_entidad(request):
 @login_required
 @permission_required('vinculacion.view_entidad')
 def tabla_entidad_proceso(request):
+    data = []
     if request.user.has_perm('registros.admin_vinc'):
-        entidades = Entidad.objects.filter(estado=False)
+        data = Entidad.objects.filter(estado=False)
     elif request.user.has_perm('registros.resp_vinc'):
-        entidades = Entidad.objects.filter(carreras=request.user.perfil.carrera, estado=False)
+        for entidad in Entidad.objects.filter(carreras=request.user.perfil.carrera, estado=False):
+            if entidad.carreras.count() == 1:
+                data.append(entidad)
     context = {
-        'entidades' : entidades,
+        'entidades' : data,
         'title': 'ENTIDADES'
     }
     return render(request, 'tablas/entidades_proceso.html', context)

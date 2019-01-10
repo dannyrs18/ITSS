@@ -37,6 +37,7 @@
                         <th>Correo</th>
                         <th>Iniciado por</th>
                         <th>Fin. Convenio</th>
+                        <th>Tipo</th>
                         <th width="11%">Opt.</th>
                     </tr>
                     </thead>
@@ -51,9 +52,20 @@
                         <td>{{ entidad.responsable.get_full_name }}</td>
                         <td>{{ entidad.fin }}</td>
                         <td>
+                            {% if entidad.carreras.count > 1 %}
+                            Inter.
+                            {% else %}
+                            Carrera
+                            {% endif %}
+                        </td>
+                        <td>
                             <button class="btn btn-default btn-xs" onclick="evidencia('{{ entidad.slug }}');"><i class="fa fa-eye"></i></button>
                             {% if perms.vinculacion.change_entidad %}
+                            {% if perms.registros.admin_vinc %}
                             <a href="{% url 'vinculacion:actualizar_entidad' entidad.slug %}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                            {% elif perms.registros.resp_vinc and entidad.carreras.count == 1 %}
+                            <a href="{% url 'vinculacion:actualizar_entidad' entidad.slug %}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                            {% endif %}
                             {% endif %}
                         </td>
                     </tr>
