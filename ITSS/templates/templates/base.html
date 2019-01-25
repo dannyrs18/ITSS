@@ -231,7 +231,9 @@
                         {% if perms.auth.change_user %}
                         <li><a href="{% url 'registro:modificar_clave' %}"><i class="fa fa-gears pull-right"></i>Cambiar clave</a></li>
                         {% endif %}
+                        {% comment %}
                         <li><a href="{% url 'registro:error' %}"><i class="fa  fa-bug pull-right"></i> Reportar error</a></li>
+                        {% endcomment %}
                         <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesión</a></li>
                     </ul>
                 </li>
