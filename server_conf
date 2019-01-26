@@ -36,12 +36,14 @@ FLUSH PRIVILEGES
 
 
 ########################### PRUEBAS CON GUNICORN
-# gunicorn (-w $num_work) (-b $host:$port) (-n $app_name) (--reload) $modulo:$funcion
+# gunicorn (-w $num_work) (-b $host:$port) (-n $app_name) (--reload) $modulo:$funcion --log-file -
 # gunicorn -w 2 -b localhost:8000 -n testing test:app
 # --reload (orientado para el desarrollo, reinicia los procesos cada vez que cambie el codigo)
 # -w == --workers (los workers son la cantidad de procesos que se le da a una app dentro del sistema normalmente se recomienda de 2 a 4 por nucleo)
 # -b == --bind (es el la direccion ip y el puert que se le otorga manuamente)
 # -n == --name (para cambiar el nombre del proceso y ubicarlo de una manera directa --debe instalarse setproctitle desde pip para que funcione)
+
+ejemplo gunicorn -w 2 -b localhost:8000 --reload -n itss proyecto.wsgi --log-file -
 
 ########################### habilitar las copias de seguridad y actualizaciones
 - activar la virtualizacion de python (env)
