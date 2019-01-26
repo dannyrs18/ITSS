@@ -7,5 +7,9 @@ env/
 heroku-env/
 
 # Archivos residuales
-*.pyc
 .vscode/
+*.pyc
+
+#sqlite
+db.sqlite3
+00*
