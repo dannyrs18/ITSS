@@ -48,3 +48,5 @@ ejemplo gunicorn -w 2 -b localhost:8000 --reload -n itss proyecto.wsgi --log-fil
 ########################### habilitar las copias de seguridad y actualizaciones
 - activar la virtualizacion de python (env)
 - ejecutar python manage.py crontab add
+- ejecutar crontab -l para observar que el script se ejecuto
+- para revisar si el servicio esta corriendo desde root ingresamos "service cron status"

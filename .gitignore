@@ -13,3 +13,7 @@ heroku-env/
 #sqlite
 db.sqlite3
 00*
+
+#otros
+backups
+cron.log
