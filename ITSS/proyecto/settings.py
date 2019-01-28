@@ -19,11 +19,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def path(dir):
     return os.path.join(BASE_DIR, dir)
     
-def enc(key):
-    password = ''
-    for caracter in key:
-        password = password + chr(ord(caracter) - 3)
-    return password
+# def enc(key):
+#     password = ''
+#     for caracter in key:
+#         password = password + chr(ord(caracter) - 3)
+#     return password
 
 
 
@@ -133,7 +133,7 @@ STATIC_ROOT = path('static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = path('media')
 
-# Redirecciona cuando se logea
+# Redirecciona cuando se inicia sesion 
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
 LOGIN_URL = reverse_lazy('login')
@@ -142,13 +142,13 @@ LOGIN_URL = reverse_lazy('login')
 DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 
 # Servidor de correos
-EMAIL = 'dannyors18@gmail.com' # variable para reusar
+EMAIL = 'controldocentes17@gmail.com' # variable para reusar
 EMAIL_HOST = 'smtp.gmail.com' 
 EMAIL_HOST_USER =  EMAIL# Gmail del emisor del mensaje
-EMAIL_HOST_PASSWORD = enc('wdumhwdv4;')
+EMAIL_HOST_PASSWORD = 'controldocentes2017..'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-SEND_EMAIL=False # Estado para activar los correos
+SEND_EMAIL=True # Estado para activar los correos
 
 # Respaldo
 PATH_BACKUP = path('backups') # Direccion donde se guardara los respaldos
