@@ -1,0 +1,3356 @@
+Starting ITSS as serveradmin
+/home/serveradmin/PracticasAcademicas/bin/start.sh: línea 25: /home/serveradmin/PracticasAcademicas/ITSS/bin/gunicorn: No existe el fichero o el directorio
+Starting ITSS as serveradmin
+/home/serveradmin/PracticasAcademicas/bin/start.sh: línea 25: /home/serveradmin/PracticasAcademicas/ITSS/bin/gunicorn: No existe el fichero o el directorio
+Starting ITSS as serveradmin
+/home/serveradmin/PracticasAcademicas/bin/start.sh: línea 25: /home/serveradmin/PracticasAcademicas/ITSS/bin/gunicorn: No existe el fichero o el directorio
+Starting ITSS as serveradmin
+/home/serveradmin/PracticasAcademicas/bin/start.sh: línea 25: /home/serveradmin/PracticasAcademicas/ITSS/bin/gunicorn: No existe el fichero o el directorio
+Starting ITSS as serveradmin
+[2019-01-26 13:44:27 +0000] [16065] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f658a365578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f658a365398>
+  pre_fork: <function pre_fork at 0x7f658a365488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 33
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f658a365938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f658a365e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f658a3652a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f658a365a28>
+  post_request: <function post_request at 0x7f658a365aa0>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f658a365758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f658a3651b8>
+  post_worker_init: <function post_worker_init at 0x7f658a365668>
+  worker_abort: <function worker_abort at 0x7f658a365848>
+  child_exit: <function child_exit at 0x7f658a365b90>
+  worker_exit: <function worker_exit at 0x7f658a365c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['unix:/home/serveradmin/PracticasAcademicas/run/gunicorn.sock']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f658a365d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 13:44:27 +0000] [16065] [INFO] Starting gunicorn 19.9.0
+Traceback (most recent call last):
+  File "/home/serveradmin/PracticasAcademicas/ITSS/../env/bin/gunicorn", line 10, in <module>
+    sys.exit(run())
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 61, in run
+    WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]").run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 223, in run
+    super(Application, self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 72, in run
+    Arbiter(self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 199, in run
+    self.start()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 157, in start
+    self.LISTENERS = sock.create_sockets(self.cfg, self.log, fds)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 181, in create_sockets
+    sock = sock_type(addr, conf, log)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 118, in __init__
+    super(UnixSocket, self).__init__(addr, conf, log, fd=fd)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 32, in __init__
+    self.sock = self.set_options(sock, bound=bound)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 50, in set_options
+    self.bind(sock)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 126, in bind
+    util.chown(self.cfg_addr, self.conf.uid, self.conf.gid)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/util.py", line 173, in chown
+    os.chown(path, uid, gid)
+OSError: [Errno 1] Operation not permitted: '/home/serveradmin/PracticasAcademicas/run/gunicorn.sock'
+Starting ITSS as serveradmin
+[2019-01-26 13:44:28 +0000] [16074] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f5dd5d92578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f5dd5d92398>
+  pre_fork: <function pre_fork at 0x7f5dd5d92488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 33
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f5dd5d92938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f5dd5d92e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f5dd5d922a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f5dd5d92a28>
+  post_request: <function post_request at 0x7f5dd5d92aa0>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f5dd5d92758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f5dd5d921b8>
+  post_worker_init: <function post_worker_init at 0x7f5dd5d92668>
+  worker_abort: <function worker_abort at 0x7f5dd5d92848>
+  child_exit: <function child_exit at 0x7f5dd5d92b90>
+  worker_exit: <function worker_exit at 0x7f5dd5d92c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['unix:/home/serveradmin/PracticasAcademicas/run/gunicorn.sock']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f5dd5d92d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 13:44:28 +0000] [16074] [INFO] Starting gunicorn 19.9.0
+Traceback (most recent call last):
+  File "/home/serveradmin/PracticasAcademicas/ITSS/../env/bin/gunicorn", line 10, in <module>
+    sys.exit(run())
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 61, in run
+    WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]").run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 223, in run
+    super(Application, self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 72, in run
+    Arbiter(self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 199, in run
+    self.start()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 157, in start
+    self.LISTENERS = sock.create_sockets(self.cfg, self.log, fds)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 181, in create_sockets
+    sock = sock_type(addr, conf, log)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 118, in __init__
+    super(UnixSocket, self).__init__(addr, conf, log, fd=fd)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 32, in __init__
+    self.sock = self.set_options(sock, bound=bound)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 50, in set_options
+    self.bind(sock)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 126, in bind
+    util.chown(self.cfg_addr, self.conf.uid, self.conf.gid)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/util.py", line 173, in chown
+    os.chown(path, uid, gid)
+OSError: [Errno 1] Operation not permitted: '/home/serveradmin/PracticasAcademicas/run/gunicorn.sock'
+Starting ITSS as serveradmin
+[2019-01-26 13:44:30 +0000] [16083] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7ffb2383f578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7ffb2383f398>
+  pre_fork: <function pre_fork at 0x7ffb2383f488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 33
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7ffb2383f938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7ffb2383fe60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7ffb2383f2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7ffb2383fa28>
+  post_request: <function post_request at 0x7ffb2383faa0>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7ffb2383f758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7ffb2383f1b8>
+  post_worker_init: <function post_worker_init at 0x7ffb2383f668>
+  worker_abort: <function worker_abort at 0x7ffb2383f848>
+  child_exit: <function child_exit at 0x7ffb2383fb90>
+  worker_exit: <function worker_exit at 0x7ffb2383fc80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['unix:/home/serveradmin/PracticasAcademicas/run/gunicorn.sock']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7ffb2383fd70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 13:44:30 +0000] [16083] [INFO] Starting gunicorn 19.9.0
+Traceback (most recent call last):
+  File "/home/serveradmin/PracticasAcademicas/ITSS/../env/bin/gunicorn", line 10, in <module>
+    sys.exit(run())
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 61, in run
+    WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]").run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 223, in run
+    super(Application, self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 72, in run
+    Arbiter(self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 199, in run
+    self.start()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 157, in start
+    self.LISTENERS = sock.create_sockets(self.cfg, self.log, fds)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 181, in create_sockets
+    sock = sock_type(addr, conf, log)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 118, in __init__
+    super(UnixSocket, self).__init__(addr, conf, log, fd=fd)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 32, in __init__
+    self.sock = self.set_options(sock, bound=bound)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 50, in set_options
+    self.bind(sock)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 126, in bind
+    util.chown(self.cfg_addr, self.conf.uid, self.conf.gid)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/util.py", line 173, in chown
+    os.chown(path, uid, gid)
+OSError: [Errno 1] Operation not permitted: '/home/serveradmin/PracticasAcademicas/run/gunicorn.sock'
+Starting ITSS as serveradmin
+[2019-01-26 13:44:34 +0000] [16092] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7ff5bba79578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7ff5bba79398>
+  pre_fork: <function pre_fork at 0x7ff5bba79488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 33
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7ff5bba79938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7ff5bba79e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7ff5bba792a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7ff5bba79a28>
+  post_request: <function post_request at 0x7ff5bba79aa0>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7ff5bba79758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7ff5bba791b8>
+  post_worker_init: <function post_worker_init at 0x7ff5bba79668>
+  worker_abort: <function worker_abort at 0x7ff5bba79848>
+  child_exit: <function child_exit at 0x7ff5bba79b90>
+  worker_exit: <function worker_exit at 0x7ff5bba79c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['unix:/home/serveradmin/PracticasAcademicas/run/gunicorn.sock']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7ff5bba79d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 13:44:34 +0000] [16092] [INFO] Starting gunicorn 19.9.0
+Traceback (most recent call last):
+  File "/home/serveradmin/PracticasAcademicas/ITSS/../env/bin/gunicorn", line 10, in <module>
+    sys.exit(run())
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 61, in run
+    WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]").run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 223, in run
+    super(Application, self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 72, in run
+    Arbiter(self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 199, in run
+    self.start()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 157, in start
+    self.LISTENERS = sock.create_sockets(self.cfg, self.log, fds)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 181, in create_sockets
+    sock = sock_type(addr, conf, log)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 118, in __init__
+    super(UnixSocket, self).__init__(addr, conf, log, fd=fd)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 32, in __init__
+    self.sock = self.set_options(sock, bound=bound)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 50, in set_options
+    self.bind(sock)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 126, in bind
+    util.chown(self.cfg_addr, self.conf.uid, self.conf.gid)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/util.py", line 173, in chown
+    os.chown(path, uid, gid)
+OSError: [Errno 1] Operation not permitted: '/home/serveradmin/PracticasAcademicas/run/gunicorn.sock'
+Starting ITSS as serveradmin
+[2019-01-26 13:44:58 +0000] [16104] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7fbf22b2d578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7fbf22b2d398>
+  pre_fork: <function pre_fork at 0x7fbf22b2d488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 33
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7fbf22b2d938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7fbf22b2de60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7fbf22b2d2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7fbf22b2da28>
+  post_request: <function post_request at 0x7fbf22b2daa0>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7fbf22b2d758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7fbf22b2d1b8>
+  post_worker_init: <function post_worker_init at 0x7fbf22b2d668>
+  worker_abort: <function worker_abort at 0x7fbf22b2d848>
+  child_exit: <function child_exit at 0x7fbf22b2db90>
+  worker_exit: <function worker_exit at 0x7fbf22b2dc80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['unix:/home/serveradmin/PracticasAcademicas/run/gunicorn.sock']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7fbf22b2dd70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 13:44:58 +0000] [16104] [INFO] Starting gunicorn 19.9.0
+Traceback (most recent call last):
+  File "/home/serveradmin/PracticasAcademicas/ITSS/../env/bin/gunicorn", line 10, in <module>
+    sys.exit(run())
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 61, in run
+    WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]").run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 223, in run
+    super(Application, self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 72, in run
+    Arbiter(self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 199, in run
+    self.start()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 157, in start
+    self.LISTENERS = sock.create_sockets(self.cfg, self.log, fds)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 181, in create_sockets
+    sock = sock_type(addr, conf, log)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 118, in __init__
+    super(UnixSocket, self).__init__(addr, conf, log, fd=fd)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 32, in __init__
+    self.sock = self.set_options(sock, bound=bound)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 50, in set_options
+    self.bind(sock)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 126, in bind
+    util.chown(self.cfg_addr, self.conf.uid, self.conf.gid)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/util.py", line 173, in chown
+    os.chown(path, uid, gid)
+OSError: [Errno 1] Operation not permitted: '/home/serveradmin/PracticasAcademicas/run/gunicorn.sock'
+Starting ITSS as serveradmin
+[2019-01-26 13:44:59 +0000] [16113] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7fe57e5b8578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7fe57e5b8398>
+  pre_fork: <function pre_fork at 0x7fe57e5b8488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 33
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7fe57e5b8938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7fe57e5b8e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7fe57e5b82a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7fe57e5b8a28>
+  post_request: <function post_request at 0x7fe57e5b8aa0>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7fe57e5b8758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7fe57e5b81b8>
+  post_worker_init: <function post_worker_init at 0x7fe57e5b8668>
+  worker_abort: <function worker_abort at 0x7fe57e5b8848>
+  child_exit: <function child_exit at 0x7fe57e5b8b90>
+  worker_exit: <function worker_exit at 0x7fe57e5b8c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['unix:/home/serveradmin/PracticasAcademicas/run/gunicorn.sock']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7fe57e5b8d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 13:44:59 +0000] [16113] [INFO] Starting gunicorn 19.9.0
+Traceback (most recent call last):
+  File "/home/serveradmin/PracticasAcademicas/ITSS/../env/bin/gunicorn", line 10, in <module>
+    sys.exit(run())
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 61, in run
+    WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]").run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 223, in run
+    super(Application, self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 72, in run
+    Arbiter(self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 199, in run
+    self.start()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 157, in start
+    self.LISTENERS = sock.create_sockets(self.cfg, self.log, fds)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 181, in create_sockets
+    sock = sock_type(addr, conf, log)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 118, in __init__
+    super(UnixSocket, self).__init__(addr, conf, log, fd=fd)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 32, in __init__
+    self.sock = self.set_options(sock, bound=bound)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 50, in set_options
+    self.bind(sock)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 126, in bind
+    util.chown(self.cfg_addr, self.conf.uid, self.conf.gid)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/util.py", line 173, in chown
+    os.chown(path, uid, gid)
+OSError: [Errno 1] Operation not permitted: '/home/serveradmin/PracticasAcademicas/run/gunicorn.sock'
+Starting ITSS as serveradmin
+[2019-01-26 13:45:01 +0000] [16122] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f5218e30578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f5218e30398>
+  pre_fork: <function pre_fork at 0x7f5218e30488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 33
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f5218e30938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f5218e30e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f5218e302a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f5218e30a28>
+  post_request: <function post_request at 0x7f5218e30aa0>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f5218e30758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f5218e301b8>
+  post_worker_init: <function post_worker_init at 0x7f5218e30668>
+  worker_abort: <function worker_abort at 0x7f5218e30848>
+  child_exit: <function child_exit at 0x7f5218e30b90>
+  worker_exit: <function worker_exit at 0x7f5218e30c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['unix:/home/serveradmin/PracticasAcademicas/run/gunicorn.sock']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f5218e30d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 13:45:01 +0000] [16122] [INFO] Starting gunicorn 19.9.0
+Traceback (most recent call last):
+  File "/home/serveradmin/PracticasAcademicas/ITSS/../env/bin/gunicorn", line 10, in <module>
+    sys.exit(run())
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 61, in run
+    WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]").run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 223, in run
+    super(Application, self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 72, in run
+    Arbiter(self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 199, in run
+    self.start()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 157, in start
+    self.LISTENERS = sock.create_sockets(self.cfg, self.log, fds)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 181, in create_sockets
+    sock = sock_type(addr, conf, log)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 118, in __init__
+    super(UnixSocket, self).__init__(addr, conf, log, fd=fd)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 32, in __init__
+    self.sock = self.set_options(sock, bound=bound)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 50, in set_options
+    self.bind(sock)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 126, in bind
+    util.chown(self.cfg_addr, self.conf.uid, self.conf.gid)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/util.py", line 173, in chown
+    os.chown(path, uid, gid)
+OSError: [Errno 1] Operation not permitted: '/home/serveradmin/PracticasAcademicas/run/gunicorn.sock'
+Starting ITSS as serveradmin
+[2019-01-26 13:45:05 +0000] [16131] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7fcbf8279578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7fcbf8279398>
+  pre_fork: <function pre_fork at 0x7fcbf8279488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 33
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7fcbf8279938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7fcbf8279e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7fcbf82792a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7fcbf8279a28>
+  post_request: <function post_request at 0x7fcbf8279aa0>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7fcbf8279758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7fcbf82791b8>
+  post_worker_init: <function post_worker_init at 0x7fcbf8279668>
+  worker_abort: <function worker_abort at 0x7fcbf8279848>
+  child_exit: <function child_exit at 0x7fcbf8279b90>
+  worker_exit: <function worker_exit at 0x7fcbf8279c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['unix:/home/serveradmin/PracticasAcademicas/run/gunicorn.sock']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7fcbf8279d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 13:45:05 +0000] [16131] [INFO] Starting gunicorn 19.9.0
+Traceback (most recent call last):
+  File "/home/serveradmin/PracticasAcademicas/ITSS/../env/bin/gunicorn", line 10, in <module>
+    sys.exit(run())
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 61, in run
+    WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]").run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 223, in run
+    super(Application, self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 72, in run
+    Arbiter(self).run()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 199, in run
+    self.start()
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 157, in start
+    self.LISTENERS = sock.create_sockets(self.cfg, self.log, fds)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 181, in create_sockets
+    sock = sock_type(addr, conf, log)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 118, in __init__
+    super(UnixSocket, self).__init__(addr, conf, log, fd=fd)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 32, in __init__
+    self.sock = self.set_options(sock, bound=bound)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 50, in set_options
+    self.bind(sock)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/sock.py", line 126, in bind
+    util.chown(self.cfg_addr, self.conf.uid, self.conf.gid)
+  File "/home/serveradmin/PracticasAcademicas/env/local/lib/python2.7/site-packages/gunicorn/util.py", line 173, in chown
+    os.chown(path, uid, gid)
+OSError: [Errno 1] Operation not permitted: '/home/serveradmin/PracticasAcademicas/run/gunicorn.sock'
+Starting ITSS as serveradmin
+[2019-01-26 14:55:20 +0000] [16784] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7fb3015da578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7fb3015da398>
+  pre_fork: <function pre_fork at 0x7fb3015da488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 1000
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7fb3015da938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7fb3015dae60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7fb3015da2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7fb3015daa28>
+  post_request: <function post_request at 0x7fb3015daaa0>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7fb3015da758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7fb3015da1b8>
+  post_worker_init: <function post_worker_init at 0x7fb3015da668>
+  worker_abort: <function worker_abort at 0x7fb3015da848>
+  child_exit: <function child_exit at 0x7fb3015dab90>
+  worker_exit: <function worker_exit at 0x7fb3015dac80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['unix:/home/serveradmin/PracticasAcademicas/run/gunicorn.sock']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7fb3015dad70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 14:55:20 +0000] [16784] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 14:55:20 +0000] [16784] [DEBUG] Arbiter booted
+[2019-01-26 14:55:20 +0000] [16784] [INFO] Listening at: unix:/home/serveradmin/PracticasAcademicas/run/gunicorn.sock (16784)
+[2019-01-26 14:55:20 +0000] [16784] [INFO] Using worker: sync
+[2019-01-26 14:55:20 +0000] [16793] [INFO] Booting worker with pid: 16793
+[2019-01-26 14:55:20 +0000] [16794] [INFO] Booting worker with pid: 16794
+[2019-01-26 14:55:20 +0000] [16799] [INFO] Booting worker with pid: 16799
+[2019-01-26 14:55:20 +0000] [16784] [DEBUG] 3 workers
+[2019-01-26 14:55:30 +0000] [16784] [INFO] Handling signal: term
+[2019-01-26 14:55:30 +0000] [16793] [INFO] Worker exiting (pid: 16793)
+[2019-01-26 14:55:30 +0000] [16799] [INFO] Worker exiting (pid: 16799)
+[2019-01-26 14:55:30 +0000] [16794] [INFO] Worker exiting (pid: 16794)
+[2019-01-26 14:55:30 +0000] [16784] [INFO] Shutting down: Master
+Starting ITSS as serveradmin
+[2019-01-26 14:56:08 +0000] [16809] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f7ec7cba578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f7ec7cba398>
+  pre_fork: <function pre_fork at 0x7f7ec7cba488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 1000
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f7ec7cba938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f7ec7cbae60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f7ec7cba2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f7ec7cbaa28>
+  post_request: <function post_request at 0x7f7ec7cbaaa0>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f7ec7cba758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f7ec7cba1b8>
+  post_worker_init: <function post_worker_init at 0x7f7ec7cba668>
+  worker_abort: <function worker_abort at 0x7f7ec7cba848>
+  child_exit: <function child_exit at 0x7f7ec7cbab90>
+  worker_exit: <function worker_exit at 0x7f7ec7cbac80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['unix:/home/serveradmin/PracticasAcademicas/run/gunicorn.sock']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f7ec7cbad70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 14:56:08 +0000] [16809] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 14:56:08 +0000] [16809] [DEBUG] Arbiter booted
+[2019-01-26 14:56:08 +0000] [16809] [INFO] Listening at: unix:/home/serveradmin/PracticasAcademicas/run/gunicorn.sock (16809)
+[2019-01-26 14:56:08 +0000] [16809] [INFO] Using worker: sync
+[2019-01-26 14:56:08 +0000] [16818] [INFO] Booting worker with pid: 16818
+[2019-01-26 14:56:08 +0000] [16819] [INFO] Booting worker with pid: 16819
+[2019-01-26 14:56:08 +0000] [16824] [INFO] Booting worker with pid: 16824
+[2019-01-26 14:56:08 +0000] [16809] [DEBUG] 3 workers
+[2019-01-26 14:56:20 +0000] [16809] [INFO] Handling signal: term
+[2019-01-26 14:56:20 +0000] [16824] [INFO] Worker exiting (pid: 16824)
+[2019-01-26 14:56:20 +0000] [16818] [INFO] Worker exiting (pid: 16818)
+[2019-01-26 14:56:20 +0000] [16819] [INFO] Worker exiting (pid: 16819)
+[2019-01-26 14:56:21 +0000] [16809] [INFO] Shutting down: Master
+Starting ITSS as serveradmin
+[2019-01-26 16:02:40 +0000] [18795] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7fd0d1a2d578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7fd0d1a2d398>
+  pre_fork: <function pre_fork at 0x7fd0d1a2d488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7fd0d1a2d938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7fd0d1a2de60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7fd0d1a2d2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7fd0d1a2da28>
+  post_request: <function post_request at 0x7fd0d1a2daa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7fd0d1a2d758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7fd0d1a2d1b8>
+  post_worker_init: <function post_worker_init at 0x7fd0d1a2d668>
+  worker_abort: <function worker_abort at 0x7fd0d1a2d848>
+  child_exit: <function child_exit at 0x7fd0d1a2db90>
+  worker_exit: <function worker_exit at 0x7fd0d1a2dc80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7fd0d1a2dd70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:02:40 +0000] [18795] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:02:40 +0000] [18795] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:40 +0000] [18795] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:41 +0000] [18795] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:41 +0000] [18795] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:42 +0000] [18795] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:42 +0000] [18795] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:43 +0000] [18795] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:43 +0000] [18795] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:44 +0000] [18795] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:44 +0000] [18795] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:45 +0000] [18795] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:02:47 +0000] [18803] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f44be14f578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f44be14f398>
+  pre_fork: <function pre_fork at 0x7f44be14f488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f44be14f938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f44be14fe60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f44be14f2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f44be14fa28>
+  post_request: <function post_request at 0x7f44be14faa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f44be14f758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f44be14f1b8>
+  post_worker_init: <function post_worker_init at 0x7f44be14f668>
+  worker_abort: <function worker_abort at 0x7f44be14f848>
+  child_exit: <function child_exit at 0x7f44be14fb90>
+  worker_exit: <function worker_exit at 0x7f44be14fc80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f44be14fd70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:02:47 +0000] [18803] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:02:47 +0000] [18803] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:47 +0000] [18803] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:48 +0000] [18803] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:48 +0000] [18803] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:49 +0000] [18803] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:49 +0000] [18803] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:50 +0000] [18803] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:50 +0000] [18803] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:51 +0000] [18803] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:51 +0000] [18803] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:52 +0000] [18803] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:02:53 +0000] [18811] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f98908f7578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f98908f7398>
+  pre_fork: <function pre_fork at 0x7f98908f7488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f98908f7938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f98908f7e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f98908f72a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f98908f7a28>
+  post_request: <function post_request at 0x7f98908f7aa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f98908f7758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f98908f71b8>
+  post_worker_init: <function post_worker_init at 0x7f98908f7668>
+  worker_abort: <function worker_abort at 0x7f98908f7848>
+  child_exit: <function child_exit at 0x7f98908f7b90>
+  worker_exit: <function worker_exit at 0x7f98908f7c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f98908f7d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:02:53 +0000] [18811] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:02:53 +0000] [18811] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:53 +0000] [18811] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:54 +0000] [18811] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:54 +0000] [18811] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:55 +0000] [18811] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:55 +0000] [18811] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:56 +0000] [18811] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:56 +0000] [18811] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:57 +0000] [18811] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:02:57 +0000] [18811] [ERROR] Retrying in 1 second.
+[2019-01-26 16:02:58 +0000] [18811] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:03:00 +0000] [18819] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f5ae133c578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f5ae133c398>
+  pre_fork: <function pre_fork at 0x7f5ae133c488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f5ae133c938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f5ae133ce60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f5ae133c2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f5ae133ca28>
+  post_request: <function post_request at 0x7f5ae133caa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f5ae133c758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f5ae133c1b8>
+  post_worker_init: <function post_worker_init at 0x7f5ae133c668>
+  worker_abort: <function worker_abort at 0x7f5ae133c848>
+  child_exit: <function child_exit at 0x7f5ae133cb90>
+  worker_exit: <function worker_exit at 0x7f5ae133cc80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f5ae133cd70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:03:00 +0000] [18819] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:03:00 +0000] [18819] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:00 +0000] [18819] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:01 +0000] [18819] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:01 +0000] [18819] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:02 +0000] [18819] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:02 +0000] [18819] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:03 +0000] [18819] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:03 +0000] [18819] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:04 +0000] [18819] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:04 +0000] [18819] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:05 +0000] [18819] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:03:06 +0000] [18828] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7fc6e8112578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7fc6e8112398>
+  pre_fork: <function pre_fork at 0x7fc6e8112488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7fc6e8112938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7fc6e8112e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7fc6e81122a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7fc6e8112a28>
+  post_request: <function post_request at 0x7fc6e8112aa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7fc6e8112758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7fc6e81121b8>
+  post_worker_init: <function post_worker_init at 0x7fc6e8112668>
+  worker_abort: <function worker_abort at 0x7fc6e8112848>
+  child_exit: <function child_exit at 0x7fc6e8112b90>
+  worker_exit: <function worker_exit at 0x7fc6e8112c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7fc6e8112d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:03:06 +0000] [18828] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:03:06 +0000] [18828] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:06 +0000] [18828] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:07 +0000] [18828] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:07 +0000] [18828] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:08 +0000] [18828] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:08 +0000] [18828] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:09 +0000] [18828] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:09 +0000] [18828] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:10 +0000] [18828] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:10 +0000] [18828] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:11 +0000] [18828] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:03:12 +0000] [18836] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7fb421da6578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7fb421da6398>
+  pre_fork: <function pre_fork at 0x7fb421da6488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7fb421da6938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7fb421da6e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7fb421da62a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7fb421da6a28>
+  post_request: <function post_request at 0x7fb421da6aa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7fb421da6758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7fb421da61b8>
+  post_worker_init: <function post_worker_init at 0x7fb421da6668>
+  worker_abort: <function worker_abort at 0x7fb421da6848>
+  child_exit: <function child_exit at 0x7fb421da6b90>
+  worker_exit: <function worker_exit at 0x7fb421da6c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7fb421da6d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:03:12 +0000] [18836] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:03:12 +0000] [18836] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:12 +0000] [18836] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:13 +0000] [18836] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:13 +0000] [18836] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:14 +0000] [18836] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:14 +0000] [18836] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:15 +0000] [18836] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:15 +0000] [18836] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:16 +0000] [18836] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:03:16 +0000] [18836] [ERROR] Retrying in 1 second.
+[2019-01-26 16:03:17 +0000] [18836] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:04:38 +0000] [18865] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7ff84c74b578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7ff84c74b398>
+  pre_fork: <function pre_fork at 0x7ff84c74b488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7ff84c74b938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7ff84c74be60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7ff84c74b2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7ff84c74ba28>
+  post_request: <function post_request at 0x7ff84c74baa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7ff84c74b758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7ff84c74b1b8>
+  post_worker_init: <function post_worker_init at 0x7ff84c74b668>
+  worker_abort: <function worker_abort at 0x7ff84c74b848>
+  child_exit: <function child_exit at 0x7ff84c74bb90>
+  worker_exit: <function worker_exit at 0x7ff84c74bc80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7ff84c74bd70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:04:38 +0000] [18865] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:04:38 +0000] [18865] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:38 +0000] [18865] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:39 +0000] [18865] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:39 +0000] [18865] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:40 +0000] [18865] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:40 +0000] [18865] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:41 +0000] [18865] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:41 +0000] [18865] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:42 +0000] [18865] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:42 +0000] [18865] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:43 +0000] [18865] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:04:45 +0000] [18873] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7fe2d875e578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7fe2d875e398>
+  pre_fork: <function pre_fork at 0x7fe2d875e488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7fe2d875e938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7fe2d875ee60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7fe2d875e2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7fe2d875ea28>
+  post_request: <function post_request at 0x7fe2d875eaa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7fe2d875e758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7fe2d875e1b8>
+  post_worker_init: <function post_worker_init at 0x7fe2d875e668>
+  worker_abort: <function worker_abort at 0x7fe2d875e848>
+  child_exit: <function child_exit at 0x7fe2d875eb90>
+  worker_exit: <function worker_exit at 0x7fe2d875ec80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7fe2d875ed70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:04:45 +0000] [18873] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:04:45 +0000] [18873] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:45 +0000] [18873] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:46 +0000] [18873] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:46 +0000] [18873] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:47 +0000] [18873] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:47 +0000] [18873] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:48 +0000] [18873] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:48 +0000] [18873] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:49 +0000] [18873] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:49 +0000] [18873] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:50 +0000] [18873] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:04:51 +0000] [18881] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f0c918d7578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f0c918d7398>
+  pre_fork: <function pre_fork at 0x7f0c918d7488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f0c918d7938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f0c918d7e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f0c918d72a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f0c918d7a28>
+  post_request: <function post_request at 0x7f0c918d7aa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f0c918d7758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f0c918d71b8>
+  post_worker_init: <function post_worker_init at 0x7f0c918d7668>
+  worker_abort: <function worker_abort at 0x7f0c918d7848>
+  child_exit: <function child_exit at 0x7f0c918d7b90>
+  worker_exit: <function worker_exit at 0x7f0c918d7c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f0c918d7d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:04:51 +0000] [18881] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:04:51 +0000] [18881] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:51 +0000] [18881] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:52 +0000] [18881] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:52 +0000] [18881] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:53 +0000] [18881] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:53 +0000] [18881] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:54 +0000] [18881] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:54 +0000] [18881] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:55 +0000] [18881] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:55 +0000] [18881] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:56 +0000] [18881] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:04:58 +0000] [18889] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f4a01c46578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f4a01c46398>
+  pre_fork: <function pre_fork at 0x7f4a01c46488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f4a01c46938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f4a01c46e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f4a01c462a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f4a01c46a28>
+  post_request: <function post_request at 0x7f4a01c46aa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f4a01c46758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f4a01c461b8>
+  post_worker_init: <function post_worker_init at 0x7f4a01c46668>
+  worker_abort: <function worker_abort at 0x7f4a01c46848>
+  child_exit: <function child_exit at 0x7f4a01c46b90>
+  worker_exit: <function worker_exit at 0x7f4a01c46c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f4a01c46d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:04:58 +0000] [18889] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:04:58 +0000] [18889] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:58 +0000] [18889] [ERROR] Retrying in 1 second.
+[2019-01-26 16:04:59 +0000] [18889] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:04:59 +0000] [18889] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:00 +0000] [18889] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:00 +0000] [18889] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:01 +0000] [18889] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:01 +0000] [18889] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:02 +0000] [18889] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:02 +0000] [18889] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:03 +0000] [18889] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:05:04 +0000] [18897] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7fbb7f865578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7fbb7f865398>
+  pre_fork: <function pre_fork at 0x7fbb7f865488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7fbb7f865938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7fbb7f865e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7fbb7f8652a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7fbb7f865a28>
+  post_request: <function post_request at 0x7fbb7f865aa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7fbb7f865758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7fbb7f8651b8>
+  post_worker_init: <function post_worker_init at 0x7fbb7f865668>
+  worker_abort: <function worker_abort at 0x7fbb7f865848>
+  child_exit: <function child_exit at 0x7fbb7f865b90>
+  worker_exit: <function worker_exit at 0x7fbb7f865c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7fbb7f865d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:05:04 +0000] [18897] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:05:04 +0000] [18897] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:04 +0000] [18897] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:05 +0000] [18897] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:05 +0000] [18897] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:06 +0000] [18897] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:06 +0000] [18897] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:07 +0000] [18897] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:07 +0000] [18897] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:08 +0000] [18897] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:08 +0000] [18897] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:09 +0000] [18897] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:05:10 +0000] [18905] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7fbc0853b578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7fbc0853b398>
+  pre_fork: <function pre_fork at 0x7fbc0853b488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7fbc0853b938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7fbc0853be60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7fbc0853b2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7fbc0853ba28>
+  post_request: <function post_request at 0x7fbc0853baa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7fbc0853b758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7fbc0853b1b8>
+  post_worker_init: <function post_worker_init at 0x7fbc0853b668>
+  worker_abort: <function worker_abort at 0x7fbc0853b848>
+  child_exit: <function child_exit at 0x7fbc0853bb90>
+  worker_exit: <function worker_exit at 0x7fbc0853bc80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7fbc0853bd70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:05:10 +0000] [18905] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:05:10 +0000] [18905] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:10 +0000] [18905] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:12 +0000] [18905] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:12 +0000] [18905] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:13 +0000] [18905] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:13 +0000] [18905] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:14 +0000] [18905] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:14 +0000] [18905] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:15 +0000] [18905] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:15 +0000] [18905] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:16 +0000] [18905] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:05:17 +0000] [18913] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f12c9119578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f12c9119398>
+  pre_fork: <function pre_fork at 0x7f12c9119488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f12c9119938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f12c9119e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f12c91192a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f12c9119a28>
+  post_request: <function post_request at 0x7f12c9119aa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f12c9119758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f12c91191b8>
+  post_worker_init: <function post_worker_init at 0x7f12c9119668>
+  worker_abort: <function worker_abort at 0x7f12c9119848>
+  child_exit: <function child_exit at 0x7f12c9119b90>
+  worker_exit: <function worker_exit at 0x7f12c9119c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f12c9119d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:05:17 +0000] [18913] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:05:17 +0000] [18913] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:17 +0000] [18913] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:18 +0000] [18913] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:18 +0000] [18913] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:19 +0000] [18913] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:19 +0000] [18913] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:20 +0000] [18913] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:20 +0000] [18913] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:21 +0000] [18913] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:21 +0000] [18913] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:22 +0000] [18913] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:05:23 +0000] [18921] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7ff00ab44578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7ff00ab44398>
+  pre_fork: <function pre_fork at 0x7ff00ab44488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7ff00ab44938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7ff00ab44e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7ff00ab442a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7ff00ab44a28>
+  post_request: <function post_request at 0x7ff00ab44aa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7ff00ab44758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7ff00ab441b8>
+  post_worker_init: <function post_worker_init at 0x7ff00ab44668>
+  worker_abort: <function worker_abort at 0x7ff00ab44848>
+  child_exit: <function child_exit at 0x7ff00ab44b90>
+  worker_exit: <function worker_exit at 0x7ff00ab44c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7ff00ab44d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:05:23 +0000] [18921] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:05:23 +0000] [18921] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:23 +0000] [18921] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:24 +0000] [18921] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:24 +0000] [18921] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:25 +0000] [18921] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:25 +0000] [18921] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:26 +0000] [18921] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:26 +0000] [18921] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:28 +0000] [18921] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:28 +0000] [18921] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:29 +0000] [18921] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:05:30 +0000] [18930] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f8da78b6578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f8da78b6398>
+  pre_fork: <function pre_fork at 0x7f8da78b6488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f8da78b6938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f8da78b6e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f8da78b62a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f8da78b6a28>
+  post_request: <function post_request at 0x7f8da78b6aa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f8da78b6758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f8da78b61b8>
+  post_worker_init: <function post_worker_init at 0x7f8da78b6668>
+  worker_abort: <function worker_abort at 0x7f8da78b6848>
+  child_exit: <function child_exit at 0x7f8da78b6b90>
+  worker_exit: <function worker_exit at 0x7f8da78b6c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f8da78b6d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:05:30 +0000] [18930] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:05:30 +0000] [18930] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:30 +0000] [18930] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:31 +0000] [18930] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:31 +0000] [18930] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:32 +0000] [18930] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:32 +0000] [18930] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:34 +0000] [18930] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:34 +0000] [18930] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:35 +0000] [18930] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:35 +0000] [18930] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:36 +0000] [18930] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:05:37 +0000] [18938] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7ffa8743d578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7ffa8743d398>
+  pre_fork: <function pre_fork at 0x7ffa8743d488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7ffa8743d938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7ffa8743de60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7ffa8743d2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7ffa8743da28>
+  post_request: <function post_request at 0x7ffa8743daa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7ffa8743d758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7ffa8743d1b8>
+  post_worker_init: <function post_worker_init at 0x7ffa8743d668>
+  worker_abort: <function worker_abort at 0x7ffa8743d848>
+  child_exit: <function child_exit at 0x7ffa8743db90>
+  worker_exit: <function worker_exit at 0x7ffa8743dc80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7ffa8743dd70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:05:37 +0000] [18938] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:05:37 +0000] [18938] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:37 +0000] [18938] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:38 +0000] [18938] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:38 +0000] [18938] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:39 +0000] [18938] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:39 +0000] [18938] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:40 +0000] [18938] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:40 +0000] [18938] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:41 +0000] [18938] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:41 +0000] [18938] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:42 +0000] [18938] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:05:44 +0000] [18946] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f3a61cf7578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f3a61cf7398>
+  pre_fork: <function pre_fork at 0x7f3a61cf7488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f3a61cf7938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f3a61cf7e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f3a61cf72a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f3a61cf7a28>
+  post_request: <function post_request at 0x7f3a61cf7aa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f3a61cf7758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f3a61cf71b8>
+  post_worker_init: <function post_worker_init at 0x7f3a61cf7668>
+  worker_abort: <function worker_abort at 0x7f3a61cf7848>
+  child_exit: <function child_exit at 0x7f3a61cf7b90>
+  worker_exit: <function worker_exit at 0x7f3a61cf7c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f3a61cf7d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:05:44 +0000] [18946] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:05:44 +0000] [18946] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:44 +0000] [18946] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:45 +0000] [18946] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:45 +0000] [18946] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:46 +0000] [18946] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:46 +0000] [18946] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:47 +0000] [18946] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:47 +0000] [18946] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:48 +0000] [18946] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:48 +0000] [18946] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:49 +0000] [18946] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:05:50 +0000] [18954] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f0cdc3a3578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f0cdc3a3398>
+  pre_fork: <function pre_fork at 0x7f0cdc3a3488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f0cdc3a3938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f0cdc3a3e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f0cdc3a32a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f0cdc3a3a28>
+  post_request: <function post_request at 0x7f0cdc3a3aa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f0cdc3a3758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f0cdc3a31b8>
+  post_worker_init: <function post_worker_init at 0x7f0cdc3a3668>
+  worker_abort: <function worker_abort at 0x7f0cdc3a3848>
+  child_exit: <function child_exit at 0x7f0cdc3a3b90>
+  worker_exit: <function worker_exit at 0x7f0cdc3a3c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f0cdc3a3d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:05:50 +0000] [18954] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:05:50 +0000] [18954] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:50 +0000] [18954] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:51 +0000] [18954] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:51 +0000] [18954] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:52 +0000] [18954] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:52 +0000] [18954] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:53 +0000] [18954] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:53 +0000] [18954] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:54 +0000] [18954] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:54 +0000] [18954] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:55 +0000] [18954] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as serveradmin
+[2019-01-26 16:05:56 +0000] [18962] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7fd776d86578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7fd776d86398>
+  pre_fork: <function pre_fork at 0x7fd776d86488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7fd776d86938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7fd776d86e60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7fd776d862a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7fd776d86a28>
+  post_request: <function post_request at 0x7fd776d86aa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7fd776d86758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7fd776d861b8>
+  post_worker_init: <function post_worker_init at 0x7fd776d86668>
+  worker_abort: <function worker_abort at 0x7fd776d86848>
+  child_exit: <function child_exit at 0x7fd776d86b90>
+  worker_exit: <function worker_exit at 0x7fd776d86c80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7fd776d86d70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:05:56 +0000] [18962] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:05:56 +0000] [18962] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:56 +0000] [18962] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:58 +0000] [18962] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:58 +0000] [18962] [ERROR] Retrying in 1 second.
+[2019-01-26 16:05:59 +0000] [18962] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:05:59 +0000] [18962] [ERROR] Retrying in 1 second.
+[2019-01-26 16:06:00 +0000] [18962] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:06:00 +0000] [18962] [ERROR] Retrying in 1 second.
+[2019-01-26 16:06:01 +0000] [18962] [DEBUG] connection to ('talentohumano.itss.edu.ec', 80) failed: [Errno 13] Permission denied
+[2019-01-26 16:06:01 +0000] [18962] [ERROR] Retrying in 1 second.
+[2019-01-26 16:06:02 +0000] [18962] [ERROR] Can't connect to ('talentohumano.itss.edu.ec', 80)
+Starting ITSS as root
+[2019-01-26 16:06:14 +0000] [18999] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f915eedf578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f915eedf398>
+  pre_fork: <function pre_fork at 0x7f915eedf488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f915eedf938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f915eedfe60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f915eedf2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f915eedfa28>
+  post_request: <function post_request at 0x7f915eedfaa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f915eedf758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f915eedf1b8>
+  post_worker_init: <function post_worker_init at 0x7f915eedf668>
+  worker_abort: <function worker_abort at 0x7f915eedf848>
+  child_exit: <function child_exit at 0x7f915eedfb90>
+  worker_exit: <function worker_exit at 0x7f915eedfc80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f915eedfd70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:06:14 +0000] [18999] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:06:14 +0000] [18999] [DEBUG] Arbiter booted
+[2019-01-26 16:06:14 +0000] [18999] [INFO] Listening at: http://10.10.130.22:80 (18999)
+[2019-01-26 16:06:14 +0000] [18999] [INFO] Using worker: sync
+[2019-01-26 16:06:14 +0000] [19007] [INFO] Booting worker with pid: 19007
+[2019-01-26 16:06:15 +0000] [19008] [INFO] Booting worker with pid: 19008
+[2019-01-26 16:06:15 +0000] [19013] [INFO] Booting worker with pid: 19013
+[2019-01-26 16:06:15 +0000] [18999] [DEBUG] 3 workers
+[2019-01-26 16:06:17 +0000] [19008] [DEBUG] GET /login/
+[2019-01-26 16:06:17 +0000] [19007] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:06:17 +0000] [19008] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:06:17 +0000] [19007] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:06:17 +0000] [19007] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:06:17 +0000] [19007] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:06:17 +0000] [19007] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:06:18 +0000] [19008] [DEBUG] GET /static/images/favicon.ico
+[2019-01-26 16:06:40 +0000] [18999] [INFO] Handling signal: term
+[2019-01-26 16:06:40 +0000] [19008] [INFO] Worker exiting (pid: 19008)
+[2019-01-26 16:06:40 +0000] [19007] [INFO] Worker exiting (pid: 19007)
+[2019-01-26 16:06:40 +0000] [19013] [INFO] Worker exiting (pid: 19013)
+[2019-01-26 16:06:40 +0000] [18999] [INFO] Shutting down: Master
+Starting ITSS as root
+[2019-01-26 16:06:47 +0000] [19018] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f141e65a578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f141e65a398>
+  pre_fork: <function pre_fork at 0x7f141e65a488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f141e65a938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f141e65ae60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f141e65a2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f141e65aa28>
+  post_request: <function post_request at 0x7f141e65aaa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f141e65a758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f141e65a1b8>
+  post_worker_init: <function post_worker_init at 0x7f141e65a668>
+  worker_abort: <function worker_abort at 0x7f141e65a848>
+  child_exit: <function child_exit at 0x7f141e65ab90>
+  worker_exit: <function worker_exit at 0x7f141e65ac80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['talentohumano.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f141e65ad70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 16:06:47 +0000] [19018] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 16:06:48 +0000] [19018] [DEBUG] Arbiter booted
+[2019-01-26 16:06:48 +0000] [19018] [INFO] Listening at: http://10.10.130.22:80 (19018)
+[2019-01-26 16:06:48 +0000] [19018] [INFO] Using worker: sync
+[2019-01-26 16:06:48 +0000] [19026] [INFO] Booting worker with pid: 19026
+[2019-01-26 16:06:48 +0000] [19029] [INFO] Booting worker with pid: 19029
+[2019-01-26 16:06:48 +0000] [19018] [DEBUG] 3 workers
+[2019-01-26 16:06:48 +0000] [19030] [INFO] Booting worker with pid: 19030
+[2019-01-26 16:06:48 +0000] [19026] [DEBUG] GET /login/
+[2019-01-26 16:06:49 +0000] [19029] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:06:49 +0000] [19026] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:06:49 +0000] [19030] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:06:49 +0000] [19026] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:06:49 +0000] [19026] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:06:49 +0000] [19029] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:06:49 +0000] [19026] [DEBUG] GET /static/images/favicon.ico
+[2019-01-26 16:26:12 +0000] [19029] [DEBUG] GET /
+[2019-01-26 16:26:13 +0000] [19026] [DEBUG] GET /login/
+[2019-01-26 16:26:13 +0000] [19026] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:26:13 +0000] [19029] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:26:13 +0000] [19030] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:26:13 +0000] [19029] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:26:13 +0000] [19030] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:26:13 +0000] [19029] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:26:13 +0000] [19029] [DEBUG] GET /static/images/favicon.ico
+[2019-01-26 16:26:32 +0000] [19029] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:26:32 +0000] [19026] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:26:32 +0000] [19030] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:26:32 +0000] [19026] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:26:32 +0000] [19029] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:26:32 +0000] [19029] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css.map
+[2019-01-26 16:46:37 +0000] [19030] [DEBUG] GET /
+[2019-01-26 16:46:38 +0000] [19029] [DEBUG] GET /login/
+[2019-01-26 16:46:38 +0000] [19030] [DEBUG] GET /login/
+[2019-01-26 16:46:38 +0000] [19026] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:46:38 +0000] [19029] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:46:39 +0000] [19026] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:46:39 +0000] [19029] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:46:39 +0000] [19029] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:46:39 +0000] [19029] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:50:55 +0000] [19029] [DEBUG] GET /
+[2019-01-26 16:50:55 +0000] [19026] [DEBUG] GET /login/
+[2019-01-26 16:50:55 +0000] [19029] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:50:55 +0000] [19029] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:50:55 +0000] [19030] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:50:55 +0000] [19029] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:50:55 +0000] [19030] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:50:55 +0000] [19026] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:50:55 +0000] [19029] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css.map
+[2019-01-26 16:50:57 +0000] [19029] [DEBUG] GET /login/
+[2019-01-26 16:50:57 +0000] [19030] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:50:57 +0000] [19029] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:50:57 +0000] [19030] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:50:57 +0000] [19029] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:50:57 +0000] [19030] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:50:57 +0000] [19026] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:50:57 +0000] [19026] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css.map
+[2019-01-26 16:50:57 +0000] [19026] [DEBUG] GET /static/images/favicon.ico
+[2019-01-26 16:51:18 +0000] [19026] [DEBUG] GET /login/
+[2019-01-26 16:51:18 +0000] [19030] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:51:18 +0000] [19026] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:51:18 +0000] [19026] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:51:18 +0000] [19029] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:51:18 +0000] [19026] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:51:18 +0000] [19029] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:51:18 +0000] [19030] [DEBUG] GET /static/images/favicon.ico
+[2019-01-26 16:51:19 +0000] [19026] [DEBUG] GET /login/
+[2019-01-26 16:51:19 +0000] [19030] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:51:20 +0000] [19030] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:51:20 +0000] [19029] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:51:20 +0000] [19029] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:51:20 +0000] [19030] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:51:20 +0000] [19029] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:51:20 +0000] [19029] [DEBUG] GET /login/
+[2019-01-26 16:51:20 +0000] [19026] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:51:20 +0000] [19029] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:51:20 +0000] [19026] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:51:20 +0000] [19029] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:51:20 +0000] [19029] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:51:20 +0000] [19026] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:51:20 +0000] [19029] [DEBUG] GET /static/images/favicon.ico
+[2019-01-26 16:52:12 +0000] [19026] [DEBUG] GET /login/
+[2019-01-26 16:52:12 +0000] [19029] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:52:12 +0000] [19029] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:52:12 +0000] [19029] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:52:12 +0000] [19026] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:52:12 +0000] [19029] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:52:12 +0000] [19030] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:52:13 +0000] [19030] [DEBUG] GET /static/images/favicon.ico
+[2019-01-26 16:52:13 +0000] [19030] [DEBUG] GET /login/
+[2019-01-26 16:52:13 +0000] [19026] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:52:13 +0000] [19026] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:52:13 +0000] [19026] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:52:13 +0000] [19026] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:52:13 +0000] [19030] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:52:13 +0000] [19029] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:52:13 +0000] [19026] [DEBUG] GET /static/images/favicon.ico
+[2019-01-26 16:55:00 +0000] [19026] [DEBUG] GET /login/
+[2019-01-26 16:55:00 +0000] [19029] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:55:00 +0000] [19026] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:55:00 +0000] [19030] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:55:00 +0000] [19026] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:55:00 +0000] [19026] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:55:00 +0000] [19030] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:55:00 +0000] [19026] [DEBUG] GET /static/images/favicon.ico
+[2019-01-26 16:55:00 +0000] [19030] [DEBUG] GET /login/
+[2019-01-26 16:55:00 +0000] [19029] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:55:00 +0000] [19030] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:55:00 +0000] [19026] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:55:00 +0000] [19029] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:55:00 +0000] [19030] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:55:00 +0000] [19026] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:56:38 +0000] [19026] [DEBUG] GET /login/
+[2019-01-26 16:56:38 +0000] [19030] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:56:38 +0000] [19026] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:56:38 +0000] [19029] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:56:38 +0000] [19026] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:56:38 +0000] [19029] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:56:38 +0000] [19030] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:56:38 +0000] [19029] [DEBUG] GET /static/images/favicon.ico
+[2019-01-26 16:56:39 +0000] [19029] [DEBUG] GET /login/
+[2019-01-26 16:56:39 +0000] [19030] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:56:39 +0000] [19029] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:56:39 +0000] [19026] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:56:39 +0000] [19026] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:56:39 +0000] [19029] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:56:39 +0000] [19026] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:56:39 +0000] [19026] [DEBUG] GET /static/images/favicon.ico
+[2019-01-26 16:56:39 +0000] [19026] [DEBUG] GET /login/
+[2019-01-26 16:56:39 +0000] [19030] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:56:39 +0000] [19026] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:56:39 +0000] [19026] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:56:39 +0000] [19026] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:56:39 +0000] [19026] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:56:39 +0000] [19030] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:56:39 +0000] [19026] [DEBUG] GET /login/
+[2019-01-26 16:56:40 +0000] [19030] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:56:40 +0000] [19030] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:56:40 +0000] [19029] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:56:40 +0000] [19026] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:56:40 +0000] [19030] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:56:40 +0000] [19026] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:56:40 +0000] [19026] [DEBUG] GET /login/
+[2019-01-26 16:56:40 +0000] [19026] [DEBUG] GET /login/
+[2019-01-26 16:56:40 +0000] [19030] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 16:56:40 +0000] [19029] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 16:56:40 +0000] [19026] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 16:56:40 +0000] [19029] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 16:56:40 +0000] [19026] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 16:56:40 +0000] [19026] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 16:56:40 +0000] [19026] [DEBUG] GET /static/images/favicon.ico
+[2019-01-26 17:04:26 +0000] [19018] [INFO] Handling signal: term
+[2019-01-26 17:04:26 +0000] [19029] [INFO] Worker exiting (pid: 19029)
+[2019-01-26 17:04:26 +0000] [19030] [INFO] Worker exiting (pid: 19030)
+[2019-01-26 17:04:26 +0000] [19026] [INFO] Worker exiting (pid: 19026)
+[2019-01-26 17:04:26 +0000] [19018] [INFO] Shutting down: Master
+Starting ITSS as root
+[2019-01-26 17:04:27 +0000] [19468] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 1000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f576410e578>
+  errorlog: -
+  enable_stdio_inheritance: False
+  worker_class: sync
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f576410e398>
+  pre_fork: <function pre_fork at 0x7f576410e488>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 0
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 3
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: ITSS
+  pre_exec: <function pre_exec at 0x7f576410e938>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f576410ee60>
+  logconfig: None
+  logconfig_dict: {}
+  config: None
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f576410e2a8>
+  reload_extra_files: []
+  accesslog: None
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f576410ea28>
+  post_request: <function post_request at 0x7f576410eaa0>
+  user: 0
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f576410e758>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 1
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f576410e1b8>
+  post_worker_init: <function post_worker_init at 0x7f576410e668>
+  worker_abort: <function worker_abort at 0x7f576410e848>
+  child_exit: <function child_exit at 0x7f576410eb90>
+  worker_exit: <function worker_exit at 0x7f576410ec80>
+  default_proc_name: proyecto.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/serveradmin/PracticasAcademicas/ITSS
+  daemon: False
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['practicasacademicas.itss.edu.ec:80']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f576410ed70>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-01-26 17:04:27 +0000] [19468] [INFO] Starting gunicorn 19.9.0
+[2019-01-26 17:04:27 +0000] [19468] [DEBUG] Arbiter booted
+[2019-01-26 17:04:27 +0000] [19468] [INFO] Listening at: http://10.10.130.22:80 (19468)
+[2019-01-26 17:04:27 +0000] [19468] [INFO] Using worker: sync
+[2019-01-26 17:04:27 +0000] [19476] [INFO] Booting worker with pid: 19476
+[2019-01-26 17:04:28 +0000] [19479] [INFO] Booting worker with pid: 19479
+[2019-01-26 17:04:28 +0000] [19482] [INFO] Booting worker with pid: 19482
+[2019-01-26 17:04:28 +0000] [19468] [DEBUG] 3 workers
+[2019-01-26 17:04:41 +0000] [19482] [DEBUG] GET /login/
+[2019-01-26 17:04:41 +0000] [19476] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-26 17:04:41 +0000] [19479] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-26 17:04:41 +0000] [19479] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-26 17:04:41 +0000] [19482] [DEBUG] GET /static/images/logo.svg
+[2019-01-26 17:04:41 +0000] [19476] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-26 17:04:41 +0000] [19479] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-26 17:04:42 +0000] [19476] [DEBUG] GET /static/images/favicon.ico
+[2019-01-28 15:19:13 +0000] [19479] [DEBUG] GET /
+[2019-01-28 15:19:14 +0000] [19476] [DEBUG] GET /login/
+[2019-01-28 15:19:14 +0000] [19479] [DEBUG] GET /login/
+[2019-01-28 15:19:14 +0000] [19482] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-28 15:19:14 +0000] [19476] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-28 15:19:15 +0000] [19476] [DEBUG] GET /static/vendors/animate.css/animate.min.css
+[2019-01-28 15:19:15 +0000] [19482] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-28 15:19:15 +0000] [19476] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-28 15:19:15 +0000] [19479] [DEBUG] GET /static/images/logo.svg
+[2019-01-28 15:19:15 +0000] [19476] [DEBUG] GET /static/images/favicon.ico
+[2019-01-28 15:20:54 +0000] [19476] [DEBUG] POST /login/
+[2019-01-28 15:20:54 +0000] [19482] [DEBUG] GET /
+[2019-01-28 15:20:55 +0000] [19482] [DEBUG] GET /static/vendors/iCheck/skins/flat/green.css
+[2019-01-28 15:20:55 +0000] [19482] [DEBUG] GET /static/vendors/bootstrap/dist/css/bootstrap.min.css
+[2019-01-28 15:20:55 +0000] [19479] [DEBUG] GET /static/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css
+[2019-01-28 15:20:55 +0000] [19482] [DEBUG] GET /static/vendors/font-awesome/css/font-awesome.min.css
+[2019-01-28 15:20:55 +0000] [19476] [DEBUG] GET /static/vendors/nprogress/nprogress.css
+[2019-01-28 15:20:55 +0000] [19476] [DEBUG] GET /static/plugins/iziToast/dist/css/iziToast.min.css
+[2019-01-28 15:20:55 +0000] [19482] [DEBUG] GET /static/build/css/custom.min.css
+[2019-01-28 15:20:55 +0000] [19476] [DEBUG] GET /static/vendors/jquery/dist/jquery.min.js
+[2019-01-28 15:20:55 +0000] [19482] [DEBUG] GET /static/vendors/bootstrap/dist/js/bootstrap.min.js
+[2019-01-28 15:20:55 +0000] [19479] [DEBUG] GET /static/vendors/fastclick/lib/fastclick.js
+[2019-01-28 15:20:55 +0000] [19482] [DEBUG] GET /static/vendors/nprogress/nprogress.js
+[2019-01-28 15:20:55 +0000] [19479] [DEBUG] GET /static/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js
+[2019-01-28 15:20:55 +0000] [19482] [DEBUG] GET /static/build/js/custom.min.js
+[2019-01-28 15:20:55 +0000] [19476] [DEBUG] GET /static/vendors/font-awesome/fonts/fontawesome-webfont.woff2
+[2019-01-28 15:20:55 +0000] [19479] [DEBUG] GET /static/plugins/iziToast/dist/js/iziToast.min.js
+[2019-01-28 15:20:55 +0000] [19482] [DEBUG] GET /static/images/logo2.png
+[2019-01-28 15:20:55 +0000] [19476] [DEBUG] GET /static/images/logo3.png

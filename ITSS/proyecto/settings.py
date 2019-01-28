@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'proyecto.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'practicas',
-        'USER': 'dep_practicas',
-        'PASSWORD': 'admiN680x',
+        'NAME': 'academico',
+        'USER': 'practicas',
+        'PASSWORD': 'tesis',
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {
