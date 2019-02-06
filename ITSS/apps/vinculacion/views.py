@@ -45,77 +45,25 @@ def crear_proyecto(request):
 def crear_componente(request, slug):
     componente = get_object_or_404(Componente, slug=slug, estado=1)
     form = forms.ComponenteForm(componente, request.user, request.POST or None, request.FILES or None)
-    if request.method == 'POST':
-        form2 = forms_update.ComponenteForm(request.POST or None, request.FILES or None, instance=componente)
-        form3 = forms_create.EvidenciaProyectoForm(request.POST or None, request.FILES or None)
-        formset = forms_create.ObjetivoFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='objetivo')
-        formset2 = forms_create.ActividadFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='actividad')
-        formset3 = forms_create.RecursoHumanoFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='recurso_humano')
-        formset4 = forms_create.RecursoFinancieroFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='recurso_financiero')
-        formset5 = forms_create.RecursoMaterialFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='recurso_material')
-        formset6 = forms_create.RecursoTecnologicoFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='recurso_tecnologico')
-        formset7 = forms_create.EvaluacionFormset(request.POST or None, request.FILES or None, form_kwargs={'componente':componente}, instance=componente, prefix='evaluacion')
-        if form2.is_valid() and form3.is_valid() and formset.is_valid() and formset2.is_valid() and formset3.is_valid() and formset4.is_valid() and formset5.is_valid() and formset6.is_valid() and formset7.is_valid():
-            componente = form2.save(request.user)
-            form3.save(request.FILES.getlist('imagenes'), componente)
-            formset.save()
-            formset2.save()
-            formset3.save()
-            formset4.save()
-            formset5.save()
-            formset6.save()
-            formset7.save()
-            messages.success(request, u'Se ha completado exitosamente!.')
-            return redirect('index')
-        else:
-            messages.error(request, u'Por seguridad los datos se formatearon.. vuelva a intentar nuevamente y registre todos los campos correctamente')
-    form2 = forms_update.ComponenteForm()
-    form3 = forms_create.EvidenciaProyectoForm()
-    formset = forms_create.ObjetivoFormSet(prefix='objetivo')        
-    formset2 = forms_create.ActividadFormSet(prefix='actividad')
-    formset3 = forms_create.RecursoHumanoFormSet(prefix='recurso_humano')
-    formset4 = forms_create.RecursoFinancieroFormSet(prefix='recurso_financiero')
-    formset5 = forms_create.RecursoMaterialFormSet(prefix='recurso_material')
-    formset6 = forms_create.RecursoTecnologicoFormSet(prefix='recurso_tecnologico')
-    formset7 = forms_create.EvaluacionFormset(form_kwargs={'componente':componente}, prefix='evaluacion')
-    context = {
-        'form': form,
-        'form2': form2,
-        'form3': form3,
-        'formset': formset,
-        'formset2': formset2,
-        'formset3': formset3,
-        'formset4': formset4,
-        'formset5': formset5,
-        'formset6': formset6,
-        'formset7': formset7,
-        'title': 'COMPONENTE'
-    }
-    return render(request, 'formularios/vinculacion_componente.html', context)
-
-"""
-def crear_componente(request, slug):
-    componente = get_object_or_404(Componente, slug=slug, estado=1)
-    form = forms.ComponenteForm(componente, request.user, request.POST or None, request.FILES or None)
     form2 = forms_update.ComponenteForm(request.POST or None, request.FILES or None, instance=componente)
     form3 = forms_create.EvidenciaProyectoForm(request.POST or None, request.FILES or None)
-    formset = forms_create.ObjetivoFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='objetivo')
-    formset2 = forms_create.ActividadFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='actividad')
-    formset3 = forms_create.RecursoHumanoFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='recurso_humano')
-    formset4 = forms_create.RecursoFinancieroFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='recurso_financiero')
-    formset5 = forms_create.RecursoMaterialFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='recurso_material')
-    formset6 = forms_create.RecursoTecnologicoFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='recurso_tecnologico')
-    formset7 = forms_create.EvaluacionFormset(request.POST or None, request.FILES or None, form_kwargs={'componente':componente}, instance=componente, prefix='evaluacion')
-    if form2.is_valid() and form3.is_valid() and formset.is_valid() and formset2.is_valid() and formset3.is_valid() and formset4.is_valid() and formset5.is_valid() and formset6.is_valid() and formset7.is_valid():
+    formset = forms_create.ObjetivoFormSet(request.POST or None, request.FILES or None, instance=componente)
+    formset1 = forms_create.ActividadFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='form1')
+    formset2 = forms_create.RecursoHumanoFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='form2')
+    formset3 = forms_create.RecursoFinancieroFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='form3')
+    formset4 = forms_create.RecursoMaterialFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='form4')
+    formset5 = forms_create.RecursoTecnologicoFormSet(request.POST or None, request.FILES or None, instance=componente, prefix='form5')
+    formset6 = forms_create.EvaluacionFormset(request.POST or None, request.FILES or None, form_kwargs={'componente':componente}, instance=componente, prefix='form6')
+    if form2.is_valid() and form3.is_valid() and formset.is_valid() and formset1.is_valid() and formset2.is_valid() and formset3.is_valid() and formset4.is_valid() and formset5.is_valid() and formset6.is_valid():
         componente = form2.save(request.user)
         form3.save(request.FILES.getlist('imagenes'), componente)
         formset.save()
+        formset1.save()
         formset2.save()
         formset3.save()
         formset4.save()
         formset5.save()
         formset6.save()
-        formset7.save()
         messages.success(request, u'Se ha completado exitosamente!.')
         return redirect('index')
     elif request.POST:
@@ -125,16 +73,15 @@ def crear_componente(request, slug):
         'form2': form2,
         'form3': form3,
         'formset': formset,
+        'formset1': formset1,
         'formset2': formset2,
         'formset3': formset3,
         'formset4': formset4,
         'formset5': formset5,
         'formset6': formset6,
-        'formset7': formset7,
         'title': 'COMPONENTE'
     }
     return render(request, 'formularios/vinculacion_componente.html', context)
-"""
 
 
 @login_required
@@ -144,16 +91,16 @@ def crear_actividad(request):
     actividad = Actividad_vinculacion()
     form = forms_create.ActividadProyectoForm(request.user, request.POST or None, request.FILES or None)
     form2 = forms_create.EvidenciaActividadForm(request.POST or None, request.FILES or None)
-    formset = forms_create.ObjetivoEspecificoFormset(request.POST or None, request.FILES or None, instance=actividad, prefix='objetivo_especifico')
-    formset1 = forms_create.ObjetivogeneralFormset(request.POST or None, request.FILES or None, instance=actividad, prefix='objetivo_general')
-    formset2 = forms_create.ActividadAcFormset(request.POST or None, request.FILES or None, instance=actividad, prefix='actividadAc')
-    formset3 = forms_create.Evaluacion2Formset(request.POST or None, request.FILES or None, form_kwargs={'user':request.user, 'carrera': request.POST.get('carrera')}, instance=actividad, prefix='evaluacion')
+    formset = forms_create.ObjetivoEspecificoFormset(request.POST or None, request.FILES or None, instance=actividad)
+    formset1 = forms_create.ObjetivoGeneralFormset(request.POST or None, request.FILES or None, instance=actividad, prefix='form1')
+    formset2 = forms_create.ActividadAcFormset(request.POST or None, request.FILES or None, instance=actividad, prefix='form2')
+    formset3 = forms_create.Evaluacion2Formset(request.POST or None, request.FILES or None, form_kwargs={'user':request.user, 'carrera': request.POST.get('carrera')}, instance=actividad, prefix='form3')
     if form.is_valid() and form2.is_valid() and formset.is_valid() and formset1.is_valid() and formset2.is_valid() and formset3.is_valid():
         actividad = form.save(request.user)
-        formset = forms_create.ObjetivoEspecificoFormset(request.POST, request.FILES, instance=actividad, prefix='objetivo_especifico')
-        formset1 = forms_create.ObjetivogeneralFormset(request.POST, request.FILES, instance=actividad, prefix='objetivo_general')
-        formset2 = forms_create.ActividadAcFormset(request.POST, request.FILES, instance=actividad, prefix='actividadAc')
-        formset3 = forms_create.Evaluacion2Formset(request.POST, request.FILES, form_kwargs={'user':request.user, 'carrera': request.POST.get('carrera')}, instance=actividad, prefix='evaluacion')
+        formset = forms_create.ObjetivoEspecificoFormset(request.POST, request.FILES, instance=actividad)
+        formset1 = forms_create.ObjetivoGeneralFormset(request.POST, request.FILES, instance=actividad, prefix='form1')
+        formset2 = forms_create.ActividadAcFormset(request.POST, request.FILES, instance=actividad, prefix='form2')
+        formset3 = forms_create.Evaluacion2Formset(request.POST, request.FILES, form_kwargs={'user':request.user, 'carrera': request.POST.get('carrera')}, instance=actividad, prefix='form3')
         if formset.is_valid() and formset1.is_valid() and formset2.is_valid() and formset3.is_valid():
             form2.save(request.FILES.getlist('imagenes'), actividad)
             formset.save()
@@ -174,6 +121,7 @@ def crear_actividad(request):
         'title': 'ACTIVIDAD'
     }
     return render(request, 'formularios/vinculacion_actividad.html', context)
+
 
 @login_required
 @permission_required('vinculacion.add_informe_vinculacion')

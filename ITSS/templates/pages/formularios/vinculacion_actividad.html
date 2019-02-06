@@ -49,126 +49,90 @@
                         </div>
                     </div>
                 {% endfor %}
-                <div class="form-group">
-                    <label class="control-label col-md-3" >Objetivos Especificos:</label>
-                    <div class="col-md-7">
-                        {{ formset.management_form }}            
-                        <table class="table">
-                            <tbody>
-                                {% for form in formset.forms %}
-                                <tr class="{% cycle row1 row2 %} formset">
-                                    {% for field in form.visible_fields %}
-                                    <td>
-                                        {% if forloop.first %}
-                                            {% for hidden in form.hidden_fields %}
-                                                {{ hidden }}
-                                            {% endfor %}
-                                        {% endif %}
-                                        {{ field.errors.as_ul }}
-                                        {{ field }}
-                                        {% if field.help_text %}
-                                            <p class="help">{{ field.help_text|safe }}</p>
-                                        {% endif %}
-                                    </td>
-                                    {% endfor %}
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-3" >Objetivos Generales:</label>
-                    <div class="col-md-7">
-                        {{ formset1.management_form }}            
-                        <table class="table">
-                            <tbody>
-                                {% for form in formset1.forms %}
-                                <tr class="{% cycle row1 row2 %} formset1">
-                                    {% for field in form.visible_fields %}
-                                    <td>
-                                        {% if forloop.first %}
-                                            {% for hidden in form.hidden_fields %}
-                                                {{ hidden }}
-                                            {% endfor %}
-                                        {% endif %}
-                                        {{ field.errors.as_ul }}
-                                        {{ field }}
-                                        {% if field.help_text %}
-                                            <p class="help">{{ field.help_text|safe }}</p>
-                                        {% endif %}
-                                    </td>
-                                    {% endfor %}
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-3" >Actividades: </label>
-                    <div class="col-md-7">
-                        {{ formset2.management_form }}            
-                        <table class="table">
-                            <tbody>
-                                {% for form in formset2.forms %}
-                                <tr class="{% cycle row1 row2 %} formset2">
-                                    {% for field in form.visible_fields %}
-                                    <td>
-                                        {% if forloop.first %}
-                                            {% for hidden in form.hidden_fields %}
-                                                {{ hidden }}
-                                            {% endfor %}
-                                        {% endif %}
-                                        {{ field.errors.as_ul }}
-                                        {{ field }}
-                                        {% if field.help_text %}
-                                            <p class="help">{{ field.help_text|safe }}</p>
-                                        {% endif %}
-                                    </td>
-                                    {% endfor %}
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_title">
-                                <h2 style="width: 93%;"> <strong> Evaluacion </strong></h2>
-                            <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                {{ formset3.management_form }}
-                                {% for form in formset3.forms %}
-                                    <div id="{{ formset3.prefix }}-row" class="formset3">
-                                        {% for field in form.visible_fields %}
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" >{{ field.label_tag }}</label>
-                                            <div class="col-md-9">
-                                                {% if forloop.first %}
-                                                {% for hidden in form.hidden_fields %}
-                                                    {{ hidden }}
-                                                {% endfor %}
-                                                {% endif %}
-                                                {{ field.errors.as_ul }}
-                                                {{ field }}
-                                                {% if field.help_text %}
-                                                    <p class="help">{{ field.help_text|safe }}</p>
-                                                {% endif %}
-                                            </div>
+                <br>
+                <fieldset>
+                    <legend>Objetivos Especificos</legend>
+                    <div id="formset">{{ formset.management_form }}
+                        {% for form in formset %}
+                            <div class="form" >
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            {{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help">{{ field.help_text|safe }}</p>
+                                            {% endif %}
                                         </div>
-                                        {% endfor %}
-                                        <div class="x_title"></div>
                                     </div>
                                 {% endfor %}
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                </div>
+                </fieldset>
+                <br>
+                <br>
+                <fieldset>
+                    <legend>Objetivos Generales</legend>
+                    <div id="formset1">{{ formset1.management_form }}
+                        {% for form in formset1 %}
+                            <div class="form" >
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            {{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help">{{ field.help_text|safe }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+                <br>
+                <br>
+                <fieldset>
+                    <legend>Actividades</legend>
+                    <div id="formset2">{{ formset2.management_form }}
+                        {% for form in formset2 %}
+                            <div class="form" >
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            {{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help">{{ field.help_text|safe }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+                <br>
+                <br>
+                <fieldset>
+                    <legend>Evaluacion</legend>
+                    <div id="formset3">{{ formset3.management_form }}
+                        {% for form in formset3 %}
+                            <div class="form" >
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2" >{{ field.label_tag }}</label>
+                                        <div class="col-md-9">
+                                            {{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help">{{ field.help_text|safe }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </fieldset>
                 <div class="ln_solid"></div>
                 <div class="form-group">
                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -198,7 +162,7 @@
     <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
     <script>
         $(function(){
-            $('.fecha').daterangepicker({
+            $('[class*=fecha]').daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
                 locale: {
@@ -208,82 +172,52 @@
         });
     </script>
     <!-- Formset -->
-    <script src="{% static 'plugins/formset/jquery.formset.js' %}"></script>
+    <script src="{% static 'plugins/formset/jquery.formset2.js' %}"></script>
     <script>
-        $('.formset').formset({
-            addText: '<span class="btn btn-default">Agregar</span>',
-            deleteText: '<span class="btn btn-danger">Eliminar</span>',
-            prefix: '{{ formset.prefix }}'
-        })
-        $('.formset1').formset({
-            addText: '<span class="btn btn-default">Agregar</span>',
-            deleteText: '<span class="btn btn-danger">Eliminar</span>',
-            prefix: '{{ formset1.prefix }}'
-        })
-        $('.formset2').formset({
-            addText: '<span class="btn btn-default">Agregar</span>',
-            deleteText: '<span class="btn btn-danger">Eliminar</span>',
-            prefix: '{{ formset2.prefix }}'
-        })
-        $('.formset3').formset({
-            addText: '<span class="btn btn-default" id="add_estudiante">Agregar</span>',
-            deleteText: '<span class="btn btn-danger">Eliminar</span>',
-            prefix: '{{ formset3.prefix }}'
-        })
-    </script>
-    <script>
-        $('#id_carrera').change(function(){
-            console.log('{{ formset3.carrera }}')
-            if ($(this).val().length > 0){
-                $('#id_entidad').html('');
-                $('#id_entidad').append('<option value="" selected="selected">---------</option>');
-                $.ajax({
-                    url: "{% url 'registro:ajax_entidad_estudiante' %}",
-                    type: 'post',
-                    data: {'csrfmiddlewaretoken': '{{csrf_token}}', 'pk':$('#id_carrera').val()},
-                    success: function(data){
-                        var entidades = data.entidades
-                        var estudiantes = data.estudiantes
-                        for(var i=0; i<entidades.length; i++){
-                            $('#id_entidad').append('<option value="'+entidades[i].id+'">'+entidades[i].nombre+'</option>');
-                        }
-                        
-                    }
-                })
-            }
-        })
+        $("#formset").mensaje({
+            nameButton: 'Agregar',
+            prefix: '{{formset.prefix}}'
+        });
+        $("#formset1").mensaje({
+            nameButton: 'Agregar',
+            prefix: '{{formset1.prefix}}'
+        });
+        $("#formset2").mensaje({
+            nameButton: 'Agregar',
+            prefix: '{{formset2.prefix}}'
+        });
+        $("#formset3").mensaje({
+            nameButton: 'Agregar',
+            prefix: '{{formset3.prefix}}'
+        });
     </script>
     <script>
         function asistencia(id, campo){
-            var base = id.slice(0, 15)
-            var num = id.slice(15, -(campo.length+1))
-            var campo = $('#'+base+num+"-"+campo).val()
-            if (campo != ""){
-                var punt = parseFloat($('#'+base+num+"-puntualidad").val())
-                var asis = parseInt($('#'+base+num+"-asistencia").val())
-                var act = parseInt($('#'+base+num+"-actitud").val())
-                var cump = parseInt($('#'+base+num+"-cumplimiento").val())
-                var hab = parseInt($('#'+base+num+"-aplicacion").val())
-                var sat = parseInt($('#'+base+num+"-satisfaccion").val())
-                //document.getElementById(base+num+"-nota").value = 0//
-
-                $('#'+base+num+"-promedio").val((punt+asis+act+cump+hab+sat).toFixed(1))
-            } else {
-                $('#'+base+num+"-promedio").val('')
-            } 
+            base = id.slice(0,-campo.length);
+            if($("#"+id).val() != ""){
+                var punt = parseFloat($('#'+base+"puntualidad").val())
+                var asis = parseInt($('#'+base+"asistencia").val())
+                var act = parseInt($('#'+base+"actitud").val())
+                var cump = parseInt($('#'+base+"cumplimiento").val())
+                var hab = parseInt($('#'+base+"aplicacion").val())
+                var sat = parseInt($('#'+base+"satisfaccion").val())
+                $('#'+base+"promedio").val((punt+asis+act+cump+hab+sat).toFixed(1))
+            }else{
+                $('#'+base+"promedio").val('')
+            }
         }
-        $(function(){
-            $(':input[type=number]').on('mousewheel',function(e){ $(this).blur(); });
-        });
     </script>
     <script type="text/javascript">
-    $(document).ready(function() {
-        $("form").keypress(function(e) {
-            if (e.which == 13) {
-                return false;
-            }
+        $(document).ready(function() {
+            $("form").keypress(function(e) {
+                if (e.which == 13) {
+                    return false;
+                }
+            });
         });
-    });
+        $(document).on("wheel", "input[type=number]", function (e) {
+            $(this).blur();
+        });
     </script>
 
 {% endblock %}

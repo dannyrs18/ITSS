@@ -5,6 +5,7 @@ import models
 
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+from django.forms import formset_factory
 from django import forms
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from ..registros.models import Carrera, Estudiante
@@ -131,7 +132,7 @@ class ObjetivoForm(forms.ModelForm):
         super(ObjetivoForm, self).__init__(*args, **kwargs)
         self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows':2})
 
-ObjetivoFormSet = inlineformset_factory(models.Componente, models.Objetivo, form=ObjetivoForm, extra=1)
+ObjetivoFormSet = inlineformset_factory(models.Componente, models.Objetivo, form=ObjetivoForm, can_delete=True, extra=1)
 
 class ActividadForm(forms.ModelForm):
     class Meta:
@@ -143,7 +144,7 @@ class ActividadForm(forms.ModelForm):
         for key in self.fields:
             self.fields[key].widget.attrs.update({'class' : 'form-control', 'rows':2})
 
-ActividadFormSet = inlineformset_factory(models.Componente, models.Actividad, form=ActividadForm, extra=1)
+ActividadFormSet = inlineformset_factory(models.Componente, models.Actividad, form=ActividadForm, can_delete=True, extra=1)
 
 class RecursoHumanoForm(forms.ModelForm):
     class Meta:
@@ -158,7 +159,7 @@ class RecursoHumanoForm(forms.ModelForm):
         self.fields['unitario'].widget.attrs.update({'class' : 'form-control', 'onkeyup':"total(this.id, 'cantidad');"})
         self.fields['total'].widget.attrs.update({'class' : 'form-control', 'readonly': "readonly"})
 
-RecursoHumanoFormSet = inlineformset_factory(models.Componente, models.Recurso_humano, form=RecursoHumanoForm, extra=1)
+RecursoHumanoFormSet = inlineformset_factory(models.Componente, models.Recurso_humano, form=RecursoHumanoForm, can_delete=True, extra=1)
 
 class RecursoFinancieroForm(forms.ModelForm):
     class Meta:
@@ -173,7 +174,7 @@ class RecursoFinancieroForm(forms.ModelForm):
         self.fields['unitario'].widget.attrs.update({'class' : 'form-control', 'onkeyup':"total(this.id, 'cantidad');"})
         self.fields['total'].widget.attrs.update({'class' : 'form-control', 'readonly': "readonly"})
 
-RecursoFinancieroFormSet = inlineformset_factory(models.Componente, models.Recurso_financiero, form=RecursoFinancieroForm, extra=1)
+RecursoFinancieroFormSet = inlineformset_factory(models.Componente, models.Recurso_financiero, form=RecursoFinancieroForm, can_delete=True, extra=1)
 
 class RecursoMaterialForm(forms.ModelForm):
     class Meta:
@@ -188,7 +189,7 @@ class RecursoMaterialForm(forms.ModelForm):
         self.fields['unitario'].widget.attrs.update({'class' : 'form-control', 'onkeyup':"total(this.id, 'cantidad');"})
         self.fields['total'].widget.attrs.update({'class' : 'form-control', 'readonly': "readonly"})
 
-RecursoMaterialFormSet = inlineformset_factory(models.Componente, models.Recurso_material, form=RecursoMaterialForm, extra=1)
+RecursoMaterialFormSet = inlineformset_factory(models.Componente, models.Recurso_material, form=RecursoMaterialForm, can_delete=True, extra=1)
 
 class RecursoTecnologicoForm(forms.ModelForm):
     class Meta:
@@ -203,7 +204,7 @@ class RecursoTecnologicoForm(forms.ModelForm):
         self.fields['unitario'].widget.attrs.update({'class' : 'form-control', 'onkeyup':"total(this.id, 'unitario');"})
         self.fields['total'].widget.attrs.update({'class' : 'form-control', 'readonly': "readonly"})
 
-RecursoTecnologicoFormSet = inlineformset_factory(models.Componente, models.Recurso_tecnologico, form=RecursoTecnologicoForm, extra=1)
+RecursoTecnologicoFormSet = inlineformset_factory(models.Componente, models.Recurso_tecnologico, form=RecursoTecnologicoForm, can_delete=True, extra=1)
 
 class EvaluacionForm(forms.ModelForm):
     hora_entrada = forms.TimeField(widget=TimeInput)
@@ -227,7 +228,7 @@ class EvaluacionForm(forms.ModelForm):
         self.fields['promedio'].widget.attrs.update({'readonly' : 'readonly'})
         self.fields['estudiante'].queryset = Estudiante.objects.filter(carrera=componente.proyecto_vinculacion.carrera)
 
-EvaluacionFormset = inlineformset_factory(models.Componente, models.Evaluacion, form=EvaluacionForm, extra=1)
+EvaluacionFormset = inlineformset_factory(models.Componente, models.Evaluacion, form=EvaluacionForm, can_delete=True, extra=1)
 
 class EvidenciaProyectoForm(forms.Form):
     imagenes = forms.ImageField(label=_(u'Evidencia Fotografica'), widget=forms.FileInput(attrs={'class':"form-control", 'multiple': True}), required=True)
@@ -271,7 +272,6 @@ class ActividadProyectoForm(forms.ModelForm):
     def save(self, user, commit=True):
         data = super(ActividadProyectoForm, self).save(commit=False)
         data.responsable=user
-        data.save()
         if user.has_perm('registros.resp_vinc'):
             data.carrera = user.perfil.carrera
         data.save()
@@ -286,18 +286,19 @@ class ObjetivoEspecificoForm(forms.ModelForm):
         super(ObjetivoEspecificoForm, self).__init__(*args, **kwargs)
         self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows': 3})
 
-ObjetivoEspecificoFormset = inlineformset_factory(models.Actividad_vinculacion, models.Objetivo_Especifico, form=ObjetivoEspecificoForm, extra=1)
+# ObjetivoEspecificoFormset = inlineformset_factory(models.Actividad_vinculacion, models.Objetivo_Especifico, form=ObjetivoEspecificoForm, extra=1)
+ObjetivoEspecificoFormset = inlineformset_factory(models.Actividad_vinculacion, models.Objetivo_Especifico, form=ObjetivoEspecificoForm, can_delete=True, extra=1)
 
 class ObjetivoGeneralForm(forms.ModelForm):
     class Meta:
         model = models.Objetivo_General
-        fields = '__all__'
+        fields = ('nombre',)
 
     def __init__(self, *args, **kwargs):
         super(ObjetivoGeneralForm, self).__init__(*args, **kwargs)
         self.fields['nombre'].widget.attrs.update({'class' : 'form-control', 'rows': 3})
 
-ObjetivogeneralFormset = inlineformset_factory(models.Actividad_vinculacion, models.Objetivo_General, form=ObjetivoGeneralForm, extra=1)
+ObjetivoGeneralFormset = inlineformset_factory(models.Actividad_vinculacion, models.Objetivo_General, form=ObjetivoGeneralForm, can_delete=True, extra=1)
 
 class ActividadAcForm(forms.ModelForm):
     class Meta:

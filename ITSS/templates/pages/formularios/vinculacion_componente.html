@@ -24,23 +24,63 @@
             <br/>
             <form id="demo-form2" class="form-horizontal form-label-left" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-
-                <div class="">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_title">
-                                <h2 style="width: 93%;"> Información del Proyecto</h2>
-                            <div class="clearfix"></div>
+                <fieldset>
+                    <legend>Información del Proyecto</legend>
+                    {% for field in form %}
+                    {{ field.errors }}
+                        <div class="form-group">
+                            <label class="control-label col-md-3" >{{ field.label_tag }}</label>
+                            <div class="col-md-6">
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <p class="help">{{ field.help_text|safe }}</p>
+                                {% endif %}
                             </div>
-                            <div class="x_content">
-                                {{ form2.non_field_errors }}
-                                {{ form3.non_field_errors }}
-                                {% for field in form %}
-                                {{ field.errors }}
+                        </div>
+                    {% endfor %}
+                </fieldset>
+                <br>
+                <fieldset>
+                    <legend>Datos del componente</legend>
+                    {% for field in form2 %}
+                    {{ field.errors }}
+                        <div class="form-group">
+                            <label class="control-label col-md-3" >{{ field.label_tag }}</label>
+                            <div class="col-md-6">
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <p class="help">{{ field.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </fieldset>
+                <br>
+                <fieldset>
+                    <legend>Evidencias</legend>
+                    {% for field in form3 %}
+                    {{ field.errors }}
+                        <div class="form-group">
+                            <label class="control-label col-md-3" >{{ field.label_tag }}</label>
+                            <div class="col-md-6">
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <p class="help">{{ field.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </fieldset>
+                <br>
+                <fieldset>
+                    <legend>Objetivos</legend>
+                    <div id="formset">{{ formset.management_form }}
+                        {% for form in formset %}
+                            <div class="form" >
+                                {% for field in form.visible_fields %}
                                     <div class="form-group">
-                                        <label class="control-label col-md-2" >{{ field.label_tag }}</label>
-                                        <div class="col-md-9">
+                                        <div class="col-md-12">
+                                            {{ field.errors.as_ul }}
                                             {{ field }}
                                             {% if field.help_text %}
                                                 <p class="help">{{ field.help_text|safe }}</p>
@@ -49,24 +89,20 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                </div>
-                
-                <div class="">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_title">
-                                <h2 style="width: 93%;"> Datos del Componente</h2>
-                            <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                {% for field in form2 %}
-                                {{ field.errors }}
+                </fieldset>
+                <br>
+                <fieldset>
+                    <legend>Actividades</legend>
+                    <div id="formset1">{{ formset1.management_form }}
+                        {% for form in formset1 %}
+                            <div class="form" >
+                                {% for field in form.visible_fields %}
                                     <div class="form-group">
                                         <label class="control-label col-md-2" >{{ field.label_tag }}</label>
                                         <div class="col-md-9">
+                                            {{ field.errors.as_ul }}
                                             {{ field }}
                                             {% if field.help_text %}
                                                 <p class="help">{{ field.help_text|safe }}</p>
@@ -74,11 +110,21 @@
                                         </div>
                                     </div>
                                 {% endfor %}
-                                {% for field in form3 %}
-                                {{ field.errors }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+                <br>
+                <fieldset>
+                    <legend>Recursos Humanos</legend>
+                    <div id="formset2">{{ formset2.management_form }}
+                        {% for form in formset2 %}
+                            <div class="form" >
+                                {% for field in form.visible_fields %}
                                     <div class="form-group">
                                         <label class="control-label col-md-2" >{{ field.label_tag }}</label>
                                         <div class="col-md-9">
+                                            {{ field.errors.as_ul }}
                                             {{ field }}
                                             {% if field.help_text %}
                                                 <p class="help">{{ field.help_text|safe }}</p>
@@ -86,261 +132,98 @@
                                         </div>
                                     </div>
                                 {% endfor %}
-                                <div class="form-group">
-                                    <label class="control-label col-md-2" >Objetivos:</label>
-                                    <div class="col-md-10">
-                                        {{ formset.management_form }}            
-                                        <table class="table">
-                                            <tbody>
-                                                {% for form in formset.forms %}
-                                                <tr class="{% cycle row1 row2 %} formset_row">
-                                                    {% for field in form.visible_fields %}
-                                                    <td>
-                                                        {% if forloop.first %}
-                                                            {% for hidden in form.hidden_fields %}
-                                                                {{ hidden }}
-                                                            {% endfor %}
-                                                        {% endif %}
-                                                        {{ field.errors.as_ul }}
-                                                        {{ field }}
-                                                        {% if field.help_text %}
-                                                            <p class="help">{{ field.help_text|safe }}</p>
-                                                        {% endif %}
-                                                    </td>
-                                                    {% endfor %}
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                </div>
-                <div class="">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_title">
-                                <h2 style="width: 93%;"> <strong> Actividad </strong></h2>
-                            <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                {{ formset2.management_form }}
-                                <div>
-                                    {% for form in formset2.forms %}
-                                        <div id="{{ formset2.prefix }}-row" class="formset2">
-                                            {% for field in form.visible_fields %}
-                                            <div class="form-group">
-                                                <label class="control-label col-md-2" >{{ field.label_tag }}</label>
-                                                <div class="col-md-9">
-                                                    {% if forloop.first %}
-                                                    {% for hidden in form.hidden_fields %}
-                                                        {{ hidden }}
-                                                    {% endfor %}
-                                                    {% endif %}
-                                                    {{ field.errors.as_ul }}
-                                                    {{ field }}
-                                                    {% if field.help_text %}
-                                                        <p class="help">{{ field.help_text|safe }}</p>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                            {% endfor %}
-                                            <div class="x_title"></div>
+                </fieldset>
+                <br>
+                <fieldset>
+                    <legend>Recursos Financieros</legend>
+                    <div id="formset3">{{ formset3.management_form }}
+                        {% for form in formset3 %}
+                            <div class="form" >
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2" >{{ field.label_tag }}</label>
+                                        <div class="col-md-9">
+                                            {{ field.errors.as_ul }}
+                                            {{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help">{{ field.help_text|safe }}</p>
+                                            {% endif %}
                                         </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_title">
-                                <h2 style="width: 93%;"> <strong> Recurso Humano </strong></h2>
-                            <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                {{ formset3.management_form }}
-                                {% for form in formset3.forms %}
-                                    <div id="{{ formset3.prefix }}-row" class="formset3">
-                                        {% for field in form.visible_fields %}
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" >{{ field.label_tag }}</label>
-                                            <div class="col-md-9">
-                                                {% if forloop.first %}
-                                                {% for hidden in form.hidden_fields %}
-                                                    {{ hidden }}
-                                                {% endfor %}
-                                                {% endif %}
-                                                {{ field.errors.as_ul }}
-                                                {{ field }}
-                                                {% if field.help_text %}
-                                                    <p class="help">{{ field.help_text|safe }}</p>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                        {% endfor %}
-                                        <div class="x_title"></div>
                                     </div>
                                 {% endfor %}
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                </div>
+                </fieldset>
                 <br>
-                <div class="">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_title">
-                                <h2 style="width: 93%;"> <strong> Recurso Financiero </strong></h2>
-                            <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                {{ formset4.management_form }}
-                                {% for form in formset4.forms %}
-                                    <div id="{{ formset4.prefix }}-row" class="formset4">
-                                        {% for field in form.visible_fields %}
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" >{{ field.label_tag }}</label>
-                                            <div class="col-md-9">
-                                                {% if forloop.first %}
-                                                {% for hidden in form.hidden_fields %}
-                                                    {{ hidden }}
-                                                {% endfor %}
-                                                {% endif %}
-                                                {{ field.errors.as_ul }}
-                                                {{ field }}
-                                                {% if field.help_text %}
-                                                    <p class="help">{{ field.help_text|safe }}</p>
-                                                {% endif %}
-                                            </div>
+                <fieldset>
+                    <legend>Recursos Materiales</legend>
+                    <div id="formset4">{{ formset4.management_form }}
+                        {% for form in formset4 %}
+                            <div class="form" >
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2" >{{ field.label_tag }}</label>
+                                        <div class="col-md-9">
+                                            {{ field.errors.as_ul }}
+                                            {{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help">{{ field.help_text|safe }}</p>
+                                            {% endif %}
                                         </div>
-                                        {% endfor %}
-                                        <div class="x_title"></div>
                                     </div>
                                 {% endfor %}
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                </div>
+                </fieldset>
                 <br>
-                <div class="">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_title">
-                                <h2 style="width: 93%;"> <strong> Recurso Material </strong></h2>
-                            <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                {{ formset5.management_form }}
-                                {% for form in formset5.forms %}
-                                    <div id="{{ formset5.prefix }}-row" class="formset5">
-                                        {% for field in form.visible_fields %}
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" >{{ field.label_tag }}</label>
-                                            <div class="col-md-9">
-                                                {% if forloop.first %}
-                                                {% for hidden in form.hidden_fields %}
-                                                    {{ hidden }}
-                                                {% endfor %}
-                                                {% endif %}
-                                                {{ field.errors.as_ul }}
-                                                {{ field }}
-                                                {% if field.help_text %}
-                                                    <p class="help">{{ field.help_text|safe }}</p>
-                                                {% endif %}
-                                            </div>
+                <fieldset>
+                    <legend>Recursos Tecnológicos</legend>
+                    <div id="formset5">{{ formset5.management_form }}
+                        {% for form in formset5 %}
+                            <div class="form" >
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2" >{{ field.label_tag }}</label>
+                                        <div class="col-md-9">
+                                            {{ field.errors.as_ul }}
+                                            {{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help">{{ field.help_text|safe }}</p>
+                                            {% endif %}
                                         </div>
-                                        {% endfor %}
-                                        <div class="x_title"></div>
                                     </div>
                                 {% endfor %}
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                </div>
+                </fieldset>
                 <br>
-                <div class="">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_title">
-                                <h2 style="width: 93%;"> <strong> Recurso Tecnológico </strong></h2>
-                            <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                {{ formset6.management_form }}
-                                {% for form in formset6.forms %}
-                                    <div id="{{ formset6.prefix }}-row" class="formset6">
-                                        {% for field in form.visible_fields %}
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" >{{ field.label_tag }}</label>
-                                            <div class="col-md-9">
-                                                {% if forloop.first %}
-                                                {% for hidden in form.hidden_fields %}
-                                                    {{ hidden }}
-                                                {% endfor %}
-                                                {% endif %}
-                                                {{ field.errors.as_ul }}
-                                                {{ field }}
-                                                {% if field.help_text %}
-                                                    <p class="help">{{ field.help_text|safe }}</p>
-                                                {% endif %}
-                                            </div>
+                <fieldset>
+                    <legend>Evaluación</legend>
+                    <div id="formset6">{{ formset6.management_form }}
+                        {% for form in formset6 %}
+                            <div class="form" >
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2" >{{ field.label_tag }}</label>
+                                        <div class="col-md-9">
+                                            {{ field.errors.as_ul }}
+                                            {{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help">{{ field.help_text|safe }}</p>
+                                            {% endif %}
                                         </div>
-                                        {% endfor %}
-                                        <div class="x_title"></div>
                                     </div>
                                 {% endfor %}
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                </div>
-                <br>
-                <div class="">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_title">
-                                <h2 style="width: 93%;"> <strong> Evaluacion </strong></h2>
-                            <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                {{ formset7.management_form }}
-                                {% for form in formset7.forms %}
-                                    <div id="{{ formset7.prefix }}-row" class="formset7">
-                                        {% for field in form.visible_fields %}
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" >{{ field.label_tag }}</label>
-                                            <div class="col-md-9">
-                                                {% if forloop.first %}
-                                                {% for hidden in form.hidden_fields %}
-                                                    {{ hidden }}
-                                                {% endfor %}
-                                                {% endif %}
-                                                {{ field.errors.as_ul }}
-                                                {{ field }}
-                                                {% if field.help_text %}
-                                                    <p class="help">{{ field.help_text|safe }}</p>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                        {% endfor %}
-                                        <div class="x_title"></div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <br>
+                </fieldset>
                 <div class="ln_solid"></div>
                 <div class="form-group">
                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -380,81 +263,64 @@
         });
     </script>
     <!-- Formset -->
-    <script src="{% static 'plugins/formset/jquery.formset.js' %}"></script>
+    <!-- Formset -->
+    <script src="{% static 'plugins/formset/jquery.formset2.js' %}"></script>
     <script>
-        $(document).ready(function(){
-            $('.formset_row').formset({
-                addText: '<span class="btn btn-default">Agregar</span>',
-                deleteText: '<span class="btn btn-danger">Eliminar</span>',
-                prefix: 'objetivo'
-            })
-            $('.formset2').formset({
-                addText: '<span class="btn btn-default">Agregar</span>',
-                deleteText: '<span class="btn btn-danger">Eliminar</span>',
-                prefix: '{{ formset2.prefix }}',
-            })
-            $('.formset3').formset({
-                addText: '<span class="btn btn-default">Agregar</span>',
-                deleteText: '<span class="btn btn-danger">Eliminar</span>',
-                prefix: '{{ formset3.prefix }}',
-            })
-            $('.formset4').formset({
-                addText: '<span class="btn btn-default">Agregar</span>',
-                deleteText: '<span class="btn btn-danger">Eliminar</span>',
-                prefix: '{{ formset4.prefix }}',
-            })
-            $('.formset5').formset({
-                addText: '<span class="btn btn-default">Agregar</span>',
-                deleteText: '<span class="btn btn-danger">Eliminar</span>',
-                prefix: '{{ formset5.prefix }}',
-            })
-            $('.formset6').formset({
-                addText: '<span class="btn btn-default">Agregar</span>',
-                deleteText: '<span class="btn btn-danger">Eliminar</span>',
-                prefix: '{{ formset6.prefix }}',
-            })
-            $('.formset7').formset({
-                addText: '<span class="btn btn-default">Agregar</span>',
-                deleteText: '<span class="btn btn-danger">Eliminar</span>',
-                prefix: '{{ formset7.prefix }}',
-            })
-        })
+        $("#formset").mensaje({
+            nameButton: 'Agregar',
+            prefix: '{{formset.prefix}}'
+        });
+        $("#formset1").mensaje({
+            nameButton: 'Agregar',
+            prefix: '{{formset1.prefix}}'
+        });
+        $("#formset2").mensaje({
+            nameButton: 'Agregar',
+            prefix: '{{formset2.prefix}}'
+        });
+        $("#formset3").mensaje({
+            nameButton: 'Agregar',
+            prefix: '{{formset3.prefix}}'
+        });
+        $("#formset4").mensaje({
+            nameButton: 'Agregar',
+            prefix: '{{formset4.prefix}}'
+        });
+        $("#formset5").mensaje({
+            nameButton: 'Agregar',
+            prefix: '{{formset5.prefix}}'
+        });
+        $("#formset6").mensaje({
+            nameButton: 'Agregar',
+            prefix: '{{formset6.prefix}}'
+        });
     </script>
     <!-- Calcular Datos -->
     <script>
         function total(id, campo){
-            var base = id.slice(0, 12)
-            var num = id.slice(12, -(campo.length+1));
-            var campo = id.substr(12+num.length+1)
-            var unitario = $("#"+base+num+"-unitario").val()
-            var cantidad = $("#"+base+num+"-cantidad").val()
+            base = id.slice(0,-campo.length);
+            var unitario = $("#"+base+"unitario").val()
+            var cantidad = $("#"+base+"cantidad").val()
             if (unitario != "" && cantidad != ""){
-                $("#"+base+num+"-total").val((unitario*cantidad).toFixed(2))
+                $("#"+base+"total").val((unitario*cantidad).toFixed(2))
             } else {
-                $("$"+base+num+"-total").val('')
+                $("#"+base+"total").val('')
             }
         }
         function asistencia(id, campo){
-            var base = id.slice(0, 15)
-            var num = id.slice(15, -(campo.length+1))
-            var campo = $('#'+base+num+"-"+campo).val()
-            if (campo != ""){
-                var punt = parseFloat($('#'+base+num+"-puntualidad").val())
-                var asis = parseInt($('#'+base+num+"-asistencia").val())
-                var act = parseInt($('#'+base+num+"-actitud").val())
-                var cump = parseInt($('#'+base+num+"-cumplimiento").val())
-                var hab = parseInt($('#'+base+num+"-aplicacion").val())
-                var sat = parseInt($('#'+base+num+"-satisfaccion").val())
-                //document.getElementById(base+num+"-nota").value = 0//
-
-                $('#'+base+num+"-promedio").val((punt+asis+act+cump+hab+sat).toFixed(1))
-            } else {
-                $('#'+base+num+"-promedio").val('')
-            } 
+            base = id.slice(0,-campo.length);
+            if($("#"+id).val() != ""){
+                var punt = parseFloat($('#'+base+"puntualidad").val())
+                var asis = parseInt($('#'+base+"asistencia").val())
+                var act = parseInt($('#'+base+"actitud").val())
+                var cump = parseInt($('#'+base+"cumplimiento").val())
+                var hab = parseInt($('#'+base+"aplicacion").val())
+                var sat = parseInt($('#'+base+"satisfaccion").val())
+                $('#'+base+"promedio").val((punt+asis+act+cump+hab+sat).toFixed(0))
+            }else{
+                $('#'+base+"promedio").val('')
+            }
         }
-        $(function(){
-            $(':input[type=number]').on('mousewheel',function(e){ $(this).blur(); });
-        });
     </script>
     <script type="text/javascript">
     $(document).ready(function() {
@@ -463,6 +329,9 @@
                 return false;
             }
         });
+    });
+    $(function(){
+        $(':input[type=number]').on('mousewheel',function(e){ $(this).blur(); });
     });
     </script>
 
