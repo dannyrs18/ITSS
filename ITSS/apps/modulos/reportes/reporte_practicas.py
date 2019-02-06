@@ -206,12 +206,16 @@ def convenio(slug):
     if empresa.logo:
         logo = InlineImage(tpl, empresa.logo, height=Mm(18))
     context = {
-        'nombre' : empresa.nombre,
+        'nombre' : u'{}'.format(empresa.nombre),
         'logo' : logo,
-        'telefono' : empresa.telefono,
-        'correo' : empresa.correo,
-        'direccion' : empresa.direccion,
-        'gerente' : empresa.gerente
+        'telefono' : u'{}'.format(empresa.telefono),
+        'correo' : u'{}'.format(empresa.correo),
+        'direccion' : u'{}'.format(empresa.direccion),
+        'gerente' : u'{}'.format(empresa.gerente),
+        'cargo' : u'{}'.format(empresa.cargo),
+        'descripcion' : u'{}'.format(empresa.descripcion),
+        'coordinador': u'{}'.format(empresa.carreras.first().coordinadores.first().docente.get_full_name() if empresa.carreras.first().coordinadores.first() else u'************'),
+        'carrera': u'{}'.format(empresa.carreras.last())
     }
     jinja_env = jinja2.Environment(autoescape=True)
     tpl.render(context, jinja_env)

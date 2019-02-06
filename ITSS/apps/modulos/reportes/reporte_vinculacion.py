@@ -923,25 +923,24 @@ def convenio(slug):
         return False
     informe = Informe_vinculacion.objects.all().last().convenio
     tpl=DocxTemplate(informe)
-    carreras = []
-    for carrera in entidad.carreras.all():
-        carreras.append(carrera.nombre)
     logo = ''
     if entidad.logo:
-        logo = InlineImage(tpl, entidad.logo, height=Mm(18))
+        logo = InlineImage(tpl, entidad.logo, height=Mm(22))
     context = {
-        'nombre' : entidad.nombre,
+        'nombre' : u'{}'.format(entidad.nombre),
         'logo' : logo,
-        'telefono' : entidad.telefono,
-        'fecha_inicio_convenio' : entidad.inicio,
-        'fecha_fin_convenio' : entidad.fin,
-        'correo' : entidad.correo,
-        'direccion' : entidad.direccion,
-        'enacargado' : entidad.encargado,
-        'cargo' : entidad.cargo,
-        'descripcion' : entidad.descripcion,
-        'carreras' :  carreras,
-        'responsable' : entidad.responsable.get_full_name(),
+        'telefono' : u'{}'.format(entidad.telefono),
+        'fecha_inicio_convenio' : u'{}'.format(entidad.inicio),
+        'fecha_fin_convenio' : u'{}'.format(entidad.fin),
+        'correo' : u'{}'.format(entidad.correo),
+        'nombre_proyecto' : u'{}'.format(entidad.nombre_proyecto),
+        'direccion' : u'{}'.format(entidad.direccion),
+        'encargado' : u'{}'.format(entidad.encargado),
+        'cargo' : u'{}'.format(entidad.cargo),
+        'descripcion' : u'{}'.format(entidad.descripcion),
+        'carrera' :  u'{}'.format(entidad.carreras.last()),
+        'responsable' : u'{}'.format(entidad.responsable.get_full_name()),
+        'coordinador':u'{}'.format(entidad.carreras.first().coordinadores.first().docente.get_full_name() if entidad.carreras.first().coordinadores.first() else u'************'),
     }
     jinja_env = jinja2.Environment(autoescape=True)
     tpl.render(context, jinja_env)

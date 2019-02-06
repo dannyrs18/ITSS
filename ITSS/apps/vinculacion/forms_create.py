@@ -35,7 +35,7 @@ class EntidadForm(forms.ModelForm):
     #fin = forms.DateField(label=_(u'Finalización de Convenio'), input_formats=settings.DATE_INPUT_FORMATS)
     class Meta:
         model = models.Entidad
-        fields = ('nombre', 'encargado', 'cargo', 'correo', 'telefono', 'direccion', 'descripcion', 'logo', 'carreras')
+        fields = ('nombre', 'nombre_proyecto', 'encargado', 'cargo', 'correo', 'telefono', 'direccion', 'descripcion', 'logo', 'carreras')
         labels = {'nombre': _(u'Nombre de la entidad')}
         widgets = {'carreras': forms.CheckboxSelectMultiple()}
 

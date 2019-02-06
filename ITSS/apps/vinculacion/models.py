@@ -12,6 +12,7 @@ from ..modulos.validators import valid_extension, valid_extension_docx
 class Entidad(Oficina):
     encargado = models.CharField(_('Responsable'), max_length=100)
     cargo = models.CharField(_('Cargo'), max_length=100)
+    nombre_proyecto = models.CharField(_('Nombre del proyecto'), max_length=50)
     fax = models.CharField(_('Fax'), max_length=20, blank=True, null=True)
     descripcion = models.TextField(_('Descripción'))
     carreras = models.ManyToManyField(Carrera, related_name='entidades')

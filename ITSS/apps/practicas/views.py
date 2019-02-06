@@ -174,10 +174,13 @@ def tabla_empresa_proceso(request):
 @login_required
 @permission_required('practicas.reporte_convenio_practicas')
 def reporte_convenio(request, slug):
-    convenio = reporte_practicas.convenio(slug)
-    if not convenio:
-        messages.error(request, u'Verifique si existe modelo de convenio.')
-        return redirect('practicas:tabla_empresa_proceso')
+    try:
+        convenio = reporte_practicas.convenio(slug)
+        if not convenio:
+            messages.error(request, u'Verifique si existe modelo de convenio.')
+            return redirect('practicas:tabla_empresa_proceso')
+    except:
+        messages.error(request, u'Conflictos con el archivo base,')
     return convenio
 
 @login_required

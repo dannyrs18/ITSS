@@ -10,6 +10,8 @@ from ..modulos.validators import valid_extension, valid_extension_docx
 
 class Empresa(Oficina): # PRACTICAS
     gerente = models.CharField(_(u'Nombre del Gerente'), max_length=100)
+    cargo = models.CharField(_(u'Cargo'), max_length=50)
+    descripcion = models.TextField(_(u'Descripción'))
     carreras = models.ManyToManyField(Carrera, related_name='empresas')
     responsable = models.ForeignKey(User, on_delete=models.CASCADE, related_name='empresas', blank=True, null=True)
 

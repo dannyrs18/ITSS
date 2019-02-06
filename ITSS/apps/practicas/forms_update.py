@@ -40,7 +40,7 @@ class EmpresaForm(forms.ModelForm):
 
     class Meta:
         model = models.Empresa
-        fields = ('aux_nombre', 'gerente', 'telefono', 'correo', 'direccion', 'logo')
+        fields = ('aux_nombre', 'gerente', 'cargo', 'telefono', 'correo', 'direccion', 'logo')
 
     def __init__(self, *args, **kwargs):
         super(EmpresaForm, self).__init__(*args, **kwargs)
