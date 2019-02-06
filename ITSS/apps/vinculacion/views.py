@@ -293,7 +293,7 @@ def reporte_convenio(request, slug):
     convenio = reporte_vinculacion.convenio(slug)
     if not convenio:
         messages.error(request, u'Verifique si existe modelo de convenio.')
-        return redirect('vinculacion:tabla_entidad')
+        return redirect('vinculacion:tabla_entidad_proceso')
     return convenio
 
 @login_required

@@ -83,13 +83,13 @@ class ProyectoVinculacionForm(forms.ModelForm):
         self.fields['carrera'].widget.attrs.update({'class' : 'form-control search_select'})
         if user.has_perm('registros.resp_vinc'):
             del self.fields['carrera']
-            self.fields['entidad'].queryset = models.Entidad.objects.filter(carreras=user.perfil.carrera) # estado
+            self.fields['entidad'].queryset = models.Entidad.objects.filter(carreras=user.perfil.carrera).exclude(fin=None) # estado
         elif user.has_perm('registros.admin_vinc'):
             self.fields['entidad'].queryset = models.Entidad.objects.none()
             if self.data.get('carrera', ''):
                 try:
                     carrera_id = self.data.get('carrera')
-                    self.fields['entidad'].queryset = models.Entidad.objects.filter(carreras=carrera_id).order_by('nombre')
+                    self.fields['entidad'].queryset = models.Entidad.objects.filter(carreras=carrera_id).exclude(fin=None).order_by('nombre')
                 except (ValueError, TypeError):
                     pass  # invalid input from the client; ignore and fallback to empty City queryset
             elif self.instance.pk:
@@ -256,13 +256,13 @@ class ActividadProyectoForm(forms.ModelForm):
         self.fields['carrera'].widget.attrs.update({'class' : 'form-control search_select'})
         if user.has_perm('registros.resp_vinc'):
             del self.fields['carrera']
-            self.fields['entidad'].queryset = models.Entidad.objects.filter(carreras=user.perfil.carrera) # estado
+            self.fields['entidad'].queryset = models.Entidad.objects.filter(carreras=user.perfil.carrera).exclude(fin=None) # estado
         elif user.has_perm('registros.admin_vinc'):
             self.fields['entidad'].queryset = models.Entidad.objects.none()
             if self.data.get('carrera', ''):
                 try:
                     carrera_id = self.data.get('carrera')
-                    self.fields['entidad'].queryset = models.Entidad.objects.filter(carreras=carrera_id).order_by('nombre')
+                    self.fields['entidad'].queryset = models.Entidad.objects.filter(carreras=carrera_id).exclude(fin=None).order_by('nombre')
                 except (ValueError, TypeError):
                     pass  # invalid input from the client; ignore and fallback to empty City queryset
             elif self.instance.pk:
