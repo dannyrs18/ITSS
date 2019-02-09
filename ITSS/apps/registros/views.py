@@ -203,16 +203,17 @@ def estudiantes():
     carreras = Carrera.objects.all()
     for carrera in carreras:
         estudiantes = _.get_data(_._listadoEstudiantesCarrera, carrera.codigo)
-        for estudiante in estudiantes:
-            if not Estudiante.objects.filter(cedula=estudiante['cedula']).exists():
-                instance = Estudiante()
-                instance.nombres = estudiante['nombres']
-                instance.apellidos = estudiante['apellidos']
-                instance.cedula = estudiante['cedula']
-                instance.genero = estudiante['genero']
-                instance.ciclo = estudiante['ciclo']
-                instance.carrera = get_object_or_404(Carrera,nombre = estudiante['carrera'])
-                instance.save()
+        if estudiantes:
+            for estudiante in estudiantes:
+                if not Estudiante.objects.filter(cedula=estudiante['cedula']).exists():
+                    instance = Estudiante()
+                    instance.nombres = estudiante['nombres']
+                    instance.apellidos = estudiante['apellidos']
+                    instance.cedula = estudiante['cedula']
+                    instance.genero = estudiante['genero']
+                    instance.ciclo = estudiante['ciclo']
+                    instance.carrera = get_object_or_404(Carrera,nombre = estudiante['carrera'])
+                    instance.save()
 
 def docentes():
     docentes = _.get_data(_._listadoDocentesPeriodoActual)
