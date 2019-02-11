@@ -17,6 +17,7 @@ from docx.shared import Mm, Inches, Pt
 import jinja2
 from jinja2.utils import Markup
 from django.shortcuts import get_object_or_404
+from cgi import escape
 
 from ...vinculacion.models import Entidad, Informe_vinculacion
 
@@ -74,7 +75,7 @@ def encabezado(story, inf, hb=12, h=10):
     data = []
     for i in range(len(inf['data'])):
         try:
-            data.append([Paragraph(u'{}:'.format(inf['data'][i]), _hb(hb)), Paragraph(u'{}'.format(inf['info'][i]), _h(h))])
+            data.append([Paragraph(u'{}:'.format(inf['data'][i]), _hb(hb)), Paragraph(u'{}'.format(escape(inf['info'][i])), _h(h))])
         except :
             data.append([Paragraph(u'{}:'.format(inf['data'][i]), _hb(hb)), Paragraph(u'{}'.format('------------'), _h(h))])
     t = Table(data, colWidths=inf['dim'])
@@ -93,7 +94,7 @@ def tabla(story, inf):
         aux = []
         for x in range(len(inf['info'][i])):
             try:
-                aux.append(Paragraph(u'{}'.format(inf['info'][i][x]), _h(10)))
+                aux.append(Paragraph(u'{}'.format(escape(inf['info'][i][x])), _h(10)))
             except:
                 aux.append(Paragraph(u'{}'.format('----------'), _h(10)))
         data.append(aux)
@@ -282,9 +283,9 @@ def primeraPagina2(c, doc, titulo, fondo=True):
     c.setFont('Helvetica-Bold', 12)
     c.drawImage(settings.STATIC_ROOT+'/images/logo_vinculacion.png', inch-10, PAGE_HEIGHT-inch*1.6, width=75, height=70)
     c.drawImage(settings.STATIC_ROOT+'/images/institucion2.png', PAGE_WIDTH-inch*3, PAGE_HEIGHT-inch*1.5, width=150, height=50)
-    image_width, image_height = 75*8, 70*8
-    if fondo:
-        c.drawImage(settings.STATIC_ROOT+'/images/logo_vinculacion.png', PAGE_WIDTH/2-image_width/2, PAGE_HEIGHT/2-image_height/2, width=image_width, height=image_height, mask=[-3,-3,-3,-3,-3,-3])
+    # image_width, image_height = 75*8, 70*8
+    # if fondo:
+    #     c.drawImage(settings.STATIC_ROOT+'/images/logo_vinculacion.png', PAGE_WIDTH/2-image_width/2, PAGE_HEIGHT/2-image_height/2, width=image_width, height=image_height, mask=[-3,-3,-3,-3,-3,-3])
     c.drawCentredString(PAGE_WIDTH/2, PAGE_HEIGHT-150, titulo)
     c.setFont('Times-Roman', 11)
     c.drawRightString(PAGE_WIDTH-inch, 0.75*inch, 'Pagina {}'.format(1))
@@ -293,9 +294,9 @@ def primeraPagina2(c, doc, titulo, fondo=True):
 def siguientePagina2(c, doc, fondo=True):
     c.saveState()
     c.setFont('Times-Roman', 11)
-    image_width, image_height = 75*8, 70*8
-    if fondo:
-        c.drawImage(settings.STATIC_ROOT+'/images/logo_vinculacion.png', PAGE_WIDTH/2-image_width/2, PAGE_HEIGHT/2-image_height/2, width=image_width, height=image_height, mask=[-3,-3,-3,-3,-3,-3])
+    # image_width, image_height = 75*8, 70*8
+    # if fondo:
+    #     c.drawImage(settings.STATIC_ROOT+'/images/logo_vinculacion.png', PAGE_WIDTH/2-image_width/2, PAGE_HEIGHT/2-image_height/2, width=image_width, height=image_height, mask=[-3,-3,-3,-3,-3,-3])
     c.drawRightString(PAGE_WIDTH-inch, 0.75*inch, 'Pagina {}'.format(doc.page))
     c.restoreState()
 
@@ -304,7 +305,7 @@ def informacionX(story, inf):
     data = []
     for i in range(len(inf['data'])):
         try:
-            data.append([Paragraph(u'{}:'.format(inf['data'][i]), _hb(10)), Paragraph(u'{}'.format(inf['info'][i]), _h(10))])
+            data.append([Paragraph(u'{}:'.format(inf['data'][i]), _hb(10)), Paragraph(u'{}'.format(escape(inf['info'][i])), _h(10))])
         except :
             data.append([Paragraph(u'{}:'.format(inf['data'][i]), _hb(10)), Paragraph(u'{}'.format('---------------'), _h(10))])
     t = Table(data, colWidths=inf['dim'])
@@ -322,7 +323,7 @@ def informacion1(story, inf):
     try:
         data = [
             [''],
-            ['',Paragraph(u'{}'.format(inf['data']), _h(10)), ''],
+            ['',Paragraph(u'{}'.format(escape(inf['data'])), _h(10)), ''],
             ['']
         ]
     except :
@@ -363,10 +364,7 @@ def informacion3(story, inf):
         cab_table(story, inf['enc'])
     data = ['']
     for i in range(len(inf['obj'])):
-        try:
-            data.append(['', Paragraph(u'- {}'.format(inf['obj'][i]), _h(10)), ''])
-        except :
-            data.append(['', Paragraph(u'- {}'.format('---------------'), _h(10)), ''])
+        data.append(['', Paragraph(u'- {}'.format(escape(inf['obj'][i])), _h(10)), ''])
     for i in range(len(inf['rsm'])):
         data.append(['', Paragraph('- {}'.format(inf['rsm'][i]), _h(10))])
     data.append([''])
@@ -402,16 +400,22 @@ def informacionY(story, inf):
     story.append(t)
 
 def firmas(story, inf):
-    aux, data = [], [['' '', ''],['' '', ''],[Paragraph('...................................................................', _h(9, TA_CENTER)), '', Paragraph('.......................................................................', _h(9, TA_CENTER))]]
+    linea = []
+    for aux in inf['tipo']:
+        if aux:
+            linea.append(Paragraph('...................................................................', _h(9, TA_CENTER)))
+        else:
+            linea.append('')
+    aux, data = [], [['' '', ''],['' '', ''],linea]
     for i in range(len(inf['nombre'])):
         aux = []
         for x in range(len(inf['nombre'][i])):
-            aux.append(Paragraph(inf['nombre'][i][x], _hb(9, TA_CENTER)))
+            aux.append(Paragraph(escape(inf['nombre'][i][x]), _hb(9, TA_CENTER)))
         data.append(aux)
     for i in range(len(inf['cargo'])):
         aux = []
         for x in range(len(inf['cargo'][i])):
-            aux.append(Paragraph(inf['cargo'][i][x], _h(8, TA_CENTER)))
+            aux.append(Paragraph(escape(inf['cargo'][i][x]), _h(8, TA_CENTER)))
         data.append(aux)
     t = Table(data, colWidths=inf['dim'])
     t.setStyle(TableStyle([
@@ -530,20 +534,41 @@ def componentes(componente):
         }
         informacionY(story, inf)
 
-    story.append(Spacer(1, 80))
-    coordinador = componente.proyecto_vinculacion.carrera.coordinadores.filter(estado=True).first()
-    docente = '-------'
-    carrera = '-------'
-    if coordinador:
-        carrera = coordinador.carrera.nombre
-        docente = u'{}'.format(coordinador.docente.get_full_name())
-    responsable = componente.responsable.perfil.docente
+    story.append(Spacer(1, 50))
+
+    #################
+    coordinador = componente.proyecto_vinculacion.carrera.coordinadores.get() if componente.proyecto_vinculacion.carrera.coordinadores.exists() else '-------'
     inf = {
-            'cargo':[[u'COORDINACIÓN DE LA CARRERA DE {}'.format(carrera).upper(), '', u'RESPONSABLE DE VINCULACION CON SOCIEDAD CARRERA DE {}'.format(componente.proyecto_vinculacion.carrera.nombre).upper()]],
-            'nombre' :[[u'{}'.format(docente).upper(), '', u'{}'.format(responsable.get_full_name()).upper()]],
-            'dim'  :[210, 60, 210] #400
-        }
+        'cargo': [[u'{} DE {}'.format(entidad.cargo, entidad.nombre).upper(), '', u'COORDINADOR DE LA CARRERA {}'.format(componente.proyecto_vinculacion.carrera.nombre).upper()]],
+        'nombre' :[[u'{}'.format(entidad.encargado).upper(), '', u'Ing. {}'.format(coordinador).upper()]],
+        'dim'  :[220, 40, 210], #400
+        'tipo': [1,0,1]
+    }
     firmas(story, inf)
+    story.append(Spacer(1, 1))
+
+    inf = {
+        'cargo': [['', u'RESPONSABLE DE VINCULACIÓN CON LA COLECTIVIDAD CARRERA {}'.format(componente.proyecto_vinculacion.carrera.nombre).upper(), '']],
+        'nombre' :[['', u'Ing. {}'.format(componente.responsable.get_full_name()).upper(), '']],
+        'dim'  :[120, 220, 130], #400
+        'tipo' : [0,1,0]
+    }
+    firmas(story, inf)
+    #################
+    # coordinador = componente.proyecto_vinculacion.carrera.coordinadores.filter(estado=True).first()
+    # docente = '-------'
+    # carrera = '-------'
+    # if coordinador:
+    #     carrera = coordinador.carrera.nombre
+    #     docente = u'{}'.format(coordinador.docente.get_full_name())
+    # responsable = componente.responsable.perfil.docente
+    # inf = {
+    #         'cargo':[[u'COORDINACIÓN DE LA CARRERA DE {}'.format(carrera).upper(), '', u'RESPONSABLE DE VINCULACION CON SOCIEDAD CARRERA DE {}'.format(componente.proyecto_vinculacion.carrera.nombre).upper()]],
+    #         'nombre' :[[u'{}'.format(docente).upper(), '', u'{}'.format(responsable.get_full_name()).upper()]],
+    #         'dim'  :[210, 60, 210], #400
+    #         'tipo' : [1,0,1] # 0 sin linea / 1 con linea
+    #     }
+    # firmas(story, inf)
 
     doc.build(story, onFirstPage=partial(primeraPagina2, titulo='INFORMES DE AVANCES DE PROYECTOS DE VINCULACIÓN'), onLaterPages=siguientePagina2)
     response.write(buff.getvalue())
@@ -705,10 +730,11 @@ def evaluacion(componente):
         docente = coordinador.docente.get_full_name()
     responsable = componente.responsable.perfil.docente
     inf = {
-            'cargo':[[u'COORDINACIÓN DE LA CARRERA DE {}'.format(carrera).upper(), '', u'RESPONSABLE DE VINCULACION CON SOCIEDAD CARRERA DE {}'.format(componente.proyecto_vinculacion.carrera.nombre).upper()]],
-            'nombre' :[[u'{}'.format(docente).upper(), '', u'{}'.format(responsable.get_full_name()).upper()]],
-            'dim'  :[290, 100, 290] #400
-        }
+        'cargo':[[u'COORDINACIÓN DE LA CARRERA DE {}'.format(carrera).upper(), '', u'COORDINADOR DE {}'.format(componente.proyecto_vinculacion.entidad.nombre), '', u'RESPONSABLE DE VINCULACION CON SOCIEDAD CARRERA DE {}'.format(componente.proyecto_vinculacion.carrera.nombre).upper()]],
+        'nombre' :[[u'Ing. {}'.format(docente).upper(), '', u'{}'.format(componente.proyecto_vinculacion.entidad.encargado).upper(), '', u'Ing. {}'.format(responsable.get_full_name()).upper()]],
+        'dim'  :[220, 30, 220, 30, 220], #400
+        'tipo': [1,0,1,0,1]
+    }
     firmas(story, inf)
 
     doc.build(story, onFirstPage=primeraPagina3, onLaterPages=siguientePagina3)
@@ -730,7 +756,7 @@ def actividad(actividad):
     story = [Spacer(1,inch*1.3)]
     try:
         data = [
-            [Paragraph('TEMA:', _hb(10)), Paragraph(u'{}'.format(actividad.nombre), _h(10))],
+            [Paragraph('TEMA:', _hb(10)), Paragraph(u'{}'.format(escape(actividad.nombre)), _h(10))],
             [Paragraph('CARRERA:', _hb(10)), Paragraph(u'{}'.format(actividad.carrera), _h(10))],
             [Paragraph('RESPONSABLE:', _hb(10)), Paragraph(u'{}'.format(actividad.responsable.perfil.docente.get_full_name()), _h(10))],
             [Paragraph('FECHA:', _hb(10)), Paragraph(u'{} - {}'.format(actividad.inicio.strftime('%d/%m/%Y'), actividad.fin.strftime('%d/%m/%Y')), _h(10))],
@@ -830,10 +856,21 @@ def actividad(actividad):
     
     story.append(Spacer(1, 20))
 
+    coordinador = actividad.carrera.coordinadores.get() if actividad.carrera.coordinadores.exists() else '-------'
     inf = {
-        'cargo':[[u'RESPONSABLE DE VINCULACION CON LA SOCIEDAD CARRERA DE {}'.format(actividad.carrera.nombre).upper(), '', u'RESPONSABLE DE {}'.format(actividad.carrera.nombre).upper()]],
-        'nombre' :[[u'{}'.format(actividad.responsable.get_full_name()).upper(), '', u'{}'.format(actividad.entidad.encargado).upper()]],
-        'dim'  :[220, 40, 210] #400
+        'cargo': [[u'{} DE {}'.format(actividad.entidad.cargo, actividad.entidad.nombre).upper(), '', u'COORDINADOR DE LA CARRERA {}'.format(actividad.carrera.nombre).upper()]],
+        'nombre' :[[u'{}'.format(actividad.entidad.encargado).upper(), '', u'Ing. {}'.format(coordinador).upper()]],
+        'dim'  :[220, 40, 210], #400
+        'tipo': [1,0,1]
+    }
+    firmas(story, inf)
+    story.append(Spacer(1, 1))
+
+    inf = {
+        'cargo': [['', u'RESPONSABLE DE VINCULACIÓN CON LA COLECTIVIDAD CARRERA {}'.format(actividad.carrera.nombre).upper(), '']],
+        'nombre' :[['', u'Ing. {}'.format(actividad.responsable.get_full_name()).upper(), '']],
+        'dim'  :[120, 220, 130], #400
+        'tipo' : [0,1,0]
     }
     firmas(story, inf)
 
@@ -904,10 +941,11 @@ def evaluacion2(actividad):
         docente = coordinador.docente.get_full_name()
     responsable = actividad.responsable.perfil.docente
     inf = {
-            'cargo':[[u'COORDINACIÓN DE LA CARRERA DE {}'.format(carrera).upper(), '', u'COORDINADOR DE {}'.format(actividad.entidad.nombre), '', u'RESPONSABLE DE VINCULACION CON SOCIEDAD CARRERA DE {}'.format(actividad.carrera.nombre).upper()]],
-            'nombre' :[[u'{}'.format(docente).upper(), '', u'{}'.format(actividad.entidad.encargado).upper(), '', u'{}'.format(responsable.get_full_name()).upper()]],
-            'dim'  :[220, 30, 220, 30, 220] #400
-        }
+        'cargo':[[u'COORDINACIÓN DE LA CARRERA DE {}'.format(carrera).upper(), '', u'COORDINADOR DE {}'.format(actividad.entidad.nombre), '', u'RESPONSABLE DE VINCULACION CON SOCIEDAD CARRERA DE {}'.format(actividad.carrera.nombre).upper()]],
+        'nombre' :[[u'{}'.format(docente).upper(), '', u'{}'.format(actividad.entidad.encargado).upper(), '', u'{}'.format(responsable.get_full_name()).upper()]],
+        'dim'  :[220, 30, 220, 30, 220], #400
+        'tipo': [1,0,1,0,1]
+    }
     firmas(story, inf)
 
     doc.build(story, onFirstPage=primeraPagina3, onLaterPages=siguientePagina3)
