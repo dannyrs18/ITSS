@@ -69,11 +69,14 @@ class ComponenteReporteForm(forms.Form):
             self.fields['registro'].queryset = Proyecto_vinculacion.objects.filter(carrera=user.perfil.carrera)
 
 class ActividadReporteForm(forms.Form):
-    registro = forms.ModelChoiceField(queryset=Proyecto_vinculacion.objects.none())
+    registro = forms.ModelChoiceField(queryset=Actividad_vinculacion.objects.none())
     reporte = AjaxChoiceField(choices=((None, '---------'),))
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(ActividadReporteForm, self).__init__(*args, **kwargs)
         for key in self.fields:
             self.fields[key].widget.attrs.update({'class' : 'form-control search_select'})
-        self.fields['registro'].queryset = Actividad_vinculacion.objects.all()
+        if user.has_perm('registros.admin_vinc'):
+            self.fields['registro'].queryset = Actividad_vinculacion.objects.all()
+        elif user.has_perm('registros.resp_vinc'):
+            self.fields['registro'].queryset = Actividad_vinculacion.objects.filter(carrera=user.perfil.carrera)

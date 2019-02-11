@@ -129,9 +129,10 @@ class UserForm(UserCreationForm):
             from django.core.mail import EmailMessage
 
             data = self.cleaned_data
-            mensaje = u"""Bienvenido :
+            mensaje = u"""Bienvenido:
+            url: http://practicasacademicas.itss.edu.ec/
             username: {}
-            clave {}""".format(data.get('username'), data.get('password1'))
+            clave: {}""".format(data.get('username'), data.get('password1'))
             mail = EmailMessage('Instituto tecnologico Superior Sudamericano', mensaje, to=[data.get('email')])
             mail.send()
         except:
