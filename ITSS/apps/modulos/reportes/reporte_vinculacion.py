@@ -537,7 +537,7 @@ def componentes(componente):
     story.append(Spacer(1, 50))
 
     #################
-    coordinador = componente.proyecto_vinculacion.carrera.coordinadores.get() if componente.proyecto_vinculacion.carrera.coordinadores.exists() else '-------'
+    coordinador = componente.proyecto_vinculacion.carrera.coordinadores.filter(estado=True).first() if componente.proyecto_vinculacion.carrera.coordinadores.filter(estado=True).exists() else '-------'
     inf = {
         'cargo': [[u'{} DE {}'.format(entidad.cargo, entidad.nombre).upper(), '', u'COORDINADOR DE LA CARRERA {}'.format(componente.proyecto_vinculacion.carrera.nombre).upper()]],
         'nombre' :[[u'{}'.format(entidad.encargado).upper(), '', u'Ing. {}'.format(coordinador).upper()]],
@@ -856,7 +856,7 @@ def actividad(actividad):
     
     story.append(Spacer(1, 20))
 
-    coordinador = actividad.carrera.coordinadores.get() if actividad.carrera.coordinadores.exists() else '-------'
+    coordinador = actividad.carrera.coordinadores.filter(estado=True).first() if actividad.carrera.coordinadores.filter(estado=True).exists() else '-------'
     inf = {
         'cargo': [[u'{} DE {}'.format(actividad.entidad.cargo, actividad.entidad.nombre).upper(), '', u'COORDINADOR DE LA CARRERA {}'.format(actividad.carrera.nombre).upper()]],
         'nombre' :[[u'{}'.format(actividad.entidad.encargado).upper(), '', u'Ing. {}'.format(coordinador).upper()]],
