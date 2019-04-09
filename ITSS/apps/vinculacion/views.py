@@ -312,7 +312,7 @@ def reporte_componente(request):
     return render(request, 'formularios/reporte_componente.html', context)
 
 def reporte_actividad(request):
-    form = forms.ActividadReporteForm(request.POST or None)
+    form = forms.ActividadReporteForm(request.user, request.POST or None)
     if form.is_valid():
         registro = get_object_or_404(Actividad_vinculacion, pk=form.cleaned_data.get('registro').id)
         if form.cleaned_data.get('reporte')=='1':

@@ -144,10 +144,11 @@ LOGIN_URL = reverse_lazy('login')
 DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 
 # Servidor de correos
-EMAIL = 'controldocentes17@gmail.com' # variable para reusar
+EMAIL = 'practicas.vinculacionitss@gmail.com'
+# variable para reusar
 EMAIL_HOST = 'smtp.gmail.com' 
 EMAIL_HOST_USER =  EMAIL# Gmail del emisor del mensaje
-EMAIL_HOST_PASSWORD = 'controldocentes2017..'
+EMAIL_HOST_PASSWORD = 'practicas'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 SEND_EMAIL=True # Estado para activar los correos

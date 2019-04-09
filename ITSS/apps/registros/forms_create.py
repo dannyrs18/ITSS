@@ -129,10 +129,11 @@ class UserForm(UserCreationForm):
             from django.core.mail import EmailMessage
 
             data = self.cleaned_data
-            mensaje = u"""Bienvenido :
+            mensaje = u"""Bienvenido a la aplicación web de cotrol y seguimiento del proceso de Practicas Pre-profesionales y horas de Vinculación con la Sociedad para el ITSS:
+            url: http://practicasacademicas.itss.edu.ec/
             username: {}
-            clave {}""".format(data.get('username'), data.get('password1'))
-            mail = EmailMessage('Instituto tecnologico Superior Sudamericano', mensaje, to=[data.get('email')])
+            clave: {}""".format(data.get('username'), data.get('password1'))
+            mail = EmailMessage('Bienvenido al aplicativo de seguimiento y control', mensaje, to=[data.get('email')])
             mail.send()
         except:
             print 'error de envio'
