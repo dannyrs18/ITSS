@@ -220,7 +220,11 @@ def reporte_estudiante(request):
 
 @login_required
 def reporte_empresas(request):
-    empresas = Empresa.objects.all()
+    empresas = Empresa.objects.none()
+    if request.user.has_perm('registros.resp_prac'):
+        empresas = Empresa.objects.filter(carrera = request.user.perfil.carrera)
+    elif request.user.has_perm('registros.admin_prac'):
+        empresas = Empresa.objects.filter()
     return reporte_practicas.empresas(empresas)
 
 @login_required

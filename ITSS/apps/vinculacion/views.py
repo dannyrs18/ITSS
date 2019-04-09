@@ -260,9 +260,12 @@ def reporte_estudiante(request):
 @login_required
 @permission_required('vinculacion.reporte_entidad')
 def reporte_entidades(request):
-    entidades = Entidad.objects.all()
-    response = reporte_vinculacion.entidades(entidades)
-    return response
+    entidades = Entidad.objects.none()
+    if request.user.has_perm('registros.resp_vinc'):
+        entidades = Entidad.objects.filter(carrera = request.user.perfil.carrera)
+    elif request.user.has_perm('registros.admin_vinc'):
+        entidades = Entidad.objects.filter()
+    return reporte_vinculacion.entidades(entidades)
 
 @login_required
 def reporte_periodo(request):

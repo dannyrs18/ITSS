@@ -215,6 +215,7 @@ def estudiantes():
                 instance.save()
 
 def docentes():
+    print 'ok'
     docentes = _.get_data(_._listadoDocentesPeriodoActual)
     for docente in docentes:
         if not Docente.objects.filter(cedula=docente['cedula']).exists():

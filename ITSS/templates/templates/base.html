@@ -98,7 +98,7 @@
                     {% if perms.registros.view_coordinador %}
                     <li><a><i class="fa fa-list-alt"></i> <strong>Coordinadores</strong> <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            {% if perms.registros.add_coordinador %}
+                            {% if perms.registros.add_coordinador and not user.is_superuser %}
                             <li><a href="{% url 'registro:crear_coordinador' %}">Nuevo</a></li>
                             {% endif %}
                             <li><a href="{% url 'registro:tabla_coordinadores' %}">Buscar</a></li>
