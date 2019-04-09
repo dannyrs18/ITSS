@@ -39,7 +39,7 @@ def crear_usuario(request):
 
 
 @login_required
-@permission_required('registros:add_coordinador') #raise_exception=True
+@permission_required('registros.add_coordinador') #raise_exception=True
 @transaction.atomic
 def crear_coordinador(request):
     form = CoordinadorForm(request.POST or None, request.FILES or None)

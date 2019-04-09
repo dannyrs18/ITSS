@@ -262,7 +262,7 @@ def reporte_estudiante(request):
 def reporte_entidades(request):
     entidades = Entidad.objects.none()
     if request.user.has_perm('registros.resp_vinc'):
-        entidades = Entidad.objects.filter(carrera = request.user.perfil.carrera)
+        entidades = Entidad.objects.filter(carreras = request.user.perfil.carrera)
     elif request.user.has_perm('registros.admin_vinc'):
         entidades = Entidad.objects.filter()
     return reporte_vinculacion.entidades(entidades)

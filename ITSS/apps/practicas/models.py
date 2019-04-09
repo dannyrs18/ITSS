@@ -18,7 +18,7 @@ class Empresa(Oficina): # PRACTICAS
     class Meta:
         permissions = [
             ('view_empresa', 'Puede acceder a Empresa'),
-            ('reporte_empresa', 'Puede acceder a reporte de Empresa')
+            ('reporte_empresa', 'Puede acceder a reporte de Empresa'),
         ]
 
     def __unicode__(self):
